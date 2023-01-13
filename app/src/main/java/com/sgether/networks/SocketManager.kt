@@ -51,7 +51,7 @@ class SocketManager(onWelcome: Emitter.Listener, onOffer: Emitter.Listener, onAn
         socket?.emit("answer", data, room)
     }
 
-    fun sendIce(iceCandidate: IceCandidate?, room: String): Unit{
+    fun sendIce(iceCandidate: IceCandidate?, room: String){
         val data = JSONObject()
             .put("sdp", iceCandidate?.sdp)
             .put("sdpMid", iceCandidate?.sdpMid)
