@@ -64,11 +64,11 @@ class PeerManager(context: Context, peerConnectionObserver: PeerConnection.Obser
 
     fun createAnswer(sdpObserver: AppSdpObserver){
         val mediaConstraint = MediaConstraints().apply {
-            mandatory.add(
-                MediaConstraints.KeyValuePair(
-                    "OfferToReceiveVideo", "true"
-                )
-            )
+//            mandatory.add(
+//                MediaConstraints.KeyValuePair(
+//                    "OfferToReceiveVideo", "true"
+//                )
+//            )
         }
         peerConnection?.createAnswer(sdpObserver, mediaConstraint)
     }
@@ -126,6 +126,14 @@ class PeerManager(context: Context, peerConnectionObserver: PeerConnection.Obser
                     createCapturer(it, null)
                 }
             }
+    }
+    
+    fun getLocalDescription(): SessionDescription?{
+        return peerConnection?.localDescription
+    }
+
+    fun getRemoteDescription(): SessionDescription? {
+        return peerConnection?.remoteDescription
     }
 
     fun closeConnection(){
