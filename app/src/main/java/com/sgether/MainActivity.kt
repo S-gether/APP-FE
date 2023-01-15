@@ -3,10 +3,13 @@ package com.sgether
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.sgether.databinding.ActivityMainBinding
 import com.sgether.networks.AppSdpObserver
 import com.sgether.networks.PeerConnectionObserver
@@ -22,6 +25,8 @@ import org.webrtc.IceCandidate
 import org.webrtc.MediaStream
 import org.webrtc.SessionDescription
 import org.webrtc.VideoTrack
+import java.util.Timer
+import kotlin.concurrent.schedule
 import kotlin.concurrent.timer
 
 class MainActivity : AppCompatActivity() {
@@ -46,8 +51,27 @@ class MainActivity : AppCompatActivity() {
     private lateinit var room: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        var isReady = false
+        Timer("CheckLogin").schedule(1000){
+            isReady = true
+        }
+        val content: View = findViewById(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object: ViewTreeObserver.OnPreDrawListener{
+                override fun onPreDraw(): Boolean {
+                    return if(isReady){
+                        content.viewTreeObserver.removeOnPreDrawListener(this)
+                        true
+                    } else {
+                        false
+                    }
+                }
+            }
+        )
 
         socketManager = SocketManager(onWelcomeListener, onOfferListener, onAnswerListener, onIceCandidate)
         peerManager = PeerManager(this, peerConnectionObserver)
