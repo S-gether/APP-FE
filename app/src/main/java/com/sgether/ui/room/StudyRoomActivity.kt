@@ -27,7 +27,9 @@ class StudyRoomActivity : AppCompatActivity() {
         const val TAG = ".StudyRoomActivity"
     }
 
+
     private val binding by lazy { ActivityStudyRoomBinding.inflate(layoutInflater) }
+
 
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
@@ -52,21 +54,19 @@ class StudyRoomActivity : AppCompatActivity() {
             SocketManager(onWelcomeListener, onOfferListener, onAnswerListener, onIceCandidate)
         peerManager = PeerManager(this, peerConnectionObserver)
 
-        // 권한 요청
-        PermissionHelper.getDeniedPermissions(
-            this, listOf(
-                android.Manifest.permission.CAMERA,
-                android.Manifest.permission.RECORD_AUDIO,
-            )
-        ).run {
+
+        // 권한 부여
+        PermissionHelper.getDeniedPermissions(this, listOf(
+            android.Manifest.permission.CAMERA,
+            android.Manifest.permission.RECORD_AUDIO,
+        )).run {
             permissionLauncher.launch(this)
         }
 
         initViewListeners()
     }
-
-
-    private fun initViewListeners() {
+    
+    private fun initViewListeners(){
         binding.btnStart.setOnClickListener {
             room = binding.inputRoom.text.toString()
             socketManager.joinRoom(room)
@@ -96,8 +96,8 @@ class StudyRoomActivity : AppCompatActivity() {
     private val onWelcomeListener = Emitter.Listener {
         sendOffer()
     }
-
-    private fun sendOffer() {
+    
+    private fun sendOffer(){
         peerManager.createOffer(object : AppSdpObserver() {
             override fun onCreateSuccess(sdp: SessionDescription?) {
                 peerManager.setLocalDescription(object : AppSdpObserver() {
@@ -153,24 +153,24 @@ class StudyRoomActivity : AppCompatActivity() {
             SessionDescription.Type.ANSWER,
             answer.get("sdp").toString()
         )
-
-        peerManager.setRemoteDescription(object : AppSdpObserver() {
+        
+        peerManager.setRemoteDescription(object: AppSdpObserver() {
             override fun onSetSuccess() {
                 Log.d(TAG, "WEBRTC: ANSWER RemoteDescription 설정")
             }
         }, sdp)
     }
-
+    
 
     private val onIceCandidate = Emitter.Listener {
         val ice = JSONObject(it[0].toString())
         Log.d(TAG, "WEBRTC: ICE 수신")
+        
+        val sdp = if(ice.has("sdp"))
+                ice.get("sdp").toString()
+            else ice.get("candidate").toString()
 
-        val sdp = if (ice.has("sdp"))
-            ice.get("sdp").toString()
-        else ice.get("candidate").toString()
-
-        if (ice.has("candidate") || ice.has("sdp")) {
+        if(ice.has("candidate") || ice.has("sdp")){
             val temp = IceCandidate(
                 ice.get("sdpMid").toString(),
                 ice.get("sdpMLineIndex").toString().toInt(),
