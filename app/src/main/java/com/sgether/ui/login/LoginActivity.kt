@@ -16,9 +16,9 @@ import kotlin.concurrent.schedule
 class LoginActivity : AppCompatActivity() {
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        installSplashScreen()
 
         // Splash Screen
         var isReady = false
