@@ -1,4 +1,4 @@
-package com.sgether.model
+package com.sgether.models
 
 data class WebRTCModel(
     var type: String,
