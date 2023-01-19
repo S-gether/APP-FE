@@ -9,9 +9,9 @@
     <include app:graph="@navigation/nav_group" />
 
     <fragment
-        android:id="@+id/noticeFragment"
-        android:name="com.sgether.ui.notice.NoticeFragment"
-        android:label="NoticeFragment" />
+        android:id="@+id/searchFragment"
+        android:name="com.sgether.ui.search.SearchFragment"
+        android:label="SearchFragment" />
 
     <fragment
         android:id="@+id/myPageFragment"
