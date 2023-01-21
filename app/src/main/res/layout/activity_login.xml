@@ -17,44 +17,75 @@
         android:orientation="vertical"
         >
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/username"/>
+        <EditText
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:inputType="text"
+            android:drawableStart="@drawable/ic_username_logo"
+            android:drawablePadding="10dp"
+            android:layout_gravity="center"
+            />
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
-            android:text="@string/password"/>
-    <Button
-        android:id="@+id/btnLogin"
-        android:background="@drawable/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="35dp"
-        android:layout_gravity="center"
-        />
+            android:hint="@string/password"
+            android:inputType="text"
+            android:drawableStart="@drawable/ic_lock_logo"
+            android:drawablePadding="15dp"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:text="Forget password?"
+            android:layout_gravity="right"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="50dp"
+            />
         <Button
             android:id="@+id/btnLogin"
-            android:text="@string/login"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:background="@drawable/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="35dp"/>
-
+            android:layout_marginBottom="15dp"
+            android:layout_gravity="center" />
         <Button
-            android:id="@+id/btnLogin"
-            android:text="@string/login"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="35dp"/>
 
+            android:background="@drawable/btn_loginwithGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="35dp"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginBottom="35dp"
+            >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? "
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:text="Sign up"
+            android:layout_gravity="right"
+            />
+
+        </LinearLayout>
 
     </LinearLayout>
 
