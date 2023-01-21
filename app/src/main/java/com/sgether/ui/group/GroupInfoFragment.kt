@@ -18,10 +18,19 @@ class GroupInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViewListeners()
+    }
+
+    private fun initViewListeners() {
         binding.btnStudyRoom.setOnClickListener {
             startActivity(Intent(requireContext(), StudyRoomActivity::class.java))
         }
+
+        binding.btnNotice.setOnClickListener {
+            findNavController().navigate(R.id.action_groupInfoFragment_to_noticeFragment)
+        }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
