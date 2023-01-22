@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.sgether.R
+import com.sgether.adapters.MemberRankingAdapter
 import com.sgether.databinding.FragmentGroupInfoBinding
 import com.sgether.ui.room.StudyRoomActivity
 
@@ -16,9 +18,19 @@ class GroupInfoFragment : Fragment() {
     private val binding
         get() = _binding!!
 
+    private val viewModel: GroupInfoViewModel by viewModels()
+
+    private val memberRankingAdapter by lazy { MemberRankingAdapter() }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews()
         initViewListeners()
+        initViewModelListeners()
+    }
+
+    private fun initViews() {
+        binding.rvMemberRanking.adapter = memberRankingAdapter
     }
 
     private fun initViewListeners() {
@@ -28,6 +40,12 @@ class GroupInfoFragment : Fragment() {
 
         binding.btnNotice.setOnClickListener {
             findNavController().navigate(R.id.action_groupInfoFragment_to_noticeFragment)
+        }
+    }
+
+    private fun initViewModelListeners() {
+        viewModel.memberRankingListLiveData.observe(viewLifecycleOwner) {
+            memberRankingAdapter.list = it
         }
     }
 
