@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@drawable/ic_mic"
+        android:title="Mute"
+        app:showAsAction="always" />
+
+    <item
+        android:icon="@drawable/ic_video"
+        android:title="Video"
+        app:showAsAction="always" />
+
+    <item
+        android:icon="@drawable/ic_people"
+        android:title="People"
+        app:showAsAction="always" />
+
+    <item
+        android:icon="@drawable/ic_more_horiz"
+        android:title="More"
+        app:showAsAction="always" />
+</menu>

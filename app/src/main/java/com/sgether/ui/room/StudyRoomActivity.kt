@@ -76,7 +76,7 @@ class StudyRoomActivity : AppCompatActivity() {
     private fun initSurfaceView() {
         peerManager.run {
             initSurfaceView(binding.surfaceLocal)
-            initSurfaceView(binding.surfaceRemote)
+            //initSurfaceView(binding.surfaceRemote)
         }
     }
 
@@ -88,7 +88,7 @@ class StudyRoomActivity : AppCompatActivity() {
 
         override fun onAddStream(p0: MediaStream?) {
             CoroutineScope(Dispatchers.Main).launch {
-                p0?.videoTracks?.get(0)?.addSink(binding.surfaceRemote)
+                //p0?.videoTracks?.get(0)?.addSink(binding.surfaceRemote)
             }
         }
     }

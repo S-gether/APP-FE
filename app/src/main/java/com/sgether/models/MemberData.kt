@@ -4,5 +4,5 @@ import org.webrtc.VideoTrack
 
 data class MemberData(
     var name: String,
-    var videoTrack: VideoTrack,
+    var videoTrack: VideoTrack? = null,
 )

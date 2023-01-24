@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.sgether.R
 import com.sgether.adapters.MemberRankingAdapter
 import com.sgether.databinding.FragmentGroupInfoBinding
-import com.sgether.ui.room.StudyRoomActivity
+import com.sgether.ui.room.RoomActivity
 
 class GroupInfoFragment : Fragment() {
     private var _binding: FragmentGroupInfoBinding? = null
@@ -35,7 +35,7 @@ class GroupInfoFragment : Fragment() {
 
     private fun initViewListeners() {
         binding.btnStudyRoom.setOnClickListener {
-            startActivity(Intent(requireContext(), StudyRoomActivity::class.java))
+            startActivity(Intent(requireContext(), RoomActivity::class.java))
         }
 
         binding.btnNotice.setOnClickListener {

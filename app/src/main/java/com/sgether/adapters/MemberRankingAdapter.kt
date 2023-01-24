@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sgether.databinding.ItemMemberRankingBinding
 import com.sgether.models.MemberRanking
 
-class MemberRankingAdapter : RecyclerView.Adapter<MemberRankingAdapter.UserRankingViewHolder>() {
+class MemberRankingAdapter : RecyclerView.Adapter<MemberRankingAdapter.MemberRankingViewHolder>() {
 
     var list: List<MemberRanking> = listOf()
         set(value) {
@@ -14,7 +14,7 @@ class MemberRankingAdapter : RecyclerView.Adapter<MemberRankingAdapter.UserRanki
             notifyDataSetChanged()
         }
 
-    inner class UserRankingViewHolder(val binding: ItemMemberRankingBinding) :
+    inner class MemberRankingViewHolder(val binding: ItemMemberRankingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(memberRanking: MemberRanking) {
             binding.textMemberRank.text = memberRanking.rank.toString()
@@ -23,13 +23,13 @@ class MemberRankingAdapter : RecyclerView.Adapter<MemberRankingAdapter.UserRanki
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserRankingViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberRankingViewHolder {
         val binding =
             ItemMemberRankingBinding.inflate(LayoutInflater.from(parent.context), parent, false);
-        return UserRankingViewHolder(binding)
+        return MemberRankingViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: UserRankingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MemberRankingViewHolder, position: Int) {
         holder.bind(list[position])
     }
 

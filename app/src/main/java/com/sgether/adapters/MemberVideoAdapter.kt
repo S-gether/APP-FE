@@ -17,7 +17,7 @@ class MemberVideoAdapter : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVi
     inner class MemberVideoVideHolder(val binding: ItemMemberVideoBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(memberData: MemberData){
             binding.textProfile.text = memberData.name
-            memberData.videoTrack.addSink(binding.surfaceViewRenderer)
+            //memberData.videoTrack.addSink(binding.surfaceViewRenderer)
         }
     }
 
