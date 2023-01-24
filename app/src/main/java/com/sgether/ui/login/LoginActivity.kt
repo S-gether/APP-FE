@@ -6,19 +6,36 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.sgether.R
 import com.sgether.databinding.ActivityLoginBinding
 import com.sgether.ui.MainActivity
+import com.sgether.utils.PermissionHelper
 import java.util.*
 import kotlin.concurrent.schedule
 
 class LoginActivity : AppCompatActivity() {
+
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            if (!result.containsValue(false)) {
+                Toast.makeText(this, "권한 허용", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen() // super.onCreate() 이전에 위치해야 함
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        PermissionHelper.getDeniedPermissions(this, listOf(
+            android.Manifest.permission.CAMERA,
+            android.Manifest.permission.RECORD_AUDIO,
+        )).run {
+            permissionLauncher.launch(this)
+        }
 
         // Splash Screen
         var isReady = false

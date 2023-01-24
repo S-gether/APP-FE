@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sgether.databinding.ItemMemberVideoBinding
 import com.sgether.models.MemberData
+import com.sgether.networks.MyPeerManager
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 class MemberVideoAdapter : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVideHolder>(){
 
@@ -14,16 +16,24 @@ class MemberVideoAdapter : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVi
             notifyDataSetChanged()
         }
 
-    inner class MemberVideoVideHolder(val binding: ItemMemberVideoBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class MemberVideoVideHolder(val binding: ItemMemberVideoBinding, val peerManager: MyPeerManager): RecyclerView.ViewHolder(binding.root) {
         fun bind(memberData: MemberData){
             binding.textProfile.text = memberData.name
-            //memberData.videoTrack.addSink(binding.surfaceViewRenderer)
+            if(memberData.isLocal){
+                peerManager.startLocalSurface(binding.root.context, binding.surfaceViewRenderer)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberVideoVideHolder {
         val binding = ItemMemberVideoBinding.inflate(LayoutInflater.from(parent.context))
-        return MemberVideoVideHolder(binding)
+
+        val myPeerManager = MyPeerManager(parent.context)
+        myPeerManager.initSurfaceView(binding.surfaceViewRenderer)
+        //myPeerManager.startLocalSurface(parent.context, binding.surfaceViewRenderer)
+
+
+        return MemberVideoVideHolder(binding, myPeerManager)
     }
 
     override fun onBindViewHolder(holder: MemberVideoVideHolder, position: Int) {
