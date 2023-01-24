@@ -1,6 +1,7 @@
 package com.sgether.networks
 
 import android.content.Context
+import com.sgether.R
 import org.webrtc.*
 
 class MyPeerManager(context: Context) {
@@ -35,7 +36,7 @@ class MyPeerManager(context: Context) {
         PeerConnectionFactory.initialize(options)
     }
 
-    fun startLocalSurface(context: Context, surfaceViewRenderer: SurfaceViewRenderer){
+    fun startLocalSurface(context: Context, surfaceViewRenderer: SurfaceViewRenderer) {
         val videoCapturer = getVideoCapturer(context)
 
         val surfaceTextureHelper =
@@ -48,10 +49,12 @@ class MyPeerManager(context: Context) {
 
         videoCapturer?.startCapture(320, 240, 30)
 
-        val localVideoTrack = peerConnectionFactory.createVideoTrack("local_video", localVideoSource)
+        val localVideoTrack =
+            peerConnectionFactory.createVideoTrack("local_video", localVideoSource)
         localVideoTrack?.addSink(surfaceViewRenderer)
 
-        val localAudioTrack = peerConnectionFactory.createAudioTrack("local_audio", localAudioSource)
+        val localAudioTrack =
+            peerConnectionFactory.createAudioTrack("local_audio", localAudioSource)
 
         localStream = peerConnectionFactory.createLocalMediaStream("local_stream").apply {
             addTrack(localVideoTrack)
@@ -61,7 +64,7 @@ class MyPeerManager(context: Context) {
         //peerConnection?.addStream(localStream)
     }
 
-    fun initSurfaceView(surfaceViewRenderer: SurfaceViewRenderer){
+    fun initSurfaceView(surfaceViewRenderer: SurfaceViewRenderer) {
         surfaceViewRenderer.run {
             setEnableHardwareScaler(true)
             setMirror(true)
@@ -75,5 +78,19 @@ class MyPeerManager(context: Context) {
                 createCapturer(it, null)
             }
         }
+    }
+
+    fun buildPeerConnection(
+        context: Context,
+        observer: PeerConnection.Observer
+    ): PeerConnection? {
+        return peerConnectionFactory.createPeerConnection(
+            listOf(
+                PeerConnection.IceServer.builder(
+                    context.resources.getStringArray(R.array.stun_server).toList()
+                ).createIceServer(),
+            ),
+            observer
+        )
     }
 }

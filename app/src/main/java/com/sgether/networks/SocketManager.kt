@@ -7,7 +7,7 @@ import io.socket.emitter.Emitter
 import org.json.JSONObject
 import java.net.URISyntaxException
 
-class SocketManager(onWelcome: Emitter.Listener, onOffer: Emitter.Listener, onAnswer: Emitter.Listener, onIce: Emitter.Listener) {
+class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener, onAnswer: Emitter.Listener, onIce: Emitter.Listener) {
 
     companion object {
         const val TAG = ".SocketManager"
@@ -24,7 +24,7 @@ class SocketManager(onWelcome: Emitter.Listener, onOffer: Emitter.Listener, onAn
 
     init {
         socket?.apply {
-            on("welcome", onWelcome)
+            on("join", onJoinListener)
             on("offer", onOffer)
             on("answer", onAnswer)
             on("ice", onIce)
@@ -58,9 +58,5 @@ class SocketManager(onWelcome: Emitter.Listener, onOffer: Emitter.Listener, onAn
             .put("sdpMLineIndex", iceCandidate?.sdpMLineIndex)
 
         socket?.emit("ice", data, room);
-    }
-
-    fun close(){
-        socket?.close()
     }
 }

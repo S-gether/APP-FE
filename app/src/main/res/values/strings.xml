@@ -3,4 +3,11 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string-array name="stun_server">
+        <item>stun:stun.l.google.com:19302</item>
+        <item>stun:stun1.l.google.com:19302</item>
+        <item>stun:stun2.l.google.com:19302</item>
+        <item>stun:stun3.l.google.com:19302</item>
+        <item>stun:stun4.l.google.com:19302</item>
+    </string-array>
 </resources>

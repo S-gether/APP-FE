@@ -2,6 +2,7 @@ package com.sgether.ui.room
 
 import android.app.Application
 import android.content.Context
+import android.os.Build.VERSION_CODES.M
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,27 +17,22 @@ import org.webrtc.SurfaceViewRenderer
 
 class RoomViewModel(application: Application): AndroidViewModel(application) {
 
-    val peerManager = MyPeerManager(application)
-
-    private val _memberDataLists = listOf(
+    private val _memberDataLists = mutableListOf(
         MemberData("홍길동찐", "", isLocal = true),
-        MemberData("홍길동", ""),
-        MemberData("홍길동", ""),
-        MemberData("홍길동", ""),
-        MemberData("홍길동", ""),
-        MemberData("홍길동", ""),
-        MemberData("홍길동", ""),
-        MemberData("홍길동", ""),
-        MemberData("홍길동", ""),
         MemberData("홍길동", ""),
     )
 
     private val _memberDataListLiveData = MutableLiveData(_memberDataLists)
 
-    val memberDataListLiveData: LiveData<List<MemberData>>
+    val memberDataListLiveData: LiveData<MutableList<MemberData>>
         get() = _memberDataListLiveData
 
-    private fun setMemberDataList(list: List<MemberData>){
+    fun setMemberDataList(list: MutableList<MemberData>){
         _memberDataListLiveData.value = list
+    }
+
+    fun addMemberDataList(memberData: MemberData) {
+        _memberDataLists.add(memberData)
+        _memberDataListLiveData.value = _memberDataLists
     }
 }
