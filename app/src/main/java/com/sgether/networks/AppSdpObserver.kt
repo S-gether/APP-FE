@@ -6,7 +6,7 @@ import org.webrtc.SessionDescription
 
 open class AppSdpObserver: SdpObserver {
     companion object {
-        const val TAG = ".Main"
+        const val TAG = ".RoomActivity"
     }
 
     override fun onCreateSuccess(sdp: SessionDescription?) {

@@ -93,4 +93,28 @@ class MyPeerManager(context: Context) {
             observer
         )
     }
+
+    fun createOffer(peerConnection: PeerConnection?, sdpObserver: AppSdpObserver){
+        val mediaConstraint = MediaConstraints().apply {
+            mandatory.add(
+                MediaConstraints.KeyValuePair(
+                    "OfferToReceiveVideo", "true"
+                )
+            )
+        }
+        peerConnection?.createOffer(sdpObserver, mediaConstraint)
+    }
+
+    fun setLocalDescription(peerConnection: PeerConnection?, observer: AppSdpObserver, sdp: SessionDescription?) {
+        peerConnection?.setLocalDescription(observer, sdp)
+    }
+
+    fun setRemoteDescription(peerConnection: PeerConnection?, observer: AppSdpObserver, sdp: SessionDescription?){
+        peerConnection?.setRemoteDescription(observer, sdp)
+    }
+
+    fun addIceCandidate(peerConnection: PeerConnection?, iceCandidate: IceCandidate?){
+        peerConnection?.addIceCandidate(iceCandidate)
+    }
+
 }

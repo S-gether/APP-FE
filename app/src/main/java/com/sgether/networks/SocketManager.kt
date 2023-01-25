@@ -15,7 +15,7 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
 
     private val socket by lazy {
         try {
-            IO.socket("http://192.168.137.1:3000") // TODO: Set Address
+            IO.socket("http://192.168.137.1:4000") // TODO: Set Address
             //IO.socket("https://every-squids-switch-118-221-204-105.loca.lt") // TODO: Set Address
         } catch (e: URISyntaxException){
             null
@@ -33,15 +33,15 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
         }
     }
 
-    fun joinRoom(room: String){
-        socket?.emit("join_room", room)
+    fun joinRoom(roomName: String, userName: String){
+        socket?.emit("join", roomName, userName)
     }
 
-    fun sendOffer(sdp: SessionDescription?, room: String) {
+    fun sendOffer(sdp: SessionDescription?, socketId: String, nickName: String) {
         val data = JSONObject()
             .put("type", sdp?.type)
             .put("sdp", sdp?.description)
-        socket?.emit("offer", data, room)
+        socket?.emit("offer", data, socketId, nickName)
     }
 
     fun sendAnswer(sdp: SessionDescription?, room: String) {
@@ -51,12 +51,16 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
         socket?.emit("answer", data, room)
     }
 
-    fun sendIce(iceCandidate: IceCandidate?, room: String){
+    fun sendIce(iceCandidate: IceCandidate?, remoteSocketId: String){
         val data = JSONObject()
             .put("sdp", iceCandidate?.sdp)
             .put("sdpMid", iceCandidate?.sdpMid)
             .put("sdpMLineIndex", iceCandidate?.sdpMLineIndex)
 
-        socket?.emit("ice", data, room);
+        socket?.emit("ice", data, remoteSocketId);
+    }
+
+    fun disconnect(){
+        socket?.disconnect()
     }
 }

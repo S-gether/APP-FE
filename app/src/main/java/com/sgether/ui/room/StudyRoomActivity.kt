@@ -69,7 +69,7 @@ class StudyRoomActivity : AppCompatActivity() {
     private fun initViewListeners(){
         binding.btnStart.setOnClickListener {
             room = binding.inputRoom.text.toString()
-            socketManager.joinRoom(room)
+            socketManager.joinRoom(room, "test")
         }
     }
 

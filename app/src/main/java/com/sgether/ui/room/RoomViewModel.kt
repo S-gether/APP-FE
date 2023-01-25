@@ -28,7 +28,7 @@ class RoomViewModel(application: Application): AndroidViewModel(application) {
         get() = _memberDataListLiveData
 
     fun setMemberDataList(list: MutableList<MemberData>){
-        _memberDataListLiveData.value = list
+        _memberDataListLiveData.postValue(list)
     }
 
     fun addMemberDataList(memberData: MemberData) {
