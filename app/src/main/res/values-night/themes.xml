@@ -18,7 +18,7 @@
     <!-- Splash Screen -->
     <style name="Theme.Sgether.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/sgether_purple</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_logo_reversed</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
         <item name="postSplashScreenTheme">@style/Theme.Sgether</item>
 
         <item name="android:statusBarColor">@color/sgether_purple</item>
