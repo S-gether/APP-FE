@@ -21,6 +21,7 @@ class MemberVideoAdapter(var peerManager: MyPeerManager) : RecyclerView.Adapter<
             binding.textProfile.text = memberData.name
             if(memberData.isLocal){
                 peerManager.startLocalSurface(binding.root.context, binding.surfaceViewRenderer)
+
             }
             memberData.mediaStream?.videoTracks?.get(0)?.addSink(binding.surfaceViewRenderer)
         }

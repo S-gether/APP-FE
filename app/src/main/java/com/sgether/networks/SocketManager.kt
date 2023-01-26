@@ -44,11 +44,11 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
         socket?.emit("offer", data, socketId, nickName)
     }
 
-    fun sendAnswer(sdp: SessionDescription?, room: String) {
+    fun sendAnswer(sdp: SessionDescription?, socketId: String) {
         val data = JSONObject()
             .put("type", sdp?.type)
             .put("sdp", sdp?.description)
-        socket?.emit("answer", data, room)
+        socket?.emit("answer", data, socketId)
     }
 
     fun sendIce(iceCandidate: IceCandidate?, remoteSocketId: String){

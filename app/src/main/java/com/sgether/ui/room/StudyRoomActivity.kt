@@ -103,7 +103,7 @@ class StudyRoomActivity : AppCompatActivity() {
                 peerManager.setLocalDescription(object : AppSdpObserver() {
                     override fun onSetSuccess() {
 
-                        socketManager.sendOffer(sdp, room)
+                        //socketManager.sendOffer(sdp, room)
                         Log.d(TAG, "WEBRTC: OFFER 생성 및 전송")
 
                     }

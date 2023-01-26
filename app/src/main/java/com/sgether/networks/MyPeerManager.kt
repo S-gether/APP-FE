@@ -105,6 +105,10 @@ class MyPeerManager(context: Context) {
         peerConnection?.createOffer(sdpObserver, mediaConstraint)
     }
 
+    fun createAnswer(peerConnection: PeerConnection?, sdpObserver: AppSdpObserver){
+        peerConnection?.createAnswer(sdpObserver, MediaConstraints())
+    }
+
     fun setLocalDescription(peerConnection: PeerConnection?, observer: AppSdpObserver, sdp: SessionDescription?) {
         peerConnection?.setLocalDescription(observer, sdp)
     }

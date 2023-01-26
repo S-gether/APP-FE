@@ -29,7 +29,7 @@ class RoomActivity : AppCompatActivity() {
     private val memberVideoAdapter by lazy { MemberVideoAdapter(peerManager) }
 
     val roomName = "1"
-    val nickName = "test"
+    val nickName = "phone"
 
     var socketUserList = mutableListOf<MemberData>()
 
@@ -76,9 +76,7 @@ class RoomActivity : AppCompatActivity() {
 
     private val onJoinListener = Emitter.Listener {
         val userList = JSONArray(it[0].toString())
-        val first = userList.getJSONObject(0)
-
-
+        Log.d(TAG, "onJoinListener: $userList")
         // 유저 목록이 1명일 경우 종료 (자신)
         if(userList.length() == 1){
             return@Listener
@@ -102,17 +100,18 @@ class RoomActivity : AppCompatActivity() {
         }
         viewModel.setMemberDataList(socketUserList.apply {
             add(0, MemberData("홍길동찐", "", isLocal = true))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
-            add(0, MemberData("홍길동", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
 
         })
     }
@@ -130,8 +129,64 @@ class RoomActivity : AppCompatActivity() {
     }
 
     private val onOfferListener = Emitter.Listener {
+        val offer = JSONObject(it[0].toString())
+        val remoteSocketId = it[1].toString()
+        val remoteNickName = it[2].toString()
+        Log.d(TAG, "onOfferListener: $remoteNickName")
+
+        // Offer 변환
+        val sdp = SessionDescription(
+            SessionDescription.Type.OFFER,
+            offer.get("sdp").toString()
+        )
+
+        // PeerConnection 생성
+        val member = createMember(
+            remoteSocketId,
+            remoteNickName,
+        )
+        socketUserList.add(member)
+        viewModel.setMemberDataList(socketUserList.apply {
+            add(0, MemberData("홍길동찐", "", isLocal = true))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+            add(0, MemberData("유저", ""))
+        })
+
+        // RemoteDescription 설정
+        peerManager.setRemoteDescription(member.peerConnection, object : AppSdpObserver() {
+            override fun onSetSuccess() {
+                // Answer 생성
+                createAnswer(member.peerConnection, member.socketId)
+            }
+        }, sdp)
 
     }
+
+    private fun createAnswer(peerConnection: PeerConnection?, socketId: String) {
+        peerManager.createAnswer(peerConnection, object : AppSdpObserver() {
+            override fun onCreateSuccess(sdp: SessionDescription?) {
+                // LocalDescription 설정
+                peerManager.setLocalDescription(peerConnection, object : AppSdpObserver() {
+                    override fun onSetSuccess() {
+                        // Answer 전송
+                        socketManager.sendAnswer(sdp, socketId)
+                    }
+                }, sdp)
+
+            }
+        })
+    }
+
 
     private val onAnswerListener = Emitter.Listener {
         val answer = JSONObject(it[0].toString())
@@ -187,4 +242,7 @@ class RoomActivity : AppCompatActivity() {
         socketManager.disconnect()
     }
 
+    interface onAddStreamListener {
+        fun onAdd()
+    }
 }
