@@ -1,6 +1,8 @@
 package com.sgether.ui.search
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,11 +24,31 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
+        initViewListeners()
         initViewModelListeners()
     }
 
     private fun initViews() {
         binding.rvGroup.adapter = groupAdapter
+    }
+
+    private fun initViewListeners() {
+        // 검색 리스너
+        binding.inputKeyword.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            // 변경되는 즉시 호출되므로 입력 도중 호출됨.
+            override fun onTextChanged(keyword: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.filterKeywords(keyword.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+        })
     }
 
     private fun initViewModelListeners() {
