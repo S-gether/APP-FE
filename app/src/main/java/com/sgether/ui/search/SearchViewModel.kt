@@ -1,11 +1,14 @@
 package com.sgether.ui.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.sgether.db.AppDatabase
 import com.sgether.models.Group
+import com.sgether.models.GroupSearchLog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class SearchViewModel: ViewModel() {
+class SearchViewModel(application: Application): AndroidViewModel(application) {
     private val _groupList = listOf(
         Group("테스트 그룹11", "안녕하세요!"),
         Group("테스트 그룹12", "안녕하세요!"),
@@ -29,4 +32,16 @@ class SearchViewModel: ViewModel() {
     fun filterKeywords(keyword: String) {
         setGroupList(_groupList.filter { it.name.contains(keyword) })
     }
+
+    private val groupSearchLogDao = AppDatabase.getInstance(application).groupSearchLogDao
+
+    fun insertGroupSearchLog(groupSearchLog: GroupSearchLog) = viewModelScope.launch(Dispatchers.IO) {
+        groupSearchLogDao.insert(groupSearchLog)
+    }
+
+    fun deleteGroupSearchLog(groupSearchLog: GroupSearchLog) = viewModelScope.launch(Dispatchers.IO) {
+        groupSearchLogDao.delete(groupSearchLog)
+    }
+
+    val groupSearchLogListLiveData = groupSearchLogDao.readAll()
 }
