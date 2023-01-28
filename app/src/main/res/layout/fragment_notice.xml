@@ -21,57 +21,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/dividerGroupInfoTop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvComment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
-        android:background="@color/divider"
-        app:layout_constraintTop_toBottomOf="@id/textTitle"
-        android:layout_width="0dp"
-        android:layout_height="1dp"/>
-
-    <ImageView
-        android:id="@+id/imageGroupProfile"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/background_profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dividerGroupInfoTop" />
-
-    <TextView
-        android:id="@+id/textGroupName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="1학년 4반"
-        android:textColor="@color/text_primary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageGroupProfile"
-        app:layout_constraintTop_toTopOf="@id/imageGroupProfile" />
-
-    <TextView
-        android:id="@+id/textGroupInfo"
-        android:textColor="@color/text_primary"
-        app:layout_constraintTop_toBottomOf="@id/textGroupName"
-        app:layout_constraintStart_toStartOf="@id/textGroupName"
-        android:text="최근 학습 참여 경과시간 : 1일 전"
-        android:textSize="12sp"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <View
-        android:id="@+id/dividerUserInfoBottom"
-        app:layout_constraintStart_toStartOf="parent"
+        app:stackFromEnd="true"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/inputComment"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:background="@color/divider"
-        app:layout_constraintTop_toBottomOf="@id/imageGroupProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        tools:listitem="@layout/item_comment_sender" />
+
+    <EditText
+        android:id="@+id/inputComment"
         android:layout_width="0dp"
-        android:layout_height="1dp"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnSend"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnSend"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_send" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
