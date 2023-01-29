@@ -32,7 +32,7 @@ class NoticeFragment : Fragment() {
 
     private fun initViewListeners() {
         binding.btnSend.setOnClickListener {
-            viewModel.addComment(Comment("테스트", binding.inputComment.text.toString()))
+            viewModel.addComment(Comment("", "sdfds", binding.inputComment.text.toString()))
         }
     }
 
