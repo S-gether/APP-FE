@@ -1,4 +1,4 @@
-package com.sgether.networks
+package com.sgether.webrtc
 
 import android.content.Context
 import com.sgether.R
