@@ -3,89 +3,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".ui.login.LoginActivity">
 
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/loginLayout"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_sgether" />
-
+        android:src="@drawable/ic_logo"/>
     <LinearLayout
-        android:id="@+id/loginLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <EditText
             android:layout_width="330dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:hint="@string/username"
+            android:inputType="text"
             android:drawableStart="@drawable/ic_username_logo"
             android:drawablePadding="10dp"
-            android:hint="@string/username"
-            android:inputType="text" />
+            android:layout_gravity="center"
+            />
 
         <EditText
             android:layout_width="330dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:hint="@string/password"
+            android:inputType="text"
             android:drawableStart="@drawable/ic_lock_logo"
             android:drawablePadding="15dp"
-            android:hint="@string/password"
-            android:inputType="text" />
+            android:layout_gravity="center"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="30dp"
+            android:textColor="@color/blue"
             android:text="Forget password?"
-            android:textColor="@color/blue" />
-
-        <ImageButton
+            android:layout_gravity="right"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="50dp"
+            />
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogin"
+            android:background="@drawable/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
-            android:padding="0dp"
-            android:src="@drawable/btn_login" />
+            android:layout_gravity="center" />
+        <androidx.appcompat.widget.AppCompatButton
 
-        <ImageButton
+            android:background="@drawable/btn_loginwithgoogle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="35dp"
-            android:padding="0dp"
-            android:src="@drawable/btn_loginwithgoogle" />
+            android:layout_gravity="center"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_marginBottom="35dp"
-            android:orientation="horizontal">
+            >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Don't have an account? " />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Sign up"
-                android:textColor="@color/blue" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? "
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:text="Sign up"
+            android:layout_gravity="right"
+            />
 
         </LinearLayout>
 
