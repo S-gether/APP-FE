@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sgether.databinding.ItemMemberVideoBinding
 import com.sgether.models.MemberData
-import com.sgether.networks.MyPeerManager
-import kotlinx.coroutines.NonDisposableHandle.parent
+import com.sgether.webrtc.MyPeerManager
 
 class MemberVideoAdapter(var peerManager: MyPeerManager) : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVideHolder>(){
 

@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sgether.adapters.MemberVideoAdapter
 import com.sgether.databinding.ActivityRoomBinding
 import com.sgether.models.MemberData
-import com.sgether.networks.AppSdpObserver
-import com.sgether.networks.MyPeerManager
-import com.sgether.networks.PeerConnectionObserver
+import com.sgether.webrtc.AppSdpObserver
+import com.sgether.webrtc.MyPeerManager
+import com.sgether.webrtc.PeerConnectionObserver
 import com.sgether.networks.SocketManager
 import io.socket.emitter.Emitter
 import org.json.JSONArray
