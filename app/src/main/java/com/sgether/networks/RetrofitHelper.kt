@@ -1,12 +1,13 @@
 package com.sgether.networks
 
+import com.sgether.utils.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object RetrofitHelper {
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://3.35.166.15:8080/")
+        .baseUrl(Constants.serverUrl)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()

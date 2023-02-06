@@ -1,9 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.login.RegisterActivity">
+    android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:context=".ui.login.RegisterActivity">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="서비스 사용을 위해\n회원가입을 진행해주세요."
+                    android:textColor="@color/text_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/inputUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/background_auth_input"
+                    android:drawableStart="@drawable/ic_person"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/gray"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/inputEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/background_auth_input"
+                    android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/gray"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/inputUserId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/background_auth_input"
+                    android:drawableStart="@drawable/ic_card"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/gray"
+                    android:hint="ID"
+                    android:inputType="text"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/inputPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/background_auth_input"
+                    android:drawableStart="@drawable/ic_lock"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/gray"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/inputPassword2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/background_auth_input"
+                    android:drawableStart="@drawable/ic_lock"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/gray"
+                    android:hint="Confirm password"
+                    android:inputType="textPassword"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="구분"
+                    android:textColor="@color/text_primary" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupAuthority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@id/btnStudent"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/btnStudent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/sgether_purple"
+                        android:text="학생" />
+
+                    <RadioButton
+                        android:id="@+id/btnAdmin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:buttonTint="@color/sgether_purple"
+                        android:text="선생님" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="자기소개"
+                    android:textColor="@color/text_primary" />
+
+                <EditText
+                    android:id="@+id/inputIntroduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/background_auth_input"
+                    android:hint="Introduction"
+                    android:inputType="textMultiLine"
+                    android:lines="2"
+                    android:padding="10dp" />
+            </LinearLayout>
+        </ScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_button"
+            android:text="확인"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/progressBar"
+        layout="@layout/layout_progress"
+        android:visibility="gone" />
+</FrameLayout>
+
