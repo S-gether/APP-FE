@@ -2,19 +2,17 @@ package com.sgether.ui.login
 
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.sgether.R
 import com.sgether.databinding.ActivityRegisterBinding
 import com.sgether.networks.RetrofitHelper
-import com.sgether.networks.request.SignUpBody
+import com.sgether.networks.request.auth.SignUpBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
-import java.net.ConnectException
 
 class RegisterActivity : AppCompatActivity() {
     private val binding by lazy { ActivityRegisterBinding.inflate(layoutInflater) }
@@ -23,7 +21,6 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnOk.setOnClickListener {
-
             register()
         }
     }
@@ -31,17 +28,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun register() {
         val password1 = binding.inputPassword.text.toString()
         val password2 = binding.inputPassword2.text.toString()
-        if (checkInput(
-                listOf(
-                    binding.inputUserName,
-                    binding.inputEmail,
-                    binding.inputUserId,
-                    binding.inputPassword,
-                    binding.inputPassword2,
-                    binding.inputIntroduction
-                )
-            )
-        ) {
+        if (checkInputIsNotBlank()){
             if (checkPassword(password1, password2)) {
                 binding.progressBar.root.visibility = View.VISIBLE
                 lifecycleScope.launch(Dispatchers.IO) {
@@ -51,7 +38,7 @@ class RegisterActivity : AppCompatActivity() {
                                 binding.inputUserId.text.toString(),
                                 binding.inputPassword.text.toString(),
                                 binding.inputUserName.text.toString(),
-                                "",
+                                getResidentNum(),
                                 getAuthority(),
                                 binding.inputEmail.text.toString(),
                                 binding.inputIntroduction.text.toString()
@@ -65,12 +52,10 @@ class RegisterActivity : AppCompatActivity() {
                             toastOnMain("${result.errorBody()}")
                             hideProgressBar()
                         }
-                    } catch (e: ConnectException) {
-                        toastOnMain("서버와의 연결에 실패하였습니다.")
+                    }  catch (e: IOException) {
+                        toastOnMain("서버와의 연결에 실패하였습니다. ${e.toString()}")
                         hideProgressBar()
-                    } catch (e: IOException) {
-                        toastOnMain(e.toString())
-                        hideProgressBar()
+                        startLogin("테스트 아이디", "테스트 비밀번호")
                     }
 
                 }
@@ -80,7 +65,26 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkInput(list: List<EditText>): Boolean {
+    private fun startLogin(id: String, password: String) {
+        setResult(RESULT_OK, intent.apply {
+            putExtra("id", id)
+            putExtra("password", password)
+        })
+        finish()
+    }
+
+    private fun checkInputIsNotBlank(): Boolean {
+        val list = listOf(
+            binding.inputUserName,
+            binding.inputResidentNumStart,
+            binding.inputResidentNumEnd,
+            binding.inputEmail,
+            binding.inputUserId,
+            binding.inputPassword,
+            binding.inputPassword2,
+            binding.inputIntroduction,
+        )
+
         list.forEach {
             if (it.text.toString().isBlank()) {
                 return false
@@ -98,6 +102,12 @@ class RegisterActivity : AppCompatActivity() {
             R.id.btnAdmin -> "admin"
             else -> "student"
         }
+    }
+
+    private fun getResidentNum(): String {
+        val start = binding.inputResidentNumStart.text.toString()
+        val end = binding.inputResidentNumEnd.text.toString()
+        return "$start-${end}000000"
     }
 
     private suspend fun toastOnMain(message: String) = withContext(Dispatchers.Main) {

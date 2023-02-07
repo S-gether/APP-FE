@@ -31,6 +31,18 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+    private val registerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        Toast.makeText(this, "${it.resultCode} 호출", Toast.LENGTH_SHORT).show()
+        if(it.resultCode == RESULT_OK) {
+            val id = it.data?.getStringExtra("id")
+            val password = it.data?.getStringExtra("password")
+            Toast.makeText(this, "$id, $password", Toast.LENGTH_SHORT).show()
+            if(id != null && password != null) {
+                startLogin(id, password)
+            }
+        }
+    }
+
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen() // super.onCreate() 이전에 위치해야 함
@@ -75,55 +87,15 @@ class LoginActivity : AppCompatActivity() {
 
         // 로그인 버튼 클릭
         binding.btnLogin.setOnClickListener {
-            //startActivity(Intent(this, MainActivity::class.java))
-            //finish()
-            /*lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    val result = RetrofitHelper.myService.signUp(JsonObject().apply {
-                        addProperty("id", "hong12")
-                        addProperty("pwd", "1q2w3e4r!!!")
-                        addProperty("name", "hong1243")
-                        addProperty("residentNum", "hong12143")
-                        addProperty("authority", "student")
-                        addProperty("email", "hongmucahe@gmail.com")
-                        addProperty("introduce", "소개 메시지")
-                    })
-                    Log.d(".LoginActivity", "body: ${result.body()}")
-                    Log.d(".LoginActivity", "errorbody: ${result.errorBody()?.string()}")
-                } catch(e: Exception) {
-                    Log.d(".LoginActivity", "catch: $e")
-                }
-
-            }*/
+            registerLauncher.launch(Intent(this, RegisterActivity::class.java))
         }
 
         binding.btnGoogle.setOnClickListener {
-            /*lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    val result = RetrofitHelper.myService.signIn(JsonObject().apply {
-                        addProperty("id", "hong12")
-                        addProperty("pwd", "1q2w3e4r!!!")
-                    })
-                    Log.d(".LoginActivity", "onCreate: ${result.body()}")
-                    Log.d(".LoginActivity", "onCreate: ${result.errorBody()?.string()}")
-                } catch(e: Exception) {
-                    Log.d(".LoginActivity", "onCreate: $e")
-                }
 
-            }*/
         }
 
         binding.sendGroup.setOnClickListener {
-            /*lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    val result = RetrofitHelper.myService.getGroupList("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImhvbmcxMiIsImlhdCI6MTY3NTQ5MTQ5MSwiaXNzIjoiYXBpLXNlcnZlciJ9.5IWGD0C1noJMSmpHT4lbujsmG4kFyZILryrTZuWXAS4")
-                    Log.d(".LoginActivity", "onCreate: ${result.body()}")
-                    Log.d(".LoginActivity", "onCreate: ${result.errorBody()?.string()}")
-                } catch(e: Exception) {
-                    Log.d(".LoginActivity", "onCreate: $e")
-                }
 
-            }*/
         }
         initViewListeners()
     }
@@ -132,5 +104,9 @@ class LoginActivity : AppCompatActivity() {
         binding.textSignUp.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+    }
+
+    private fun startLogin(id: String, password: String) {
+        Toast.makeText(this, "$id, $password", Toast.LENGTH_SHORT).show()
     }
 }
