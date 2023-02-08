@@ -33,7 +33,7 @@ class RegisterActivity : AppCompatActivity() {
                 binding.progressBar.root.visibility = View.VISIBLE
                 lifecycleScope.launch(Dispatchers.IO) {
                     try {
-                        val result = RetrofitHelper.myService.signUp(
+                        val result = RetrofitHelper.authService.signUp(
                             SignUpBody(
                                 binding.inputUserId.text.toString(),
                                 binding.inputPassword.text.toString(),
