@@ -23,18 +23,20 @@
 
         <EditText
             android:layout_width="330dp"
+            android:drawableTint="@color/gray"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_logo"
+            android:drawableStart="@drawable/ic_person"
             android:drawablePadding="10dp"
             android:hint="@string/username"
             android:inputType="text" />
 
         <EditText
             android:layout_width="330dp"
+            android:drawableTint="@color/gray"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_lock_logo"
+            android:drawableStart="@drawable/ic_lock"
             android:drawablePadding="15dp"
             android:hint="@string/password"
             android:inputType="text" />
