@@ -2,10 +2,7 @@ package com.sgether.networks.service
 
 import com.google.gson.JsonObject
 import com.sgether.models.Group
-import com.sgether.networks.request.auth.ChangePwdBody
-import com.sgether.networks.request.auth.IdFoundBody
-import com.sgether.networks.request.auth.PwdFoundBody
-import com.sgether.networks.request.auth.SignUpBody
+import com.sgether.networks.request.auth.*
 import com.sgether.networks.response.AuthResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -20,7 +17,7 @@ interface AuthService {
 
     @POST("auth/signin")
     suspend fun signIn(
-        @Body body: JsonObject
+        @Body body: SignInBody
     ): Response<AuthResponse>
 
     @POST("auth/idFound")

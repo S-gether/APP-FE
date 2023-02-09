@@ -1,20 +1,29 @@
 package com.sgether.ui.login
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import com.sgether.R
 import com.sgether.databinding.ActivityRegisterBinding
 import com.sgether.networks.RetrofitHelper
 import com.sgether.networks.request.auth.SignUpBody
+import com.sgether.utils.Constants
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class RegisterActivity : AppCompatActivity() {
+
     private val binding by lazy { ActivityRegisterBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +64,7 @@ class RegisterActivity : AppCompatActivity() {
                     }  catch (e: IOException) {
                         toastOnMain("서버와의 연결에 실패하였습니다. ${e.toString()}")
                         hideProgressBar()
-                        startLogin("테스트 아이디", "테스트 비밀번호")
+                        startLogin("테스트 아이디", "테스트 비밀번호") // TODO: 성공 시 하는 것으로 바꿔야 함
                     }
 
                 }
@@ -74,6 +83,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun checkInputIsNotBlank(): Boolean {
+        // TODO : ResidentNum 크기 체크해야 함
         val list = listOf(
             binding.inputUserName,
             binding.inputResidentNumStart,
@@ -117,4 +127,6 @@ class RegisterActivity : AppCompatActivity() {
     private suspend fun hideProgressBar() = withContext(Dispatchers.Main) {
         binding.progressBar.root.visibility = View.GONE
     }
+
+
 }

@@ -1,28 +1,35 @@
 package com.sgether.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
-import com.google.gson.JsonObject
 import com.sgether.databinding.ActivityLoginBinding
 import com.sgether.networks.RetrofitHelper
+import com.sgether.networks.request.auth.SignInBody
 import com.sgether.ui.MainActivity
+import com.sgether.utils.Constants
 import com.sgether.utils.PermissionHelper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import okhttp3.RequestBody
-import org.json.JSONObject
+import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.concurrent.schedule
 
 class LoginActivity : AppCompatActivity() {
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.PREF_AUTH)
 
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
@@ -32,11 +39,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
     private val registerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        Toast.makeText(this, "${it.resultCode} 호출", Toast.LENGTH_SHORT).show()
         if(it.resultCode == RESULT_OK) {
             val id = it.data?.getStringExtra("id")
             val password = it.data?.getStringExtra("password")
-            Toast.makeText(this, "$id, $password", Toast.LENGTH_SHORT).show()
             if(id != null && password != null) {
                 startLogin(id, password)
             }
@@ -44,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen() // super.onCreate() 이전에 위치해야 함
         super.onCreate(savedInstanceState)
@@ -77,17 +83,20 @@ class LoginActivity : AppCompatActivity() {
         })
 
         // 스플래시 화면 종료 후 로그인 상태일 경우 메인으로 이동
-        var isLogin = false
         content.viewTreeObserver.addOnDrawListener {
-            if (isLogin) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+            lifecycleScope.launch(Dispatchers.IO) {
+                if (checkToken() != null) {
+                    withContext(Dispatchers.Main) {
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
+                    }
+                }
             }
         }
 
         // 로그인 버튼 클릭
         binding.btnLogin.setOnClickListener {
-            registerLauncher.launch(Intent(this, RegisterActivity::class.java))
+
         }
 
         binding.btnGoogle.setOnClickListener {
@@ -98,15 +107,54 @@ class LoginActivity : AppCompatActivity() {
 
         }
         initViewListeners()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            if(checkToken() != null ) {
+                withContext(Dispatchers.Main) {
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                }
+            }
+        }
     }
 
     private fun initViewListeners() {
         binding.textSignUp.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            registerLauncher.launch(Intent(this, RegisterActivity::class.java))
         }
+    }
+
+    private suspend fun checkToken(): String? { // TODO: 토큰이 유효한지도 확인해야 함
+        return readStringData(Constants.KEY_TOKEN)
     }
 
     private fun startLogin(id: String, password: String) {
         Toast.makeText(this, "$id, $password", Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val res = RetrofitHelper.authService.signIn(SignInBody(id, password))
+            if(res.isSuccessful) {
+                val body = res.body()
+            } else {
+                withContext(Dispatchers.Main) {
+                    val body = res.errorBody()
+                }
+            }
+        }
+    }
+
+    private fun updateToken(token: String) = lifecycleScope.launch(Dispatchers.IO) {
+        writeStringData(Constants.KEY_TOKEN, token)
+    }
+
+    private suspend fun readStringData(key: String): String?{
+        val dataStoreKey = stringPreferencesKey(key)
+        val preferences = dataStore.data.first()
+        return preferences[dataStoreKey]
+    }
+
+    private suspend fun writeStringData(key: String, value: String){
+        val dataStoreKey = stringPreferencesKey(key)
+        dataStore.edit { settings ->
+            settings[dataStoreKey] = value
+        }
     }
 }
