@@ -25,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -96,7 +97,11 @@ class LoginActivity : AppCompatActivity() {
 
         // 로그인 버튼 클릭
         binding.btnLogin.setOnClickListener {
-
+            val id = binding.inputId.text.toString()
+            val password = binding.inputPassword.text.toString()
+            if(checkInput()) {
+                startLogin(id, password)
+            }
         }
 
         binding.btnGoogle.setOnClickListener {
@@ -127,15 +132,27 @@ class LoginActivity : AppCompatActivity() {
         return readStringData(Constants.KEY_TOKEN)
     }
 
+    private fun checkInput(): Boolean {
+        val id = binding.inputId.text.toString()
+        val password = binding.inputPassword.text.toString()
+        return id.isNotBlank() && password.isNotBlank()
+    }
+
     private fun startLogin(id: String, password: String) {
         Toast.makeText(this, "$id, $password", Toast.LENGTH_SHORT).show()
         lifecycleScope.launch(Dispatchers.IO) {
-            val res = RetrofitHelper.authService.signIn(SignInBody(id, password))
-            if(res.isSuccessful) {
-                val body = res.body()
-            } else {
+            try {
+                val res = RetrofitHelper.authService.signIn(SignInBody(id, password))
+                if(res.isSuccessful) {
+                    val body = res.body() // TODO: 로직 추가
+                } else {
+                    withContext(Dispatchers.Main) {
+                        val body = res.errorBody() // TODO: 로직 추가
+                    }
+                }
+            } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    val body = res.errorBody()
+                    startActivity(Intent(applicationContext, MainActivity::class.java))
                 }
             }
         }
