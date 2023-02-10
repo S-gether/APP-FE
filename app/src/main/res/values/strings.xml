@@ -10,4 +10,6 @@
         <item>stun:stun3.l.google.com:19302</item>
         <item>stun:stun4.l.google.com:19302</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

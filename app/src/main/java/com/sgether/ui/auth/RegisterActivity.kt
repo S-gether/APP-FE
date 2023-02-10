@@ -1,23 +1,15 @@
-package com.sgether.ui.login
+package com.sgether.ui.auth
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import com.sgether.R
 import com.sgether.databinding.ActivityRegisterBinding
 import com.sgether.networks.RetrofitHelper
 import com.sgether.networks.request.auth.SignUpBody
-import com.sgether.utils.Constants
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException

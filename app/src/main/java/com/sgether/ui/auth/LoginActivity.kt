@@ -1,4 +1,4 @@
-package com.sgether.ui.login
+package com.sgether.ui.auth
 
 import android.content.Context
 import android.content.Intent
@@ -19,6 +19,7 @@ import com.sgether.databinding.ActivityLoginBinding
 import com.sgether.networks.RetrofitHelper
 import com.sgether.networks.request.auth.SignInBody
 import com.sgether.ui.MainActivity
+import com.sgether.ui.auth.find.FindActivity
 import com.sgether.utils.Constants
 import com.sgether.utils.PermissionHelper
 import kotlinx.coroutines.Dispatchers
@@ -95,22 +96,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // 로그인 버튼 클릭
-        binding.btnLogin.setOnClickListener {
-            val id = binding.inputId.text.toString()
-            val password = binding.inputPassword.text.toString()
-            if(checkInput()) {
-                startLogin(id, password)
-            }
-        }
-
-        binding.btnGoogle.setOnClickListener {
-
-        }
-
-        binding.sendGroup.setOnClickListener {
-
-        }
         initViewListeners()
 
         lifecycleScope.launch(Dispatchers.IO) {
@@ -125,6 +110,23 @@ class LoginActivity : AppCompatActivity() {
     private fun initViewListeners() {
         binding.textSignUp.setOnClickListener {
             registerLauncher.launch(Intent(this, RegisterActivity::class.java))
+        }
+
+        binding.textForgetPassword.setOnClickListener {
+            startActivity(Intent(this, FindActivity::class.java))
+        }
+
+        // 로그인 버튼 클릭
+        binding.btnLogin.setOnClickListener {
+            val id = binding.inputId.text.toString()
+            val password = binding.inputPassword.text.toString()
+            if(checkInput()) {
+                startLogin(id, password)
+            }
+        }
+
+        binding.btnGoogle.setOnClickListener {
+
         }
     }
 
