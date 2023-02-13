@@ -2,6 +2,7 @@ package com.sgether.webrtc
 
 import android.content.Context
 import com.sgether.R
+import com.sgether.webrtc.observer.AppSdpObserver
 import org.webrtc.*
 
 class MyPeerManager(context: Context) {

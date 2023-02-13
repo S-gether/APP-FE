@@ -6,4 +6,7 @@ object Constants {
 
     const val PREF_AUTH = "pref_auth"
     const val KEY_TOKEN = "token"
+
+    const val TYPE_JOIN = "type_join"
+    const val TYPE_OFFER = "type_offer"
 }

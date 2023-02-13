@@ -150,6 +150,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     withContext(Dispatchers.Main) {
                         val body = res.errorBody() // TODO: 로직 추가
+                        startActivity(Intent(applicationContext, MainActivity::class.java))
                     }
                 }
             } catch (e: IOException) {

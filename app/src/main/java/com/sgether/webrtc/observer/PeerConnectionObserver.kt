@@ -1,4 +1,4 @@
-package com.sgether.webrtc
+package com.sgether.webrtc.observer
 
 import android.util.Log
 import org.webrtc.*
