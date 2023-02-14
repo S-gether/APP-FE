@@ -9,11 +9,13 @@ import com.sgether.utils.Constants
 
 class RoomViewModel(application: Application): AndroidViewModel(application) {
 
-    private val _memberDataLists = mutableListOf(
-        MemberData(Constants.TYPE_JOIN, "홍길동찐", "", isLocal = true),
+    private val _memberDataList = mutableListOf(
+        MemberData(Constants.TYPE_JOIN, "본인이름", "", isLocal = true),
     )
 
-    private val _memberDataListLiveData = MutableLiveData(_memberDataLists)
+    val memberDataList: List<MemberData> get() = _memberDataList
+
+    private val _memberDataListLiveData = MutableLiveData(_memberDataList)
 
     val memberDataListLiveData: LiveData<MutableList<MemberData>>
         get() = _memberDataListLiveData
@@ -23,7 +25,15 @@ class RoomViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun addMemberDataList(memberData: MemberData) {
-        _memberDataLists.add(memberData)
-        _memberDataListLiveData.value = _memberDataLists
+        _memberDataList.add(memberData)
+        _memberDataListLiveData.postValue(_memberDataList)
+    }
+
+    fun removeMemberDataList(remoteSocketId: String) {
+        val temp = _memberDataList.find {
+            it.socketId == remoteSocketId
+        }
+        _memberDataList.remove(temp)
+        _memberDataListLiveData.postValue(_memberDataList)
     }
 }

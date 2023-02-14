@@ -61,8 +61,6 @@ class MyPeerManager(context: Context) {
             addTrack(localVideoTrack)
             addTrack(localAudioTrack)
         }
-        // 피어로 스트림 전송
-        //peerConnection?.addStream(localStream)
     }
 
     fun initSurfaceView(surfaceViewRenderer: SurfaceViewRenderer) {
@@ -120,6 +118,10 @@ class MyPeerManager(context: Context) {
 
     fun addIceCandidate(peerConnection: PeerConnection?, iceCandidate: IceCandidate?){
         peerConnection?.addIceCandidate(iceCandidate)
+    }
+
+    fun close(peerConnection: PeerConnection?) {
+        peerConnection?.close()
     }
 
 }

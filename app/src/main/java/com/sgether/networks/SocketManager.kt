@@ -7,7 +7,7 @@ import io.socket.emitter.Emitter
 import org.json.JSONObject
 import java.net.URISyntaxException
 
-class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener, onAnswer: Emitter.Listener, onIce: Emitter.Listener) {
+class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener, onAnswer: Emitter.Listener, onIce: Emitter.Listener, onLeaveRoom: Emitter.Listener) {
 
     companion object {
         const val TAG = ".SocketManager"
@@ -28,6 +28,7 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
             on("offer", onOffer)
             on("answer", onAnswer)
             on("ice", onIce)
+            on("leave_room", onLeaveRoom)
             connect()
             Log.d(TAG, "연결완료: ")
         }

@@ -7,11 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sgether.adapters.MemberVideoAdapter
 import com.sgether.databinding.ActivityRoomBinding
 import com.sgether.models.MemberData
-import com.sgether.webrtc.observer.AppSdpObserver
-import com.sgether.webrtc.MyPeerManager
-import com.sgether.webrtc.observer.PeerConnectionObserver
 import com.sgether.networks.SocketManager
 import com.sgether.utils.Constants
+import com.sgether.webrtc.MyPeerManager
+import com.sgether.webrtc.observer.AppSdpObserver
 import io.socket.emitter.Emitter
 import org.json.JSONArray
 import org.json.JSONObject
@@ -25,20 +24,33 @@ class RoomActivity : AppCompatActivity() {
     private val viewModel by viewModels<RoomViewModel>()
 
     private val peerManager by lazy { MyPeerManager(this) }
-    private val socketManager by lazy { SocketManager(onJoinListener, onOfferListener, onAnswerListener, onIceCandidate) }
+    private val socketManager by lazy {
+        SocketManager(
+            onJoinListener,
+            onOfferListener,
+            onAnswerListener,
+            onIceCandidate,
+            onLeaveRoomListener,
+        )
+    }
 
-    private val memberVideoAdapter by lazy { MemberVideoAdapter(nickName, peerManager, socketManager) }
+    private val memberVideoAdapter by lazy {
+        MemberVideoAdapter(
+            nickName,
+            peerManager,
+            socketManager
+        )
+    }
 
     val roomName = "1"
-    val nickName = "phone"
-
-    var socketUserList = mutableListOf<MemberData>()
+    val nickName = "emulator"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         init()
         initViews()
+        initViewListeners()
         initViewModelListeners()
     }
 
@@ -48,6 +60,20 @@ class RoomActivity : AppCompatActivity() {
 
     private fun initViews() {
         binding.rvMemberVideo.adapter = memberVideoAdapter
+    }
+
+    private fun initViewListeners() {
+        binding.btnLeave.setOnClickListener {
+
+            socketManager.disconnect()
+            peerManager.localStream.videoTracks.forEach {
+                it.dispose()
+            }
+            peerManager.localStream.audioTracks.forEach {
+                it.dispose()
+            }
+            finish()
+        }
     }
 
     private fun initViewModelListeners() {
@@ -60,28 +86,25 @@ class RoomActivity : AppCompatActivity() {
         val userList = JSONArray(it[0].toString())
         Log.d(TAG, "onJoinListener: $userList")
         // 유저 목록이 1명일 경우 종료 (자신)
-        if(userList.length() == 1){
+        if (userList.length() == 1) {
             return@Listener
         }
 
-        socketUserList.clear()
-        for(i in 0 until userList.length()){
+        //socketUserList.clear()
+        for (i in 0 until userList.length()) {
             val user = userList.getJSONObject(i)
             Log.d(TAG, "onJoinListener: $user")
 
 
-            if(user.get("nickname") != nickName) {
-                val member = MemberData(Constants.TYPE_JOIN,
+            if (user.get("nickname") != nickName) {
+                val member = MemberData(
+                    Constants.TYPE_JOIN,
                     user.get("nickname").toString(),
                     user.get("socketId").toString(),
                 )
-                socketUserList.add(member)
-                Log.d(TAG, "Add member: ${socketUserList.size}")
+                viewModel.addMemberDataList(member)
             }
         }
-        viewModel.setMemberDataList(socketUserList.apply {
-            add(0, MemberData(Constants.TYPE_JOIN, "나", "", isLocal = true))
-        })
     }
 
     private val onOfferListener = Emitter.Listener {
@@ -103,10 +126,7 @@ class RoomActivity : AppCompatActivity() {
             remoteSocketId,
             sdp,
         )
-        socketUserList.add(member)
-        viewModel.setMemberDataList(socketUserList.apply {
-            add(0, MemberData(Constants.TYPE_JOIN, "홍길동찐", "", isLocal = true))
-        })
+        viewModel.addMemberDataList(member)
     }
 
     private val onAnswerListener = Emitter.Listener {
@@ -118,10 +138,9 @@ class RoomActivity : AppCompatActivity() {
             answer.get("sdp").toString()
         )
 
-        Log.d(TAG, ": ${socketUserList.size}")
         val peerConnection = getPeerConnection(remoteSocketId)
 
-        peerManager.setRemoteDescription(peerConnection, object: AppSdpObserver() {
+        peerManager.setRemoteDescription(peerConnection, object : AppSdpObserver() {
             override fun onSetSuccess() {
                 Log.d(TAG, "WEBRTC: ANSWER RemoteDescription 설정")
             }
@@ -138,11 +157,11 @@ class RoomActivity : AppCompatActivity() {
         val remoteSocketId = it[1].toString()
         val peerConnection = getPeerConnection(remoteSocketId)
 
-        val sdp = if(ice.has("sdp"))
+        val sdp = if (ice.has("sdp"))
             ice.get("sdp").toString()
         else ice.get("candidate").toString()
 
-        if(ice.has("candidate") || ice.has("sdp")){
+        if (ice.has("candidate") || ice.has("sdp")) {
             val temp = IceCandidate(
                 ice.get("sdpMid").toString(),
                 ice.get("sdpMLineIndex").toString().toInt(),
@@ -152,8 +171,13 @@ class RoomActivity : AppCompatActivity() {
         }
     }
 
-    private fun getPeerConnection(remoteSocketId: String): PeerConnection?{
-        return  socketUserList.find { memberData ->
+    private val onLeaveRoomListener = Emitter.Listener {
+        val remoteSocketId = it[0].toString()
+        viewModel.removeMemberDataList(remoteSocketId)
+    }
+
+    private fun getPeerConnection(remoteSocketId: String): PeerConnection? {
+        return viewModel.memberDataList.find { memberData ->
             memberData.socketId == remoteSocketId
         }?.peerConnection
     }
@@ -161,9 +185,5 @@ class RoomActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         socketManager.disconnect()
-    }
-
-    interface onAddStreamListener {
-        fun onAdd()
     }
 }
