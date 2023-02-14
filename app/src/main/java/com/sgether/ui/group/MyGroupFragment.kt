@@ -1,13 +1,23 @@
 package com.sgether.ui.group
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withCreated
+import androidx.navigation.fragment.findNavController
 import com.sgether.adapters.GroupAdapter
 import com.sgether.databinding.FragmentMyGroupBinding
+import com.sgether.networks.RetrofitHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MyGroupFragment : Fragment() {
     private var _binding: FragmentMyGroupBinding? = null
@@ -16,7 +26,7 @@ class MyGroupFragment : Fragment() {
 
     private val viewModel by viewModels<MyGroupViewModel>()
 
-    private val groupAdapter by lazy { GroupAdapter() }
+    private val groupAdapter by lazy { GroupAdapter(findNavController()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,6 +37,26 @@ class MyGroupFragment : Fragment() {
 
         initGroupRecyclerView()
         initViewModelObservers()
+
+        binding.btnAdd.setOnClickListener {
+            startActivity(Intent(context, AddGroupActivity::class.java))
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val res = RetrofitHelper.groupService.readGroup()
+            val body = res.body()
+            if(res.isSuccessful) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, body?.message, Toast.LENGTH_SHORT).show()
+                }
+                viewModel.setGroupList(body?.groupsSelectReseult!!)
+                Log.d("TAG", "onViewCreated: ${body?.groupsSelectReseult!!.joinToString(" ")}")
+            } else {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, res.errorBody()?.string(), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun initGroupRecyclerView() {

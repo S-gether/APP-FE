@@ -3,6 +3,7 @@ package com.sgether.ui.auth
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
@@ -141,16 +142,21 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun startLogin(id: String, password: String) {
-        Toast.makeText(this, "$id, $password", Toast.LENGTH_SHORT).show()
-        lifecycleScope.launch(Dispatchers.IO) {
+        startActivity(Intent(applicationContext, MainActivity::class.java))
+        /*lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val res = RetrofitHelper.authService.signIn(SignInBody(id, password))
                 if(res.isSuccessful) {
                     val body = res.body() // TODO: 로직 추가
+                    updateToken(body?.token)
+                    Log.d("text", "startLogin: ${body?.token}")
+                    withContext(Dispatchers.Main) {
+                        startActivity(Intent(applicationContext, MainActivity::class.java))
+                    }
                 } else {
                     withContext(Dispatchers.Main) {
                         val body = res.errorBody() // TODO: 로직 추가
-                        startActivity(Intent(applicationContext, MainActivity::class.java))
+                        //startActivity(Intent(applicationContext, MainActivity::class.java))
                     }
                 }
             } catch (e: IOException) {
@@ -158,11 +164,11 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(Intent(applicationContext, MainActivity::class.java))
                 }
             }
-        }
+        }*/
     }
 
-    private fun updateToken(token: String) = lifecycleScope.launch(Dispatchers.IO) {
-        writeStringData(Constants.KEY_TOKEN, token)
+    private suspend fun updateToken(token: String?) {
+        writeStringData(Constants.KEY_TOKEN, token?:"")
     }
 
     private suspend fun readStringData(key: String): String?{

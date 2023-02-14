@@ -1,7 +1,5 @@
 package com.sgether.networks.service
 
-import com.google.gson.JsonObject
-import com.sgether.models.Group
 import com.sgether.networks.request.auth.*
 import com.sgether.networks.response.AuthResponse
 import retrofit2.Response

@@ -1,11 +1,9 @@
 package com.sgether.networks.service
 
-import com.sgether.models.Group
 import com.sgether.networks.response.joingroup.JoinGroupResponse
 import com.sgether.networks.response.joingroup.LeaveGroupResponse
 import retrofit2.Response
 import retrofit2.http.DELETE
-import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 

@@ -1,18 +1,12 @@
 package com.sgether.networks.service
 
-import com.sgether.models.Group
-import com.sgether.networks.request.group.CreateAndEditGroupBody
 import com.sgether.networks.request.notice.CreateAndEditNoticeBody
+import com.sgether.networks.response.group.Room
 import com.sgether.networks.response.notice.CreateNoticeResponse
 import com.sgether.networks.response.notice.ReadNoticeResponse
 import com.sgether.networks.response.notice.UpdateNoticeResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface NoticeService {
     @POST("/notice")
@@ -35,5 +29,5 @@ interface NoticeService {
     @DELETE("/notice")
     suspend fun deleteNotice(
         @Query("groupId") groupId: String,
-    ): Response<Group>
+    ): Response<Room>
 }

@@ -1,6 +1,5 @@
 package com.sgether.networks.service
 
-import com.sgether.models.Group
 import com.sgether.networks.request.group.CreateAndEditGroupBody
 import com.sgether.networks.response.group.CreateGroupResponse
 import com.sgether.networks.response.group.DeleteGroupResponse
@@ -23,7 +22,7 @@ interface GroupService {
 
     @GET("/group")
     suspend fun readGroup(
-        @Header("authorization") token: String,
+
     ): Response<ReadGroupResponse>
 
     @GET("/group")
@@ -35,7 +34,7 @@ interface GroupService {
     suspend fun findGroupByUser(
 
     ): Response<ReadGroupResponse>
-    
+
     @DELETE("/group/:roomId")
     suspend fun deleteGroup(
         @Query("roomId") roomId: String,

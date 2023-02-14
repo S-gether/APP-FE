@@ -1,14 +1,19 @@
 package com.sgether.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import com.sgether.R
 import com.sgether.databinding.ItemGroupBinding
-import com.sgether.models.Group
+import com.sgether.networks.response.group.Room
+import com.sgether.ui.group.MyGroupFragmentDirections
 
-class GroupAdapter : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
+class GroupAdapter(var navController: NavController) : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
-    var list: List<Group> = listOf()
+    var list: List<Room> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -16,9 +21,14 @@ class GroupAdapter : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
     inner class GroupViewHolder(val binding: ItemGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(group: Group) {
-            binding.textGroupName.text = group.name
-            binding.textGroupInfo.text = group.description
+        fun bind(group: Room) {
+            binding.textGroupName.text = group.room_name
+            binding.textGroupInfo.text = group.created_at
+
+            binding.root.setOnClickListener {
+                val action = MyGroupFragmentDirections.actionMyGroupFragmentToGroupInfoFragment(group.room_name?:"NULL")
+                navController.navigate(action)
+            }
         }
     }
 

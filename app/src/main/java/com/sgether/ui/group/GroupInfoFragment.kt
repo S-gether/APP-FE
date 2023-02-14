@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.sgether.R
 import com.sgether.adapters.MemberRankingAdapter
 import com.sgether.databinding.FragmentGroupInfoBinding
@@ -17,6 +18,8 @@ class GroupInfoFragment : Fragment() {
     private var _binding: FragmentGroupInfoBinding? = null
     private val binding
         get() = _binding!!
+
+    private val args: GroupInfoFragmentArgs by navArgs()
 
     private val viewModel: GroupInfoViewModel by viewModels()
 
@@ -31,6 +34,7 @@ class GroupInfoFragment : Fragment() {
 
     private fun initViews() {
         binding.rvMemberRanking.adapter = memberRankingAdapter
+        binding.textGroupName.text = args.roomName
     }
 
     private fun initViewListeners() {
