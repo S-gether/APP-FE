@@ -1,5 +1,6 @@
 package com.sgether.ui.auth
 
+import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -34,10 +35,13 @@ class RegisterActivity : AppCompatActivity() {
                 binding.progressBar.root.visibility = View.VISIBLE
                 lifecycleScope.launch(Dispatchers.IO) {
                     try {
+                        RetrofitHelper.disableToken()
+                        val id = binding.inputUserId.text.toString()
+                        val password = binding.inputPassword.text.toString()
                         val result = RetrofitHelper.authService.signUp(
                             SignUpBody(
-                                binding.inputUserId.text.toString(),
-                                binding.inputPassword.text.toString(),
+                                id,
+                                password,
                                 binding.inputUserName.text.toString(),
                                 getResidentNum(),
                                 getAuthority(),
@@ -48,18 +52,19 @@ class RegisterActivity : AppCompatActivity() {
                         if (result.isSuccessful) {
                             toastOnMain("로그인 성공")
                             hideProgressBar()
-                            finish()
+                            startLogin(id, password)
                         } else {
-                            toastOnMain("${result.errorBody()}")
+                            toastOnMain("${result.errorBody()?.string()}")
                             hideProgressBar()
                         }
                     }  catch (e: IOException) {
-                        toastOnMain("서버와의 연결에 실패하였습니다. ${e.toString()}")
+                        toastOnMain("서버와의 연결에 실패하였습니다. $e")
                         hideProgressBar()
-                        startLogin("테스트 아이디", "테스트 비밀번호") // TODO: 성공 시 하는 것으로 바꿔야 함
                     }
 
                 }
+            } else {
+                Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
             }
         } else {
             Toast.makeText(this, "빈 칸을 모두 채워 주세요", Toast.LENGTH_SHORT).show()

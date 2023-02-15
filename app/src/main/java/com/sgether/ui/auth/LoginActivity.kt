@@ -3,9 +3,11 @@ package com.sgether.ui.auth
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.Toast
 import android.window.SplashScreen
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import com.sgether.databinding.ActivityLoginBinding
+import com.sgether.networks.RetrofitHelper
+import com.sgether.networks.request.auth.SignInBody
 import com.sgether.ui.MainActivity
 import com.sgether.ui.auth.find.FindActivity
 import com.sgether.utils.Constants
@@ -25,11 +29,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import java.util.*
 import kotlin.concurrent.schedule
 
 // 싱글톤으로 만들기 위해 파일 최상단에 위치해야 함
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.PREF_AUTH)
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.PREF_AUTH)
 
 class LoginActivity : AppCompatActivity() {
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
@@ -87,9 +92,12 @@ class LoginActivity : AppCompatActivity() {
                 return if (isReady) { // 준비과정이 끝난 경우 스플래시 화면 종료
                     content.viewTreeObserver.removeOnPreDrawListener(this)
                     lifecycleScope.launch(Dispatchers.IO) {
-                        if (checkToken() != null && isReady) { // 토큰을 가지고 있는지 확인하여 MainActivity 로 이동
+                        val token = checkToken()
+                        if (token != null && isReady) { // 토큰을 가지고 있는지 확인하여 MainActivity 로 이동
                             withContext(Dispatchers.Main) {
-                                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                startActivity(Intent(this@LoginActivity, MainActivity::class.java).apply {
+                                    putExtra(Constants.KEY_TOKEN, token)
+                                })
                                 finish()
                             }
                         }
@@ -138,28 +146,33 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun startLogin(id: String, password: String) {
-        /*lifecycleScope.launch(Dispatchers.IO) {
+        Toast.makeText(this@LoginActivity, "${id} ${password}", Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
+                RetrofitHelper.disableToken()
                 val res = RetrofitHelper.authService.signIn(SignInBody(id, password))
                 if(res.isSuccessful) {
                     val body = res.body() // TODO: 로직 추가
                     updateToken(body?.token)
                     Log.d("text", "startLogin: ${body?.token}")
                     withContext(Dispatchers.Main) {
-                        startActivity(Intent(applicationContext, MainActivity::class.java))
+                        startActivity(Intent(applicationContext, MainActivity::class.java).apply {
+                            putExtra(Constants.KEY_TOKEN, body?.token)
+                        })
+                        finish()
                     }
                 } else {
                     withContext(Dispatchers.Main) {
                         val body = res.errorBody() // TODO: 로직 추가
-                        //startActivity(Intent(applicationContext, MainActivity::class.java))
+                        Toast.makeText(this@LoginActivity, body?.string(), Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    startActivity(Intent(applicationContext, MainActivity::class.java))
+                    Toast.makeText(this@LoginActivity, e.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
-        }*/
+        }
     }
 
     private suspend fun updateToken(token: String?) {
@@ -178,4 +191,5 @@ class LoginActivity : AppCompatActivity() {
             settings[dataStoreKey] = value
         }
     }
+
 }

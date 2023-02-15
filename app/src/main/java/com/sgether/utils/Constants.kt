@@ -10,4 +10,6 @@ object Constants {
 
     const val TYPE_JOIN = "type_join"
     const val TYPE_OFFER = "type_offer"
+
+    const val KEY_AUTHORIZATION = "Authorization"
 }
