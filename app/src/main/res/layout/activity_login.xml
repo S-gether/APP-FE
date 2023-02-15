@@ -34,7 +34,10 @@
         android:textCursorDrawable="@drawable/bg_cursor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageLogo" />
+        app:layout_constraintTop_toBottomOf="@id/imageLogo"
+        android:ellipsize="end"
+        android:singleLine="true"
+        />
 
     <EditText
         android:id="@+id/inputPassword"
@@ -54,7 +57,10 @@
         android:textCursorDrawable="@drawable/bg_cursor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputId" />
+        app:layout_constraintTop_toBottomOf="@id/inputId"
+        android:ellipsize="end"
+        android:singleLine="true"
+        />
 
     <TextView
         android:id="@+id/textForgetPassword"
@@ -90,7 +96,7 @@
         android:layout_height="48dp"
         android:gravity="center"
         android:layout_marginTop="16dp"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="horizontal"
@@ -105,6 +111,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+
             android:layout_marginStart="16dp"
             android:text="Login with Google"
             android:layout_width="wrap_content"
@@ -122,7 +129,10 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
+        app:layout_constraintTop_toBottomOf="@id/btnGoogle"
+        android:ellipsize="end"
+        android:singleLine="true"
+        />
 
     <TextView
         android:id="@+id/textSignUp"
