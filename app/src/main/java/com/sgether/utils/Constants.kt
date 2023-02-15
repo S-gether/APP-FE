@@ -1,5 +1,6 @@
 package com.sgether.utils
 
+// 키값과 같은 상수를 저장하는 객체
 object Constants {
     const val serverUrl = "http://3.35.166.15:8080/"
     const val testServerUrl = "https://reqres.in/api/"

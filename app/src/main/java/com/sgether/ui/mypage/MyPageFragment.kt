@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sgether.databinding.FragmentMyPageBinding
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MyPageFragment : Fragment() {
+    // 프래그먼트에서 메모리 누수를 방지하기 위해 바인딩을 아래와 같이 사용
     private var _binding: FragmentMyPageBinding? = null
     private val binding
         get() = _binding!!
@@ -21,15 +23,18 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val res = RetrofitHelper.userService.readUser()
+            val res = RetrofitHelper.userService.readUser() // 유저 정보에 대한 요청을 전송
             if(res.isSuccessful) {
-                val first = res.body()?.userSelectReseult?.get(0)
+                val first = res.body()?.userSelectReseult?.get(0) // 첫 번째 유저에 대한 정보를 받아옴
                 withContext(Dispatchers.Main) {
+                    // View 와 연결
                     binding.textUserName.text = first?.user_id
                     binding.textUserEmail.text = first?.email
                 }
             } else {
-
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, res.errorBody()?.string(), Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
