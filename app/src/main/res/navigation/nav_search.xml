@@ -20,7 +20,9 @@
         android:name="com.sgether.ui.group.GroupInfoFragment"
         android:label="fragment_group_info"
         tools:layout="@layout/fragment_group_info" >
-        <argument android:name="roomName" />
+        <argument
+            android:name="groupModel"
+            app:argType="com.sgether.models.GroupModel" />
     </fragment>
 
 </navigation>

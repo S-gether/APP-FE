@@ -19,12 +19,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.btnGroupInfo.setOnClickListener {
-
-            val action = HomeFragmentDirections.actionHomeFragmentToGroupInfoFragment("NULL")
-            findNavController().navigate(action)
-        }
     }
 
     override fun onCreateView(

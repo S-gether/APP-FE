@@ -16,6 +16,7 @@ import com.sgether.ui.search.SearchFragmentDirections
 class GroupAdapter(private val navController: NavController, var simpleName: String) :
     RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
+
     var list: List<GroupModel> = listOf()
         set(value) {
             field = value
@@ -34,12 +35,12 @@ class GroupAdapter(private val navController: NavController, var simpleName: Str
                 when (simpleName) {
                     MyGroupFragment::class.java.simpleName -> {
                         action = MyGroupFragmentDirections.actionMyGroupFragmentToGroupInfoFragment(
-                            group.room_name ?: "NULL"
+                            group
                         )
                     }
                     SearchFragment::class.java.simpleName -> {
                         action = SearchFragmentDirections.actionSearchFragmentToGroupInfoFragment(
-                            group.room_name ?: "NULL"
+                            group
                         )
                     }
                 }

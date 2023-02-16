@@ -23,8 +23,8 @@
             android:id="@+id/action_groupInfoFragment_to_noticeFragment"
             app:destination="@id/noticeFragment" />
         <argument
-            android:name="roomName"
-            app:argType="string" />
+            android:name="groupModel"
+            app:argType="com.sgether.models.GroupModel" />
     </fragment>
     <fragment
         android:id="@+id/noticeFragment"

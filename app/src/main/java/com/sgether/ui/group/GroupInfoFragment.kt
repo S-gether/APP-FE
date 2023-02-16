@@ -34,7 +34,10 @@ class GroupInfoFragment : Fragment() {
 
     private fun initViews() {
         binding.rvMemberRanking.adapter = memberRankingAdapter
-        binding.textGroupName.text = args.roomName
+        args.groupModel.run {
+            binding.textGroupName.text = room_name
+            binding.textGroupDescription.text = this.created_at
+        }
     }
 
     private fun initViewListeners() {
