@@ -1,22 +1,16 @@
 package com.sgether.ui.auth
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.Toast
-import android.window.SplashScreen
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.lifecycleScope
 import com.sgether.databinding.ActivityLoginBinding
 import com.sgether.networks.RetrofitHelper
@@ -43,12 +37,17 @@ class LoginActivity : AppCompatActivity() {
 
     // 스플래시 화면을 종료하기 위한 변수
     private var isReady = false
+    private var permissionReady = false
+    private var loadTokenReady = false
+    private var token: String? = null
 
     // 권한을 요청하기 위한 런처
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             if (!result.containsValue(false)) {
-                //isReady = true
+                permissionReady = true
+            } else {
+                Toast.makeText(this, "사용자 권한을 허용하지 않으면 정상적인 이용이 불가합니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -80,27 +79,27 @@ class LoginActivity : AppCompatActivity() {
             permissionLauncher.launch(this)
         }
 
-        // (현재 미사용) 스플래시 화면을 길게 지속시키기 위한 함수
-        Timer("CheckLogin").schedule(1000) { // 1000ms 후 실행
+        // 스플래시 화면을 보여주는 최소 시간
+        Timer("CheckLogin").schedule(500) { // 1000ms 후 실행
             isReady = true
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            token = checkToken()
+            loadTokenReady = true
         }
 
         // 화면이 그려지기 전 호출
         val content: View = findViewById(android.R.id.content)
         content.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean { // 반복하여 호출됨
-                return if (isReady) { // 준비과정이 끝난 경우 스플래시 화면 종료
+                return if (permissionReady && loadTokenReady && isReady) { // 준비과정이 끝난 경우 스플래시 화면 종료
                     content.viewTreeObserver.removeOnPreDrawListener(this)
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val token = checkToken()
-                        if (token != null && isReady) { // 토큰을 가지고 있는지 확인하여 MainActivity 로 이동
-                            withContext(Dispatchers.Main) {
-                                startActivity(Intent(this@LoginActivity, MainActivity::class.java).apply {
-                                    putExtra(Constants.KEY_TOKEN, token)
-                                })
-                                finish()
-                            }
-                        }
+                    if (token != null) { // 토큰을 가지고 있는지 확인하여 MainActivity 로 이동
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java).apply {
+                            putExtra(Constants.KEY_TOKEN, token)
+                        })
+                        finish()
                     }
                     true
                 } else {
