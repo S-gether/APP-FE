@@ -1,7 +1,7 @@
 package com.sgether.networks.service
 
+import com.sgether.models.GroupModel
 import com.sgether.networks.request.notice.CreateAndEditNoticeBody
-import com.sgether.networks.response.group.Room
 import com.sgether.networks.response.notice.CreateNoticeResponse
 import com.sgether.networks.response.notice.ReadNoticeResponse
 import com.sgether.networks.response.notice.UpdateNoticeResponse
@@ -29,5 +29,5 @@ interface NoticeService {
     @DELETE("/notice")
     suspend fun deleteNotice(
         @Query("groupId") groupId: String,
-    ): Response<Room>
+    ): Response<GroupModel>
 }

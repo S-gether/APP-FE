@@ -1,16 +1,15 @@
 package com.sgether.ui.search
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sgether.db.AppDatabase
+import com.sgether.models.GroupModel
 import com.sgether.models.GroupSearchLog
 import com.sgether.networks.RetrofitHelper
-import com.sgether.networks.response.group.Room
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,14 +21,14 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     // 그룹 목록
-    private var _groupList = mutableListOf<Room>()
+    private var _groupList = mutableListOf<GroupModel>()
 
-    private val _groupLiveData: MutableLiveData<List<Room>> = MutableLiveData(_groupList)
-    val groupLiveData: LiveData<List<Room>>
+    private val _groupLiveData: MutableLiveData<List<GroupModel>> = MutableLiveData(_groupList)
+    val groupLiveData: LiveData<List<GroupModel>>
         get() = _groupLiveData
 
     // 리사이클러뷰 전송
-    private fun setGroupList(list: List<Room>) {
+    private fun setGroupList(list: List<GroupModel>) {
         _groupList = list.toMutableList()
         _groupLiveData.postValue(_groupList)
     }
@@ -40,7 +39,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun loadGroupList() = viewModelScope.launch(Dispatchers.IO) {
         val result = RetrofitHelper.groupService.readGroup()
-        if(result.isSuccessful) {
+        if (result.isSuccessful) {
             val body = result.body()
             setGroupList(body?.groupsSelectReseult!!)
 

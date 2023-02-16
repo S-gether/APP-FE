@@ -7,7 +7,7 @@ import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.sgether.databinding.ItemGroupBinding
-import com.sgether.networks.response.group.Room
+import com.sgether.models.GroupModel
 import com.sgether.ui.group.MyGroupFragment
 import com.sgether.ui.group.MyGroupFragmentDirections
 import com.sgether.ui.search.SearchFragment
@@ -16,7 +16,7 @@ import com.sgether.ui.search.SearchFragmentDirections
 class GroupAdapter(private val navController: NavController, var simpleName: String) :
     RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
-    var list: List<Room> = listOf()
+    var list: List<GroupModel> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -25,7 +25,7 @@ class GroupAdapter(private val navController: NavController, var simpleName: Str
     inner class GroupViewHolder(private val binding: ItemGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(group: Room) {
+        fun bind(group: GroupModel) {
             binding.textGroupName.text = group.room_name
             binding.textGroupInfo.text = group.created_at
 
