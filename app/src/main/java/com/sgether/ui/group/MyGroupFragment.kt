@@ -26,7 +26,7 @@ class MyGroupFragment : Fragment() {
 
     private val viewModel by viewModels<MyGroupViewModel>()
 
-    private val groupAdapter by lazy { GroupAdapter(findNavController()) }
+    private val groupAdapter by lazy { GroupAdapter(findNavController(), javaClass.simpleName) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

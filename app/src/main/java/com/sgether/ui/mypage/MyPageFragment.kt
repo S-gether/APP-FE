@@ -1,24 +1,20 @@
 package com.sgether.ui.mypage
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sgether.databinding.FragmentMyPageBinding
 import com.sgether.networks.RetrofitHelper
 import com.sgether.ui.auth.LoginActivity
-import com.sgether.ui.auth.dataStore
 import com.sgether.utils.Constants
+import com.sgether.utils.dataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

@@ -2,11 +2,13 @@ package com.sgether.networks
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.sgether.networks.response.ErrorResponse
 import com.sgether.networks.service.*
 import com.sgether.utils.Constants
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -44,6 +46,13 @@ object RetrofitHelper {
     val joinGroupService: JoinGroupService = retrofit.create(JoinGroupService::class.java)
     val noticeService: NoticeService = retrofit.create(NoticeService::class.java)
     val userService: UserService = retrofit.create(UserService::class.java)
+
+    fun parseErrorBody(errorBody: ResponseBody?): ErrorResponse? {
+        return retrofit.responseBodyConverter<ErrorResponse>(
+            ErrorResponse::class.java,
+            ErrorResponse::class.java.annotations
+        ).convert(errorBody!!)
+    }
 
     fun disableToken() {
         tokenInterceptor.isInterceptorEnabled = false

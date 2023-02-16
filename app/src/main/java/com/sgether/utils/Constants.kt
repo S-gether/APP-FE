@@ -1,5 +1,12 @@
 package com.sgether.utils
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.PREF_AUTH)
+
 // 키값과 같은 상수를 저장하는 객체
 object Constants {
     const val serverUrl = "http://3.35.166.15:8080/"

@@ -25,6 +25,7 @@ import com.sgether.ui.MainActivity
 import com.sgether.ui.auth.find.FindActivity
 import com.sgether.utils.Constants
 import com.sgether.utils.PermissionHelper
+import com.sgether.utils.dataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -34,7 +35,6 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 // 싱글톤으로 만들기 위해 파일 최상단에 위치해야 함
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.PREF_AUTH)
 
 class LoginActivity : AppCompatActivity() {
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }

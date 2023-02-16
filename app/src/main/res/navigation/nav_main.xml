@@ -6,12 +6,9 @@
 
     <include app:graph="@navigation/nav_home" />
 
-    <include app:graph="@navigation/nav_group" />
+    <include app:graph="@navigation/nav_search" />
 
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.sgether.ui.search.SearchFragment"
-        android:label="SearchFragment" />
+    <include app:graph="@navigation/nav_group" />
 
     <fragment
         android:id="@+id/myPageFragment"

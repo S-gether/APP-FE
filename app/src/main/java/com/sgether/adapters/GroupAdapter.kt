@@ -1,27 +1,19 @@
 package com.sgether.adapters
 
-import android.content.ClipData
-import android.content.Intent
-import android.graphics.Canvas
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.Callback.makeMovementFlags
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import com.sgether.R
-import com.sgether.databinding.FragmentMyGroupBinding
 import com.sgether.databinding.ItemGroupBinding
 import com.sgether.networks.response.group.Room
+import com.sgether.ui.group.MyGroupFragment
 import com.sgether.ui.group.MyGroupFragmentDirections
+import com.sgether.ui.search.SearchFragment
+import com.sgether.ui.search.SearchFragmentDirections
 
-class GroupAdapter(private val navController: NavController) :
+class GroupAdapter(private val navController: NavController, var simpleName: String) :
     RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
     var list: List<Room> = listOf()
@@ -38,12 +30,20 @@ class GroupAdapter(private val navController: NavController) :
             binding.textGroupInfo.text = group.created_at
 
             binding.root.setOnClickListener {
-                val action =
-                    MyGroupFragmentDirections.actionMyGroupFragmentToGroupInfoFragment(
-                        group.room_name
-                            ?: "NULL"
-                    )
-                navController.navigate(action)
+                var action: NavDirections? = null
+                when (simpleName) {
+                    MyGroupFragment::class.java.simpleName -> {
+                        action = MyGroupFragmentDirections.actionMyGroupFragmentToGroupInfoFragment(
+                            group.room_name ?: "NULL"
+                        )
+                    }
+                    SearchFragment::class.java.simpleName -> {
+                        action = SearchFragmentDirections.actionSearchFragmentToGroupInfoFragment(
+                            group.room_name ?: "NULL"
+                        )
+                    }
+                }
+                navController.navigate(action!!)
             }
         }
     }
