@@ -19,4 +19,6 @@ object Constants {
     const val TYPE_OFFER = "type_offer"
 
     const val KEY_AUTHORIZATION = "Authorization"
+
+    const val JWT_PAYLOAD = "jwt_payload"
 }

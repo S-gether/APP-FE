@@ -18,6 +18,7 @@ import com.sgether.networks.request.auth.SignInBody
 import com.sgether.ui.MainActivity
 import com.sgether.ui.auth.find.FindActivity
 import com.sgether.utils.Constants
+import com.sgether.utils.JWTHelper
 import com.sgether.utils.PermissionHelper
 import com.sgether.utils.dataStore
 import kotlinx.coroutines.Dispatchers
@@ -98,6 +99,7 @@ class LoginActivity : AppCompatActivity() {
                     if (token != null) { // 토큰을 가지고 있는지 확인하여 MainActivity 로 이동
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java).apply {
                             putExtra(Constants.KEY_TOKEN, token)
+                            putExtra(Constants.JWT_PAYLOAD, JWTHelper.parseJwtToken(token!!).payload)
                         })
                         finish()
                     }

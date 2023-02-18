@@ -1,6 +1,7 @@
 package com.sgether.ui.mypage
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.sgether.databinding.FragmentMyPageBinding
 import com.sgether.networks.RetrofitHelper
 import com.sgether.ui.auth.LoginActivity
 import com.sgether.utils.Constants
+import com.sgether.utils.JWTHelper
 import com.sgether.utils.dataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +30,18 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 토큰에서 정보를 가져옴
+        val payload: JWTHelper.JwtPayload? =
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+                activity?.intent?.getParcelableExtra(Constants.JWT_PAYLOAD)
+            else
+                activity?.intent?.getParcelableExtra(Constants.JWT_PAYLOAD, JWTHelper.JwtPayload::class.java)
+
+        payload?.run {
+            binding.textUserName.text = name
+            binding.textUserEmail.text = id
+        }
+        /* TODO: API 로 가져오는 코드 (설명 추가 요청해야 함)
         lifecycleScope.launch(Dispatchers.IO) {
             val res = RetrofitHelper.userService.readUser() // 유저 정보에 대한 요청을 전송
             if (res.isSuccessful) {
@@ -43,6 +57,7 @@ class MyPageFragment : Fragment() {
                 }
             }
         }
+        */
 
         binding.btnLogout.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
