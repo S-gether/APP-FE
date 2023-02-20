@@ -28,7 +28,7 @@ class GroupAdapter(private val navController: NavController, var simpleName: Str
 
         fun bind(group: GroupModel) {
             binding.textGroupName.text = group.room_name
-            binding.textGroupInfo.text = group.created_at
+            binding.textGroupInfo.text = group.id
 
             binding.root.setOnClickListener {
                 var action: NavDirections? = null

@@ -1,11 +1,18 @@
 package com.sgether.utils
 
 import android.content.Context
+import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.PREF_AUTH)
+suspend fun Context.toastOnMain(msg: String?) = withContext(Dispatchers.Main) {
+    Toast.makeText(this@toastOnMain, msg, Toast.LENGTH_SHORT).show()
+}
+
 
 // 키값과 같은 상수를 저장하는 객체
 object Constants {

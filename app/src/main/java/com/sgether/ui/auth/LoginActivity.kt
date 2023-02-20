@@ -75,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
             this, listOf(
                 android.Manifest.permission.CAMERA,
                 android.Manifest.permission.RECORD_AUDIO,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
             )
         ).run { // 스코프 함수 사용
             permissionLauncher.launch(this)

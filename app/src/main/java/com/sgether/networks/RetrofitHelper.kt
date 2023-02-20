@@ -18,7 +18,7 @@ object RetrofitHelper {
 
     // 조금 더 자세한 로그를 위한 OkHttp 인터셉터
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+        level = HttpLoggingInterceptor.Level.HEADERS
     }
     
     // 토큰 자동 삽입을 위한 OkHttp 인터셉터
@@ -46,6 +46,7 @@ object RetrofitHelper {
     val joinGroupService: JoinGroupService = retrofit.create(JoinGroupService::class.java)
     val noticeService: NoticeService = retrofit.create(NoticeService::class.java)
     val userService: UserService = retrofit.create(UserService::class.java)
+    val uploadService: UploadService = retrofit.create(UploadService::class.java)
 
     fun parseErrorBody(errorBody: ResponseBody?): ErrorResponse? {
         return retrofit.responseBodyConverter<ErrorResponse>(
