@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.sgether.adapters.GroupAdapter
 import com.sgether.databinding.FragmentMyGroupBinding
 import com.sgether.networks.RetrofitHelper
+import com.sgether.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,7 +27,7 @@ class MyGroupFragment : Fragment() {
 
     private val viewModel by viewModels<MyGroupViewModel>()
 
-    private val groupAdapter by lazy { GroupAdapter(findNavController(), javaClass.simpleName) }
+    private val groupAdapter by lazy { GroupAdapter(lifecycleScope, findNavController(), javaClass.simpleName, activity?.intent?.getStringExtra(Constants.KEY_TOKEN)!!) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.sgether.adapters.GroupAdapter
 import com.sgether.adapters.SearchLogAdapter
 import com.sgether.databinding.FragmentSearchBinding
 import com.sgether.models.GroupSearchLog
+import com.sgether.utils.Constants
 
 class SearchFragment : Fragment(), SearchLogAdapter.OnClickListener {
     private var _binding: FragmentSearchBinding? = null
@@ -22,7 +24,8 @@ class SearchFragment : Fragment(), SearchLogAdapter.OnClickListener {
 
     private val viewModel by viewModels<SearchViewModel>()
 
-    private val groupAdapter by lazy { GroupAdapter(findNavController(), javaClass.simpleName) }
+    private val groupAdapter by lazy { GroupAdapter(lifecycleScope, findNavController(), javaClass.simpleName, activity?.intent?.getStringExtra(
+        Constants.KEY_TOKEN)!!) }
     private val searchLogAdapter by lazy { SearchLogAdapter(this) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

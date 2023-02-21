@@ -2,18 +2,29 @@ package com.sgether.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.sgether.databinding.ItemGroupBinding
 import com.sgether.models.GroupModel
+import com.sgether.networks.RetrofitHelper
 import com.sgether.ui.group.MyGroupFragment
 import com.sgether.ui.group.MyGroupFragmentDirections
 import com.sgether.ui.search.SearchFragment
 import com.sgether.ui.search.SearchFragmentDirections
+import com.sgether.utils.Constants
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class GroupAdapter(private val navController: NavController, var simpleName: String) :
+class GroupAdapter(private val scope: CoroutineScope, private val navController: NavController, var simpleName: String, var token: String) :
     RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
 
@@ -29,6 +40,8 @@ class GroupAdapter(private val navController: NavController, var simpleName: Str
         fun bind(group: GroupModel) {
             binding.textGroupName.text = group.room_name
             binding.textGroupInfo.text = group.id
+            binding.imageGroupProfile.setImageBitmap(null)
+            loadGroupProfile(group.id!!, token)
 
             binding.root.setOnClickListener {
                 var action: NavDirections? = null
@@ -46,6 +59,18 @@ class GroupAdapter(private val navController: NavController, var simpleName: Str
                 }
                 navController.navigate(action!!)
             }
+        }
+
+        private fun loadGroupProfile(groupId: String, token: String) {
+
+            val url = GlideUrl("${Constants.serverUrl}upload/group/${groupId}", LazyHeaders.Builder()
+                .addHeader(Constants.KEY_AUTHORIZATION, "Bearer $token")
+                .build())
+
+            Glide.with(binding.root)
+                .load(url)
+                .circleCrop()
+                .into(binding.imageGroupProfile)
         }
     }
 

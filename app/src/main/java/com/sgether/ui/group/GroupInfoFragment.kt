@@ -7,12 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.sgether.R
 import com.sgether.adapters.MemberRankingAdapter
 import com.sgether.databinding.FragmentGroupInfoBinding
+import com.sgether.networks.RetrofitHelper
 import com.sgether.ui.room.RoomActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GroupInfoFragment : Fragment() {
     private var _binding: FragmentGroupInfoBinding? = null
@@ -37,7 +43,9 @@ class GroupInfoFragment : Fragment() {
         args.groupModel.run {
             binding.textGroupName.text = room_name
             binding.textGroupDescription.text = this.created_at
+            loadGroupProfile(groupId = id!!)
         }
+
     }
 
     private fun initViewListeners() {
@@ -53,6 +61,20 @@ class GroupInfoFragment : Fragment() {
     private fun initViewModelListeners() {
         viewModel.memberRankingListLiveData.observe(viewLifecycleOwner) {
             memberRankingAdapter.list = it
+        }
+    }
+
+    private fun loadGroupProfile(groupId: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val res = RetrofitHelper.uploadService.readGroupProfile(groupId)
+            if(res.isSuccessful) {
+                withContext(Dispatchers.Main) {
+                    Glide.with(binding.root)
+                        .load(res.body()?.bytes())
+                        .circleCrop()
+                        .into(binding.imageGroupProfile)
+                }
+            }
         }
     }
 
