@@ -83,4 +83,9 @@ dependencies {
 
     // Preference-DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    //Calander
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
+
 }

@@ -123,4 +123,3 @@ class GroupAdapter(private val scope: CoroutineScope, private val navController:
 
     override fun getItemCount() = list.size
 }
-
