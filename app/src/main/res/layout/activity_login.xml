@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.auth.LoginActivity">
+    tools:context=".ui.auth.login.LoginActivity">
 
 
     <ImageView
@@ -28,16 +28,15 @@
         android:drawableStart="@drawable/ic_card"
         android:drawablePadding="8dp"
         android:drawableTint="@color/gray"
+        android:ellipsize="end"
         android:hint="ID"
         android:inputType="text"
         android:padding="10dp"
+        android:singleLine="true"
         android:textCursorDrawable="@drawable/bg_cursor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageLogo"
-        android:ellipsize="end"
-        android:singleLine="true"
-        />
+        app:layout_constraintTop_toBottomOf="@id/imageLogo" />
 
     <EditText
         android:id="@+id/inputPassword"
@@ -51,16 +50,15 @@
         android:drawableStart="@drawable/ic_lock"
         android:drawablePadding="8dp"
         android:drawableTint="@color/gray"
+        android:ellipsize="end"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="10dp"
+        android:singleLine="true"
         android:textCursorDrawable="@drawable/bg_cursor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputId"
-        android:ellipsize="end"
-        android:singleLine="true"
-        />
+        app:layout_constraintTop_toBottomOf="@id/inputId" />
 
     <TextView
         android:id="@+id/textForgetPassword"
@@ -75,17 +73,14 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogin"
+        style="@style/button"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/sgether_purple"
-        android:gravity="center"
         android:text="Login"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputPassword" />
@@ -94,28 +89,28 @@
         android:id="@+id/btnGoogle"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/black"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
         android:background="@drawable/background_auth_input"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin" >
+        app:layout_constraintTop_toBottomOf="@id/btnLogin">
 
         <ImageView
-            android:src="@drawable/ic_google"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_google" />
 
         <TextView
 
-            android:layout_marginStart="16dp"
-            android:text="Login with Google"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Login with Google" />
     </LinearLayout>
 
     <TextView
@@ -123,16 +118,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="Don't have an account? "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textSignUp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnGoogle"
-        android:ellipsize="end"
-        android:singleLine="true"
-        />
+        app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
 
     <TextView
         android:id="@+id/textSignUp"

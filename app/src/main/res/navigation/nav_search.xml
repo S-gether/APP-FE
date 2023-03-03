@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.sgether.ui.search.SearchFragment"
+        android:name="com.sgether.ui.menu.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -17,12 +17,12 @@
     </fragment>
     <fragment
         android:id="@+id/groupInfoFragment"
-        android:name="com.sgether.ui.group.GroupInfoFragment"
+        android:name="com.sgether.ui.group.info.GroupInfoFragment"
         android:label="fragment_group_info"
         tools:layout="@layout/fragment_group_info" >
         <argument
             android:name="groupModel"
-            app:argType="com.sgether.models.GroupModel" />
+            app:argType="com.sgether.model.GroupModel" />
     </fragment>
 
 </navigation>

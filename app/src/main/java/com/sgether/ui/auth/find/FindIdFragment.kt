@@ -8,8 +8,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sgether.databinding.FragmentFindIdBinding
-import com.sgether.networks.RetrofitHelper
-import com.sgether.networks.request.auth.IdFoundBody
+import com.sgether.api.ApiClient
+import com.sgether.api.request.auth.IdFoundBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -50,7 +50,7 @@ class FindIdFragment : Fragment() {
     private fun findId(userName: String, residentNum: String) =
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val result = RetrofitHelper.authService.findId(IdFoundBody(userName, residentNum))
+                val result = ApiClient.authService.findId(IdFoundBody(userName, residentNum))
                 when (result.code()) {
                     200 -> {
                         val body = result.body()

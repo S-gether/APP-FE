@@ -6,8 +6,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.sgether.R
 import com.sgether.databinding.ActivityMainBinding
-import com.sgether.networks.RetrofitHelper
-import com.sgether.utils.Constants
+import com.sgether.api.ApiClient
+import com.sgether.util.Constants
 
 // Navigation Component 를 통해 Fragment 를 화면에 표시하기 위한 Activity
 // XML 의 FragmentContainerView 를 보면 @navigation/nav_main 와 연결됨을 확인 가능
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        RetrofitHelper.enableToken(intent.getStringExtra(Constants.KEY_TOKEN))
+        ApiClient.enableToken(intent.getStringExtra(Constants.KEY_TOKEN))
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController

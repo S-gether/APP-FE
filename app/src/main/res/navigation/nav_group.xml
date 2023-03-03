@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/myGroupFragment"
-        android:name="com.sgether.ui.group.MyGroupFragment"
+        android:name="com.sgether.ui.menu.mygroup.MyGroupFragment"
         android:label="fragment_my_group"
         tools:layout="@layout/fragment_my_group">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupInfoFragment"
-        android:name="com.sgether.ui.group.GroupInfoFragment"
+        android:name="com.sgether.ui.group.info.GroupInfoFragment"
         android:label="fragment_group_info"
         tools:layout="@layout/fragment_group_info" >
         <action
@@ -24,11 +24,11 @@
             app:destination="@id/noticeFragment" />
         <argument
             android:name="groupModel"
-            app:argType="com.sgether.models.GroupModel" />
+            app:argType="com.sgether.model.GroupModel" />
     </fragment>
     <fragment
         android:id="@+id/noticeFragment"
-        android:name="com.sgether.ui.notice.NoticeFragment"
+        android:name="com.sgether.ui.group.notice.NoticeFragment"
         android:label="fragment_notice"
         tools:layout="@layout/fragment_notice" />
 </navigation>

@@ -2,7 +2,7 @@ package com.sgether.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.sgether.models.GroupSearchLog
+import com.sgether.model.GroupSearchLog
 
 @Dao
 interface GroupSearchLogDao {

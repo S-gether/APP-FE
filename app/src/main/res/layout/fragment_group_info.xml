@@ -6,7 +6,16 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.group.GroupInfoFragment">
+    tools:context=".ui.group.info.GroupInfoFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_base"
+        app:tint="@color/sgether_purple"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back" />
 
     <ImageView
         android:id="@+id/imageGroupProfile"
@@ -35,9 +44,8 @@
         android:id="@+id/textGroupDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginHorizontal="@dimen/margin_base"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="11월 26일 1차 시험 대비 공무원 준비반입니다!"
         android:textColor="@color/text_primary"
@@ -46,52 +54,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textGroupName" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnStudyRoom"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        style="@style/button"
+        tools:enabled="false"
+        android:layout_marginStart="@dimen/margin_base"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/bg_filled_btn"
+        android:layout_marginTop="16dp"
         android:text="스터디 룸 참여하기"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_join_conference"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textGroupDescription" />
 
-    <Button
-        android:id="@+id/btnNotice"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_join_conference"
+        style="@style/button"
+        android:layout_width="wrap_content"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/bg_outlined_btn"
-        android:text="공지사항"
-        android:textColor="@color/text_primary"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
+        android:padding="16dp"
+        android:src="@drawable/ic_video"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/btnStudyRoom"
+        app:layout_constraintEnd_toStartOf="@+id/btn_notice"
+        app:layout_constraintTop_toTopOf="@+id/btnStudyRoom" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_notice"
+        style="@style/button"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="@dimen/margin_base"
+        android:padding="16dp"
+        android:src="@drawable/ic_announcement"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_join_conference"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnStudyRoom" />
+        app:layout_constraintTop_toTopOf="@+id/btn_join_conference" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMemberRanking"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginVertical="@dimen/margin_base"
+        android:layout_marginHorizontal="@dimen/margin_base"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnNotice"
+        app:layout_constraintTop_toBottomOf="@id/btn_notice"
         tools:listitem="@layout/item_member_ranking" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.sgether.databinding.FragmentFindPasswordBinding
-import com.sgether.networks.RetrofitHelper
-import com.sgether.networks.request.auth.IdFoundBody
+import com.sgether.api.ApiClient
+import com.sgether.api.request.auth.IdFoundBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,7 +53,7 @@ class FindPasswordFragment : Fragment() {
     private fun findPassword(id: String, userName: String, residentNum: String) =
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val result = RetrofitHelper.authService.findId(IdFoundBody(userName, residentNum))
+                val result = ApiClient.authService.findId(IdFoundBody(userName, residentNum))
                 when (result.code()) {
                     200 -> {
                         val body = result.body()

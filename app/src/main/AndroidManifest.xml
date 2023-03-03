@@ -11,8 +11,6 @@
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -21,7 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.group.AddGroupActivity"
+            android:name=".ui.group.add.AddGroupActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -35,7 +33,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.auth.RegisterActivity"
+            android:name=".ui.auth.register.RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -43,14 +41,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.room.RoomActivity"
+            android:name=".ui.group.room.RoomActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.auth.LoginActivity"
+            android:name=".ui.auth.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Sgether.SplashScreen">
             <meta-data

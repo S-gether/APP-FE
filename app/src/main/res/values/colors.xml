@@ -13,6 +13,7 @@
     <color name="black">#FF000000</color>
 
     <color name="sgether_purple">#FF1F0F88</color>
+    <color name="sgether_purple_ghost">#A49DF3</color>
 
     <color name="profile_background">@color/gray</color>
 

@@ -5,10 +5,6 @@ import org.webrtc.SdpObserver
 import org.webrtc.SessionDescription
 
 open class AppSdpObserver: SdpObserver {
-    companion object {
-        const val TAG = ".RoomActivity"
-    }
-
     override fun onCreateSuccess(sdp: SessionDescription?) {
     }
 
@@ -16,10 +12,10 @@ open class AppSdpObserver: SdpObserver {
     }
 
     override fun onCreateFailure(s: String?) {
-        Log.d(TAG, "onCreateFailure: $s")
+        Log.d(this::class.java.simpleName, "onCreateFailure: $s")
     }
 
     override fun onSetFailure(s: String?) {
-        Log.d(TAG, "onSetFailure: $s")
+        Log.d(this::class.java.simpleName, "onSetFailure: $s")
     }
 }

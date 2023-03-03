@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.notice.NoticeFragment">
+    tools:context=".ui.group.notice.NoticeFragment">
 
     <TextView
         android:id="@+id/textTitle"

@@ -5,24 +5,20 @@ import org.webrtc.*
 
 abstract class PeerConnectionObserver: PeerConnection.Observer {
     
-    companion object {
-        const val TAG = ".Main"
-    }
-    
     override fun onSignalingChange(p0: PeerConnection.SignalingState?) {
-        Log.d(TAG, "onSignalingChange: $p0")
+        Log.d(this::class.java.simpleName, "onSignalingChange: $p0")
     }
 
     override fun onIceConnectionChange(p0: PeerConnection.IceConnectionState?) {
-        Log.d(TAG, "onIceConnectionChange: $p0")
+        Log.d(this::class.java.simpleName, "onIceConnectionChange: $p0")
     }
 
     override fun onIceConnectionReceivingChange(p0: Boolean) {
-        Log.d(TAG, "onIceConnectionReceivingChange: $p0")
+        Log.d(this::class.java.simpleName, "onIceConnectionReceivingChange: $p0")
     }
 
     override fun onIceGatheringChange(p0: PeerConnection.IceGatheringState?) {
-        Log.d(TAG, "onIceGatheringChange: $p0")
+        Log.d(this::class.java.simpleName, "onIceGatheringChange: $p0")
     }
 
     override fun onIceCandidatesRemoved(p0: Array<out IceCandidate>?) {
