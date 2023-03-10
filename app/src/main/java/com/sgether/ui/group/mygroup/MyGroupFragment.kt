@@ -16,9 +16,11 @@ import com.sgether.databinding.FragmentMyGroupBinding
 import com.sgether.api.ApiClient
 import com.sgether.ui.group.add.AddGroupActivity
 import com.sgether.util.Constants
+import com.sgether.util.toastOnMain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 
 class MyGroupFragment : Fragment() {
     private var _binding: FragmentMyGroupBinding? = null
@@ -44,18 +46,22 @@ class MyGroupFragment : Fragment() {
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val res = ApiClient.groupService.readGroup()
-            val body = res.body()
-            if(res.isSuccessful) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, body?.message, Toast.LENGTH_SHORT).show()
+            try {
+                val res = ApiClient.groupService.readGroup()
+                val body = res.body()
+                if(res.isSuccessful) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, body?.message, Toast.LENGTH_SHORT).show()
+                    }
+                    viewModel.setGroupList(body?.groupsSelectReseult!!)
+                    Log.d("TAG", "onViewCreated: ${body?.groupsSelectReseult!!.joinToString(" ")}")
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, res.errorBody()?.string(), Toast.LENGTH_SHORT).show()
+                    }
                 }
-                viewModel.setGroupList(body?.groupsSelectReseult!!)
-                Log.d("TAG", "onViewCreated: ${body?.groupsSelectReseult!!.joinToString(" ")}")
-            } else {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, res.errorBody()?.string(), Toast.LENGTH_SHORT).show()
-                }
+            } catch(e: IOException) {
+                context?.toastOnMain(e.message)
             }
         }
     }
