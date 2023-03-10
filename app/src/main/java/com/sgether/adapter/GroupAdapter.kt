@@ -124,4 +124,3 @@ class GroupAdapter(
 
     override fun getItemCount() = list.size
 }
-
