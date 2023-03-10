@@ -1,4 +1,4 @@
-package com.sgether.ui.menu.search
+package com.sgether.ui.group.search
 
 import android.os.Bundle
 import android.text.Editable

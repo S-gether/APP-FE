@@ -1,10 +1,13 @@
 package com.sgether.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.sgether.databinding.ItemMemberRankingBinding
 import com.sgether.model.MemberRanking
+import com.sgether.util.DateHelper
 
 class MemberRankingAdapter : RecyclerView.Adapter<MemberRankingAdapter.MemberRankingViewHolder>() {
 
@@ -17,15 +20,24 @@ class MemberRankingAdapter : RecyclerView.Adapter<MemberRankingAdapter.MemberRan
     inner class MemberRankingViewHolder(val binding: ItemMemberRankingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(memberRanking: MemberRanking) {
-            binding.textMemberRank.text = memberRanking.rank.toString()
-            binding.textMemberName.text = memberRanking.name
-            binding.textUserElapsed.text = "22d 12h 59m" // TODO : 랭킹 시간 설정
+            memberRanking.let {
+                binding.textName.text = it.name
+                binding.textIntroduce.text = it.introduce
+                binding.textStudyTime.text = DateHelper.diffFormat(it.studyTime)
+
+                binding.imageMaster.visibility = if(it.isMaster) View.VISIBLE else View.INVISIBLE
+
+                Glide.with(binding.root)
+                    .load(it.imageUrl)
+                    .circleCrop()
+                    .into(binding.imageProfile)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberRankingViewHolder {
         val binding =
-            ItemMemberRankingBinding.inflate(LayoutInflater.from(parent.context), parent, false);
+            ItemMemberRankingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MemberRankingViewHolder(binding)
     }
 

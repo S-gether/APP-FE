@@ -55,29 +55,28 @@
         app:layout_constraintTop_toBottomOf="@id/textGroupName" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnStudyRoom"
+        android:id="@+id/btn_join"
         style="@style/button"
         tools:enabled="false"
         android:layout_marginStart="@dimen/margin_base"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
         android:text="스터디 룸 참여하기"
-        app:layout_constraintEnd_toStartOf="@+id/btn_join_conference"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@id/btn_start_conference"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textGroupDescription" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_join_conference"
+        android:id="@+id/btn_start_conference"
         style="@style/button"
         android:layout_width="wrap_content"
         android:layout_marginEnd="8dp"
         android:padding="16dp"
         android:src="@drawable/ic_video"
         android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/btnStudyRoom"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_join"
         app:layout_constraintEnd_toStartOf="@+id/btn_notice"
-        app:layout_constraintTop_toTopOf="@+id/btnStudyRoom" />
+        app:layout_constraintTop_toTopOf="@+id/btn_join" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_notice"
@@ -87,9 +86,9 @@
         android:padding="16dp"
         android:src="@drawable/ic_announcement"
         android:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_join_conference"
+        app:layout_constraintBottom_toBottomOf="@id/btn_join"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_join_conference" />
+        app:layout_constraintTop_toTopOf="@id/btn_join" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMemberRanking"

@@ -11,10 +11,10 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.sgether.databinding.ItemGroupBinding
 import com.sgether.model.GroupModel
-import com.sgether.ui.menu.mygroup.MyGroupFragment
-import com.sgether.ui.menu.mygroup.MyGroupFragmentDirections
-import com.sgether.ui.menu.search.SearchFragment
-import com.sgether.ui.menu.search.SearchFragmentDirections
+import com.sgether.ui.group.mygroup.MyGroupFragment
+import com.sgether.ui.group.mygroup.MyGroupFragmentDirections
+import com.sgether.ui.group.search.SearchFragment
+import com.sgether.ui.group.search.SearchFragmentDirections
 import com.sgether.util.Constants
 import kotlinx.coroutines.CoroutineScope
 

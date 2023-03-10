@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".ui.menu.home.HomeFragment">
+    tools:context=".ui.home.HomeFragment">
 
     <LinearLayout
         android:id="@+id/calendar_layout"

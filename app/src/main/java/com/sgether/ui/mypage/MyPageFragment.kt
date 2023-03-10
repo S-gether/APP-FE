@@ -1,4 +1,4 @@
-package com.sgether.ui.menu.mypage
+package com.sgether.ui.mypage
 
 import android.content.Intent
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.sgether.ui.menu.home
+package com.sgether.ui.home
 
 import android.content.Intent
 import android.os.Bundle

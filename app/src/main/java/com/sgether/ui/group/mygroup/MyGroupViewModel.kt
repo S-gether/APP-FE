@@ -1,4 +1,4 @@
-package com.sgether.ui.menu.mygroup
+package com.sgether.ui.group.mygroup
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

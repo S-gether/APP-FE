@@ -68,6 +68,21 @@
                     android:padding="10dp"
                     android:textCursorDrawable="@drawable/bg_cursor" />
 
+                <EditText
+                    android:id="@+id/inputGroupDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/background_auth_input"
+                    android:drawableStart="@drawable/ic_people"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/gray"
+                    android:hint="Group descriptoin"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:textCursorDrawable="@drawable/bg_cursor" />
+
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/check_password"
                     android:layout_width="wrap_content"

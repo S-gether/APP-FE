@@ -16,9 +16,11 @@ import com.sgether.adapter.MemberRankingAdapter
 import com.sgether.databinding.FragmentGroupInfoBinding
 import com.sgether.api.ApiClient
 import com.sgether.ui.group.room.RoomActivity
+import com.sgether.util.toastOnMain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 
 class GroupInfoFragment : Fragment() {
     private var _binding: FragmentGroupInfoBinding? = null
@@ -49,41 +51,55 @@ class GroupInfoFragment : Fragment() {
     }
 
     private fun initViewListeners() {
-        binding.btnStudyRoom.setOnClickListener {
+        binding.btnStartConference.setOnClickListener {
+            // 회의 참여
             startActivity(Intent(requireContext(), RoomActivity::class.java))
         }
 
         binding.btnNotice.setOnClickListener {
+            // 공지사항 이동
             findNavController().navigate(R.id.action_groupInfoFragment_to_noticeFragment)
         }
 
-        binding.btnStudyRoom.setOnClickListener {
+        binding.btnJoin.setOnClickListener {
             // 그룹에 참여
-            viewModel.joinGroup()
+            viewModel.joinGroup(args.groupModel.id!!)
         }
     }
 
+    // ViewModel의 LiveData의 값 변화를 관찰
     private fun initViewModelListeners() {
         viewModel.memberRankingListLiveData.observe(viewLifecycleOwner) {
             memberRankingAdapter.list = it
+        }
+
+        viewModel.joinGroupResult.observe(viewLifecycleOwner) {
+            if(it.isSuccessful) {
+
+            } else {
+
+            }
         }
     }
 
 
     private fun loadGroupProfile(groupId: String) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val res = ApiClient.uploadService.readGroupProfile(groupId)
-            if(res.isSuccessful) {
-                withContext(Dispatchers.Main) {
-                    Glide.with(binding.root)
-                        .load(res.body()?.bytes())
-                        .circleCrop()
-                        .into(binding.imageGroupProfile)
+            try {
+                val res = ApiClient.uploadService.readGroupProfile(groupId)
+                if(res.isSuccessful) {
+                    withContext(Dispatchers.Main) {
+                        Glide.with(binding.root)
+                            .load(res.body()?.bytes())
+                            .circleCrop()
+                            .into(binding.imageGroupProfile)
+                    }
                 }
+            } catch (e: IOException) {
+                context?.toastOnMain(e.message)
             }
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

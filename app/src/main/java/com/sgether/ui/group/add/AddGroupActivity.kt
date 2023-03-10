@@ -91,11 +91,13 @@ class AddGroupActivity : AppCompatActivity() {
                     val groupId = createGroup(
                         binding.inputGroupName.text.toString(),
                         5,
+                        binding.inputGroupDescription.text.toString(),
                         if (binding.checkPassword.isChecked) binding.inputPassword.text.toString() else null
-                    )
-                    groupImageUri?.let {
-                        // 이미지 업로드 시작
-                        uploadImage(groupId!!)
+                    )?.let {groupId ->
+                        groupImageUri?.let {
+                            // 이미지 업로드 시작
+                            uploadImage(groupId)
+                        }
                     }
                 }
 
@@ -107,23 +109,28 @@ class AddGroupActivity : AppCompatActivity() {
 
     private fun checkInput(): Boolean {
         if (binding.checkPassword.isChecked) {
-            binding.inputGroupName.text.isNotBlank() && binding.inputPassword.text.isNotBlank()
+            binding.inputGroupName.text.isNotBlank() && binding.inputPassword.text.isNotBlank() && binding.inputGroupDescription.text.isNotBlank()
         }
-        return binding.inputGroupName.text.isNotBlank()
+        return binding.inputGroupName.text.isNotBlank() && binding.inputGroupDescription.text.isNotBlank()
     }
 
-    private suspend fun createGroup(roomName: String, capacity: Int, pwd: String? = null) =
+    private suspend fun createGroup(roomName: String, capacity: Int, description: String, pwd: String? = null) =
         withContext(Dispatchers.IO) {
-            val res = ApiClient.groupService.createGroup(
-                CreateAndEditGroupBody(roomName, capacity, pwd)
-            )
-            if (res.isSuccessful) {
-                val body = res.body()
-                toastOnMain(body?.message)
-                body?.roomId
-            } else {
-                val errorBody = ApiClient.parseErrorBody(res.errorBody())
-                toastOnMain(errorBody?.message)
+            try {
+                val res = ApiClient.groupService.createGroup(
+                    CreateAndEditGroupBody(roomName, capacity, description, pwd)
+                )
+                if (res.isSuccessful) {
+                    val body = res.body()
+                    toastOnMain(body?.message)
+                    body?.roomId
+                } else {
+                    val errorBody = ApiClient.parseErrorBody(res.errorBody())
+                    toastOnMain(errorBody?.message)
+                    null
+                }
+            } catch(e: IOException) {
+                toastOnMain(e.message)
                 null
             }
         }
