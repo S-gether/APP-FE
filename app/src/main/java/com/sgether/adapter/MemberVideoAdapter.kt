@@ -1,8 +1,14 @@
 package com.sgether.adapter
 
+import android.graphics.Bitmap
+import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.sgether.databinding.ItemMemberVideoBinding
 import com.sgether.model.MemberData
 import com.sgether.webrtc.SocketManager
@@ -10,10 +16,16 @@ import com.sgether.util.Constants
 import com.sgether.webrtc.MyPeerManager
 import com.sgether.webrtc.observer.AppSdpObserver
 import com.sgether.webrtc.observer.PeerConnectionObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.webrtc.EglRenderer
 import org.webrtc.IceCandidate
 import org.webrtc.MediaStream
 import org.webrtc.PeerConnection
 import org.webrtc.SessionDescription
+import java.io.ByteArrayOutputStream
+import kotlin.concurrent.timer
 
 class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManager, var socketManager: SocketManager) : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVideHolder>(){
 
@@ -23,6 +35,10 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
             notifyDataSetChanged()
         }
 
+    interface BitmapListener {
+        fun onBitmap(bitmap: Bitmap)
+    }
+
     inner class MemberVideoVideHolder(val binding: ItemMemberVideoBinding): RecyclerView.ViewHolder(binding.root) {
 
         private var peerConnection: PeerConnection? = null
@@ -30,6 +46,21 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
         fun bind(memberData: MemberData){
             if(memberData.isLocal){
                 peerManager.startLocalSurface(binding.root.context, binding.surfaceViewRenderer)
+
+                val listener = object: BitmapListener {
+                    override fun onBitmap(bitmap: Bitmap) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            Glide.with(binding.root)
+                                .load(bitmap)
+                                .into(binding.imageCapture)
+                        }
+                    }
+                }
+                timer(period = 3000) {
+                    binding.surfaceViewRenderer.addFrameListener({
+                         listener.onBitmap(it)
+                    }, 0.5f)
+                }
             }
             // PeerConnection 생성
             peerConnection = buildPeerConnection(object: PeerConnectionObserver() {
@@ -111,4 +142,11 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
     }
 
     override fun getItemCount() = list.size
+
+    fun bitmapToString(bitmap: Bitmap): String {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val imageBytes = baos.toByteArray()
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+    }
 }

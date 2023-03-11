@@ -16,7 +16,7 @@ object ApiClient {
 
     // 조금 더 자세한 로그를 위한 OkHttp 인터셉터
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.HEADERS
+        level = HttpLoggingInterceptor.Level.BODY
     }
     
     // 토큰 자동 삽입을 위한 OkHttp 인터셉터
