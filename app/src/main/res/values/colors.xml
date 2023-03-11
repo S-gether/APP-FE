@@ -20,4 +20,10 @@
     <color name="text_primary">@color/black</color>
 
     <color name="divider">@color/gray</color>
+
+    <!-- Calendar -->
+    <color name="date_q1">#B4ACEC</color>
+    <color name="date_q2">#8377D5</color>
+    <color name="date_q3">#4C3DB3</color>
+    <color name="date_q4">#1F0F88</color>
 </resources>
