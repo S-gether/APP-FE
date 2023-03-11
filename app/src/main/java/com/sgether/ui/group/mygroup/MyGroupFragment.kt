@@ -29,7 +29,7 @@ class MyGroupFragment : Fragment() {
 
     private val viewModel by viewModels<MyGroupViewModel>()
 
-    private val groupAdapter by lazy { GroupAdapter(lifecycleScope, findNavController(), javaClass.simpleName, activity?.intent?.getStringExtra(Constants.KEY_TOKEN)!!) }
+    private val groupAdapter by lazy { GroupAdapter(lifecycleScope, findNavController(), javaClass.simpleName, activity?.intent?.getStringExtra(Constants.KEY_TOKEN)?:"NULL") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

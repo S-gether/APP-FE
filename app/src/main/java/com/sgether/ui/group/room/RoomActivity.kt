@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.sgether.adapter.MemberVideoAdapter
 import com.sgether.databinding.ActivityRoomBinding
+import com.sgether.model.GroupModel
 import com.sgether.model.MemberData
 import com.sgether.webrtc.SocketManager
 import com.sgether.util.Constants
@@ -22,6 +23,8 @@ class RoomActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityRoomBinding.inflate(layoutInflater) }
     private val viewModel by viewModels<RoomViewModel>()
+
+    private lateinit var groupModel: GroupModel
 
     private val peerManager by lazy { MyPeerManager(this) }
     private val socketManager by lazy {
@@ -42,7 +45,7 @@ class RoomActivity : AppCompatActivity() {
         )
     }
 
-    val roomName = "1"
+    var roomName = "1"
     val nickName = "emulator"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +58,8 @@ class RoomActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        groupModel = intent?.getParcelableExtra(Constants.KEY_GROUP_MODEL)!!
+        roomName = groupModel.room_name?:"NULL"
         socketManager.joinRoom(roomName, nickName)
     }
 

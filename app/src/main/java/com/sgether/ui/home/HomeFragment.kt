@@ -11,6 +11,7 @@ import com.sgether.adapter.CalendarAdapter
 import com.sgether.databinding.FragmentHomeBinding
 import com.sgether.model.DateColor
 import com.sgether.model.DateModel
+import com.sgether.ui.MainActivity
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDate
 import org.threeten.bp.YearMonth

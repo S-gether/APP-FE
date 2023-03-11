@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.group.search.SearchFragment">
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/background_search_icon"
-        android:src="@drawable/ic_arrow_back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/sgether_purple" />
-
     <EditText
         android:id="@+id/inputKeyword"
         android:layout_width="0dp"
@@ -28,18 +16,17 @@
         android:hint="검색어를 입력하세요."
         android:imeOptions="actionSearch"
         android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+        app:layout_constraintBottom_toBottomOf="@+id/btnSearch"
         app:layout_constraintEnd_toStartOf="@id/btnSearch"
-        app:layout_constraintStart_toEndOf="@id/btnBack"
-        app:layout_constraintTop_toTopOf="@+id/btnBack" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnSearch" />
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btnSearch"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/background_search_icon"
         android:src="@drawable/ic_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack">
+        app:layout_constraintTop_toBottomOf="@+id/btnSearch">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -71,11 +58,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvGroup"
-                android:visibility="gone"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="16dp"
                 android:overScrollMode="never"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

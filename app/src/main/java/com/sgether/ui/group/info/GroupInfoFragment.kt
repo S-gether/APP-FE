@@ -16,6 +16,7 @@ import com.sgether.adapter.MemberRankingAdapter
 import com.sgether.databinding.FragmentGroupInfoBinding
 import com.sgether.api.ApiClient
 import com.sgether.ui.group.room.RoomActivity
+import com.sgether.util.Constants
 import com.sgether.util.toastOnMain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,7 +54,9 @@ class GroupInfoFragment : Fragment() {
     private fun initViewListeners() {
         binding.btnStartConference.setOnClickListener {
             // 회의 참여
-            startActivity(Intent(requireContext(), RoomActivity::class.java))
+            startActivity(Intent(requireContext(), RoomActivity::class.java).apply {
+                putExtra(Constants.KEY_GROUP_MODEL, args.groupModel)
+            })
         }
 
         binding.btnNotice.setOnClickListener {

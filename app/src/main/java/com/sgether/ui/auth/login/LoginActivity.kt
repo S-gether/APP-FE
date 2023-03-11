@@ -131,6 +131,8 @@ class LoginActivity : AppCompatActivity() {
             if (checkInput()) {
                 startLogin(id, password)
             }
+            // 로그인 안하고 진행 (이후 삭제)
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         binding.btnGoogle.setOnClickListener {

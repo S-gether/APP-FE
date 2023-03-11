@@ -15,15 +15,19 @@ class TokenInterceptor : Interceptor {
             return chain.proceed(chain.request())
         }
         // 인터셉터를 활성화할 때는 원래 동작을 수행합니다.
-        val original = chain.request()
-        val request = original.newBuilder()
-            .header(
-                Constants.KEY_AUTHORIZATION,
-                token //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InRocmlmNjAiLCJuYW1lIjoi7LGE7ZmN66y0IiwiYXV0aG9yaXR5Ijoic3R1ZGVudCIsImlhdCI6MTY3NjM3MDgxOCwiaXNzIjoiYXBpLXNlcnZlciJ9.k1ESg7Qxz5SLKJ7nVXXFCc9VQWr9BItEDCe-otUvxvw"
-            )
-            .method(original.method, original.body)
-            .build()
+        try {
+            val original = chain.request()
+            val request = original.newBuilder()
+                .header(
+                    Constants.KEY_AUTHORIZATION,
+                    token //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InRocmlmNjAiLCJuYW1lIjoi7LGE7ZmN66y0IiwiYXV0aG9yaXR5Ijoic3R1ZGVudCIsImlhdCI6MTY3NjM3MDgxOCwiaXNzIjoiYXBpLXNlcnZlciJ9.k1ESg7Qxz5SLKJ7nVXXFCc9VQWr9BItEDCe-otUvxvw"
+                )
+                .method(original.method, original.body)
+                .build()
 
-        return chain.proceed(request)
+            return chain.proceed(request)
+        } catch (e: UninitializedPropertyAccessException) {
+            return chain.proceed(chain.request())
+        }
     }
 }

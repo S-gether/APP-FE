@@ -10,7 +10,7 @@ import com.sgether.util.Constants
 class RoomViewModel(application: Application): AndroidViewModel(application) {
 
     private val _memberDataList = mutableListOf(
-        MemberData(Constants.TYPE_JOIN, "본인이름", "", isLocal = true),
+        MemberData(Constants.TYPE_JOIN, "자신", "", isLocal = true),
     )
 
     val memberDataList: List<MemberData> get() = _memberDataList

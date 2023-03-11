@@ -25,7 +25,7 @@ class SearchFragment : Fragment(), SearchLogAdapter.OnClickListener {
     private val viewModel by viewModels<SearchViewModel>()
 
     private val groupAdapter by lazy { GroupAdapter(lifecycleScope, findNavController(), javaClass.simpleName, activity?.intent?.getStringExtra(
-        Constants.KEY_TOKEN)!!) }
+        Constants.KEY_TOKEN)?:"NULL") }
     private val searchLogAdapter by lazy { SearchLogAdapter(this) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
