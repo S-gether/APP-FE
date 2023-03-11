@@ -4,8 +4,12 @@ import android.content.Context
 import com.sgether.R
 import com.sgether.webrtc.observer.AppSdpObserver
 import org.webrtc.*
+// import org.pytorch.*
 
 class MyPeerManager(context: Context) {
+
+
+
     private val eglBaseContext = EglBase.create().eglBaseContext
     lateinit var localStream: MediaStream
 
@@ -93,7 +97,7 @@ class MyPeerManager(context: Context) {
         )
     }
 
-    fun createOffer(peerConnection: PeerConnection?, sdpObserver: AppSdpObserver){
+    fun createOffer(peerConnection: PeerConnection?, sdpObserver: AppSdpObserver) {
         val mediaConstraint = MediaConstraints().apply {
             mandatory.add(
                 MediaConstraints.KeyValuePair(
@@ -104,24 +108,33 @@ class MyPeerManager(context: Context) {
         peerConnection?.createOffer(sdpObserver, mediaConstraint)
     }
 
-    fun createAnswer(peerConnection: PeerConnection?, sdpObserver: AppSdpObserver){
+    fun createAnswer(peerConnection: PeerConnection?, sdpObserver: AppSdpObserver) {
         peerConnection?.createAnswer(sdpObserver, MediaConstraints())
     }
 
-    fun setLocalDescription(peerConnection: PeerConnection?, observer: AppSdpObserver, sdp: SessionDescription?) {
+    fun setLocalDescription(
+        peerConnection: PeerConnection?,
+        observer: AppSdpObserver,
+        sdp: SessionDescription?
+    ) {
         peerConnection?.setLocalDescription(observer, sdp)
     }
 
-    fun setRemoteDescription(peerConnection: PeerConnection?, observer: AppSdpObserver, sdp: SessionDescription?){
+    fun setRemoteDescription(
+        peerConnection: PeerConnection?,
+        observer: AppSdpObserver,
+        sdp: SessionDescription?
+    ) {
         peerConnection?.setRemoteDescription(observer, sdp)
     }
 
-    fun addIceCandidate(peerConnection: PeerConnection?, iceCandidate: IceCandidate?){
+    fun addIceCandidate(peerConnection: PeerConnection?, iceCandidate: IceCandidate?) {
         peerConnection?.addIceCandidate(iceCandidate)
     }
 
     fun close(peerConnection: PeerConnection?) {
         peerConnection?.close()
     }
+
 
 }

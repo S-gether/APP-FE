@@ -1,6 +1,7 @@
 package com.sgether.ui
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -24,5 +25,12 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         // BottomNavigationView 와 NavController 를 연결하여 메뉴 아이템 클릭시 해당 프래그먼트로 이동할 수 있도록 함
         binding.bottomNavigationView.setupWithNavController(navController)
+
+
+        val learningTime = 60 // 학습 시간 (단위: 분)
+        val aiCount = 3 // 지적 횟수
+
+
+
     }
 }
