@@ -53,6 +53,7 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                             Glide.with(binding.root)
                                 .load(bitmap)
                                 .into(binding.imageCapture)
+                            //TODO 이미지 캡쳐한 것 모델에 넣기
                         }
                     }
                 }

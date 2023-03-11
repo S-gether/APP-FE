@@ -3,8 +3,11 @@ package com.sgether.webrtc
 import android.content.Context
 import com.sgether.R
 import com.sgether.webrtc.observer.AppSdpObserver
+import org.pytorch.*
 import org.webrtc.*
-// import org.pytorch.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
 
 class MyPeerManager(context: Context) {
 
@@ -65,6 +68,38 @@ class MyPeerManager(context: Context) {
             addTrack(localVideoTrack)
             addTrack(localAudioTrack)
         }
+
+        
+
+
+    }
+    val module: Module = Module.load(assetFilePath(this, "model.ptl"))
+    fun assetFilePath(context: Context, asset: String): String {
+        val file = File(context.filesDir, asset)
+
+        try {
+            val inpStream: InputStream = context.assets.open(asset)
+            try {
+                val outStream = FileOutputStream(file, false)
+                val buffer = ByteArray(4 * 1024)
+                var read: Int
+
+                while (true) {
+                    read = inpStream.read(buffer)
+                    if (read == -1) {
+                        break
+                    }
+                    outStream.write(buffer, 0, read)
+                }
+                outStream.flush()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return file.absolutePath
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return "오류발생"
     }
 
     fun initSurfaceView(surfaceViewRenderer: SurfaceViewRenderer) {

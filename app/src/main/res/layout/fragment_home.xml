@@ -117,43 +117,61 @@
         tools:listitem="@layout/item_date" />
 
 
-
-
     <LinearLayout
+        android:id="@+id/linearlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical|bottom"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendar"
+        tools:context=".ui.auth.find.FindIdFragment">
 
         <TextView
             android:id="@+id/study_time_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_auth_input"
+            android:drawableStart="@drawable/ic_card"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/gray"
+            android:padding="10dp"
             android:text="학습 시간: 00분"
-            android:textSize="24sp" />
-
-        <View
-            android:layout_width="8dp"
-            android:layout_height="0dp" />
+            android:textCursorDrawable="@drawable/bg_cursor"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/focus_time_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_auth_input"
+            android:drawableStart="@drawable/ic_person"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/gray"
+            android:maxLines="1"
+            android:padding="10dp"
             android:text="집중 시간: 00분"
-            android:textSize="24sp" />
+            android:textCursorDrawable="@drawable/bg_cursor"
+            android:textSize="20sp" />
 
-        <View
-            android:layout_width="8dp"
-            android:layout_height="0dp" />
 
         <TextView
             android:id="@+id/ai_count_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="지적 횟수: 0회"
-            android:textSize="24sp" />
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/background_auth_input"
+            android:drawableStart="@drawable/ic_person"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/gray"
+            android:padding="10dp"
+            android:text="지적당한 횟수: 00회"
+            android:textCursorDrawable="@drawable/bg_cursor"
+            android:textSize="20sp" />
+
 
     </LinearLayout>
 
