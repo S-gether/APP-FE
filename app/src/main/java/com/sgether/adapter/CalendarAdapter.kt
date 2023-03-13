@@ -28,7 +28,7 @@ class CalendarAdapter: RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>(
 
     inner class CalendarViewHolder(var binding: ItemDateBinding): RecyclerView.ViewHolder(binding.root) {
         private val textDate = itemView.findViewById<TextView>(R.id.text_date)
-        private val viewBackground = itemView.findViewById<View>(R.id.view_background)
+        private val viewBackground = itemView.findViewById<View>(R.id.text_date)
         fun bind(dateModel: DateModel) {
 
             dateModel.let {
@@ -36,14 +36,13 @@ class CalendarAdapter: RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>(
             }
             // 학습 시간 데이터가 있는 경우, 배경색을 설정합니다.
             if (dateModel.dateColor != DateColor.NONE) {
-                viewBackground.setBackgroundResource(getColorResource(dateModel.dateColor))
+                viewBackground.setBackgroundResource(R.color.date_q1)
             }
             // 학습 시간 데이터가 없는 경우, 일반적인 배경색을 설정합니다.
             else {
-                viewBackground.setBackgroundResource(R.drawable.bg_date_normal)
+                viewBackground.setBackgroundResource(R.color.white)
             }
 
-            textDate.text = dateModel.day.toString()
         }
     }
 
