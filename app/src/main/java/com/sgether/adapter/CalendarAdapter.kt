@@ -5,12 +5,15 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sgether.R
 import com.sgether.databinding.ItemDateBinding
+import com.sgether.model.DateColor
 import com.sgether.model.DateModel
 
 class CalendarAdapter: RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
@@ -24,10 +27,23 @@ class CalendarAdapter: RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>(
         }
 
     inner class CalendarViewHolder(var binding: ItemDateBinding): RecyclerView.ViewHolder(binding.root) {
+        private val textDate = itemView.findViewById<TextView>(R.id.text_date)
+        private val viewBackground = itemView.findViewById<View>(R.id.view_background)
         fun bind(dateModel: DateModel) {
+
             dateModel.let {
                 binding.textDate.text = it.date.toString()
             }
+            // 학습 시간 데이터가 있는 경우, 배경색을 설정합니다.
+            if (dateModel.dateColor != DateColor.NONE) {
+                viewBackground.setBackgroundResource(getColorResource(dateModel.dateColor))
+            }
+            // 학습 시간 데이터가 없는 경우, 일반적인 배경색을 설정합니다.
+            else {
+                viewBackground.setBackgroundResource(R.drawable.bg_date_normal)
+            }
+
+            textDate.text = dateModel.day.toString()
         }
     }
 
