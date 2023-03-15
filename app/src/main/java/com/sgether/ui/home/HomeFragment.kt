@@ -39,6 +39,15 @@ class HomeFragment : Fragment() {
         binding.calendar.adapter = calendarAdapter.apply {
             list = getDateList(yearMonth.year, yearMonth.monthValue)
         }
+        // 백엔드 서버로부터 데이터를 받아온다고 가정
+        val studyTime = 120
+        val focusTime = 60
+        val aiCount = 10
+
+        // 각각의 TextView에 데이터를 설정
+        binding.studyTimeTextview.text = studyTime.toString()
+        binding.focusTimeTextview.text = focusTime.toString()
+        binding.aiCountTextview.text = aiCount.toString()
     }
 
     private fun initViewListeners() {
