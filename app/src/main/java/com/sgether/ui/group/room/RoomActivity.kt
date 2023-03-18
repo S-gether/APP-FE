@@ -47,6 +47,9 @@ class RoomActivity : AppCompatActivity() {
 
     var roomName = "1"
     val nickName = "emulator"
+    
+    private var startTime = 0L
+    private var aiCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,8 @@ class RoomActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        startTime = System.currentTimeMillis() // 현재 시간을 얻어옴
+        
         groupModel = intent?.getParcelableExtra(Constants.KEY_GROUP_MODEL)!!
         roomName = groupModel.room_name?:"NULL"
         socketManager.joinRoom(roomName, nickName)
@@ -190,5 +195,8 @@ class RoomActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         socketManager.disconnect()
+
+        val studyTime = System.currentTimeMillis() - startTime
+        viewModel.createStudyTime(groupModel.id?:"", studyTime, aiCount)
     }
 }

@@ -45,6 +45,7 @@ object ApiClient {
     val noticeService: NoticeService = retrofit.create(NoticeService::class.java)
     val userService: UserService = retrofit.create(UserService::class.java)
     val uploadService: UploadService = retrofit.create(UploadService::class.java)
+    val studyService: StudyService = retrofit.create(StudyService::class.java)
 
     fun parseErrorBody(errorBody: ResponseBody?): ErrorResponse? {
         return retrofit.responseBodyConverter<ErrorResponse>(

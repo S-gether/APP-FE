@@ -73,7 +73,7 @@ class MyPeerManager(context: Context) {
 
 
     }
-    val module: Module = Module.load(assetFilePath(this, "model.ptl"))
+    //val module: Module = Module.load(assetFilePath(this, "model.ptl"))
     fun assetFilePath(context: Context, asset: String): String {
         val file = File(context.filesDir, asset)
 
