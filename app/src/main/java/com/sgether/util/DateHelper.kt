@@ -7,6 +7,8 @@ import java.util.*
 object DateHelper {
     private val format = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
     private val diffFormat = SimpleDateFormat("dd일 HH시간 mm분")
+
+    private val dateStudyTimeFormat = SimpleDateFormat("HH시간 mm분")
     // 밀리세컨드 형태의 날짜를 문자열 형태로 반환하는 함수를 제공
     fun dateToString(time: Long): String{
         return format.format(time)
@@ -14,5 +16,9 @@ object DateHelper {
 
     fun diffFormat(diff: Long): String {
         return diffFormat.format(diff)
+    }
+
+    fun dateStudyTimeToString(time: Long): String {
+        return dateStudyTimeFormat.format(time)
     }
 }

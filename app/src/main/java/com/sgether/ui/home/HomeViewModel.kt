@@ -19,7 +19,7 @@ class HomeViewModel: ViewModel() {
         try {
             val res = ApiClient.studyService.readUserStudyTime()
             if(res.isSuccessful) {
-                readStudyTimeResult.postValue(res.body()?.groupSelectReseult)
+                readStudyTimeResult.postValue(res.body()?.userSelectReseult)
             }
         } catch (e: Exception) {
             e.printStackTrace()

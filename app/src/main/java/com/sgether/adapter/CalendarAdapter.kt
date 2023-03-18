@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,11 @@ import com.sgether.R
 import com.sgether.databinding.ItemDateBinding
 import com.sgether.model.DateColor
 import com.sgether.model.DateModel
+import okhttp3.internal.parseCookie
 
-class CalendarAdapter: RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
+class CalendarAdapter(var listener: OnItemClickListener): RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
 
-    private var selectedIndex: Int = 0
+    var selectedIndex: Int = -1
 
     var list = listOf<DateModel>()
         set(value) {
@@ -27,31 +29,34 @@ class CalendarAdapter: RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>(
         }
 
     inner class CalendarViewHolder(var binding: ItemDateBinding): RecyclerView.ViewHolder(binding.root) {
-        private val textDate = itemView.findViewById<TextView>(R.id.text_date)
-        private val viewBackground = itemView.findViewById<View>(R.id.text_date)
+        private val viewBackground = itemView.findViewById<View>(R.id.layout_date)
         fun bind(dateModel: DateModel) {
+            Log.d(".DateModel", "bind: $dateModel")
 
             dateModel.let {
                 binding.textDate.text = it.date.toString()
             }
-            // 학습 시간 데이터가 있는 경우, 배경색을 설정합니다.
-            if(dateModel.dateColor == DateColor.Q1){
-                viewBackground.setBackgroundResource(R.color.date_q1)
-            }
-            else if(dateModel.dateColor == DateColor.Q2){
-                viewBackground.setBackgroundResource(R.color.date_q2)
-            }
-            else if(dateModel.dateColor == DateColor.Q3){
-                viewBackground.setBackgroundResource(R.color.date_q3)
-            }
-            else if (dateModel.dateColor == DateColor.Q4){
-                viewBackground.setBackgroundResource(R.color.date_q4)
-            }
-            // 학습 시간 데이터가 없는 경우, 기본 배경색을 설정합니다.
-            else {
-                viewBackground.setBackgroundResource(R.color.white)
-            }
 
+            // 색상 계산
+            val hour = convertMillisecondsToTime(dateModel.focusTime)
+            if(hour == 0L) {
+                dateModel.dateColor = DateColor.NONE
+            } else if(hour <= 1) {
+                dateModel.dateColor = DateColor.Q1
+            } else if(hour <= 2) {
+                dateModel.dateColor = DateColor.Q2
+            } else if(hour <= 3) {
+                dateModel.dateColor = DateColor.Q3
+            } else {
+                dateModel.dateColor = DateColor.Q4
+            }
+            viewBackground.setBackgroundColor(dateModel.dateColor.getColor())
+
+        }
+
+        fun convertMillisecondsToTime(milliseconds: Long): Long {
+            val hours = (milliseconds / (1000 * 60 * 60)) % 24
+            return hours
         }
     }
 
@@ -69,14 +74,20 @@ class CalendarAdapter: RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>(
 
         holder.itemView.setOnClickListener {
             selectedIndex = position
+            listener.onItemClick(list[position])
+
             notifyDataSetChanged()
         }
 
-        if(selectedIndex == position) {
+        if(selectedIndex != -1 && selectedIndex == position) {
             holder.itemView.setBackgroundResource(R.drawable.backgorund_date_selected)
-            ((holder.itemView.background as GradientDrawable).mutate() as GradientDrawable).setColor(holder.binding.root.context.resources.getColor(item.dateColor.getColor()))
+            ((holder.itemView.background as GradientDrawable).mutate() as GradientDrawable).setColor(holder.binding.root.context.resources.getColor(item.dateColor!!.getColor()))
         } else {
             holder.itemView.setBackgroundResource(item.dateColor.getColor())
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(dataModel: DateModel)
     }
 }
