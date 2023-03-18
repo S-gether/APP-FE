@@ -23,6 +23,5 @@ interface StudyService {
 
     @GET("study/")
     suspend fun readUserStudyTime(
-        @Path("groupId") groupId: String,
     ): Response<ReadGroupStudyTimeResponse>
 }

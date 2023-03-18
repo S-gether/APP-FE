@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.sgether.adapter.CalendarAdapter
 import com.sgether.databinding.FragmentHomeBinding
 import com.sgether.model.DateColor
@@ -21,15 +22,17 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding
         get() = _binding!!
-
+    private val viewModel by viewModels<HomeViewModel>()
     private val calendarAdapter by lazy { CalendarAdapter() }
 
     private var yearMonth = YearMonth.now()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.readStudyTime()
         initView()
         initViewListeners()
+        initViewModelListeners()
     }
 
     private fun initView() {
@@ -62,6 +65,13 @@ class HomeFragment : Fragment() {
             binding.textMonth.text = "${yearMonth.year}년 ${yearMonth.monthValue}월"
             calendarAdapter.list = getDateList(yearMonth.year, yearMonth.monthValue)
         }
+    }
+
+    private fun initViewModelListeners(){
+        viewModel.readStudyTimeResult.observe(viewLifecycleOwner){
+
+        }
+
     }
 
     override fun onCreateView(

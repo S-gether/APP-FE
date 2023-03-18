@@ -35,16 +35,16 @@ class CalendarAdapter: RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>(
                 binding.textDate.text = it.date.toString()
             }
             // 학습 시간 데이터가 있는 경우, 배경색을 설정합니다.
-            if(dateModel.dateColor != DateColor.Q1){
+            if(dateModel.dateColor == DateColor.Q1){
                 viewBackground.setBackgroundResource(R.color.date_q1)
             }
-            else if(dateModel.dateColor != DateColor.Q2){
+            else if(dateModel.dateColor == DateColor.Q2){
                 viewBackground.setBackgroundResource(R.color.date_q2)
             }
-            else if(dateModel.dateColor != DateColor.Q3){
+            else if(dateModel.dateColor == DateColor.Q3){
                 viewBackground.setBackgroundResource(R.color.date_q3)
             }
-            else if (dateModel.dateColor != DateColor.Q4){
+            else if (dateModel.dateColor == DateColor.Q4){
                 viewBackground.setBackgroundResource(R.color.date_q4)
             }
             // 학습 시간 데이터가 없는 경우, 기본 배경색을 설정합니다.
