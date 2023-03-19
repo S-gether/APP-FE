@@ -9,17 +9,19 @@ import com.sgether.adapter.MemberVideoAdapter
 import com.sgether.databinding.ActivityRoomBinding
 import com.sgether.model.GroupModel
 import com.sgether.model.MemberData
-import com.sgether.webrtc.SocketManager
 import com.sgether.util.Constants
 import com.sgether.webrtc.MyPeerManager
+import com.sgether.webrtc.SocketManager
 import com.sgether.webrtc.observer.AppSdpObserver
 import io.socket.emitter.Emitter
 import org.json.JSONArray
 import org.json.JSONObject
+import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
 import org.webrtc.*
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 
 class RoomActivity : AppCompatActivity() {
 
@@ -41,16 +43,31 @@ class RoomActivity : AppCompatActivity() {
         )
     }
 
-    private val module = Module.load("file:///android_asset/model.ptl")
+    private val module by lazy {
+        LiteModuleLoader.load(assetFilePath(applicationContext, "model.ptl"))
+    }
 
-    fun assetFilePath(context: Context, assetName: String): String {
-        return context.assets.open(assetName).use {
-            val file = File(context.filesDir, assetName)
-            FileOutputStream(file).use { outputStream ->
-                it.copyTo(outputStream)
-            }
-            file.absolutePath
+    private fun assetFilePath(context: Context, assetName: String): String? {
+        val file = File(context.filesDir, assetName)
+        if (file.exists() && file.length() > 0) {
+            return file.absolutePath
         }
+        try {
+            context.assets.open(assetName).use { `is` ->
+                FileOutputStream(file).use { os ->
+                    val buffer = ByteArray(4 * 1024)
+                    var read: Int
+                    while (`is`.read(buffer).also { read = it } != -1) {
+                        os.write(buffer, 0, read)
+                    }
+                    os.flush()
+                }
+                return file.absolutePath
+            }
+        } catch (e: IOException) {
+            Log.e(TAG, assetName + ": " + e.getLocalizedMessage())
+        }
+        return null
     }
 
     private val memberVideoAdapter by lazy {
