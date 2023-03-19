@@ -19,6 +19,9 @@ import com.sgether.webrtc.observer.PeerConnectionObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.pytorch.IValue
+import org.pytorch.Module
+import org.pytorch.torchvision.TensorImageUtils
 import org.webrtc.EglRenderer
 import org.webrtc.IceCandidate
 import org.webrtc.MediaStream
@@ -27,7 +30,7 @@ import org.webrtc.SessionDescription
 import java.io.ByteArrayOutputStream
 import kotlin.concurrent.timer
 
-class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManager, var socketManager: SocketManager) : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVideHolder>(){
+class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManager, var socketManager: SocketManager, var module: Module) : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVideHolder>(){
 
     var list: List<MemberData> = listOf()
         set(value) {
@@ -47,13 +50,20 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
             if(memberData.isLocal){
                 peerManager.startLocalSurface(binding.root.context, binding.surfaceViewRenderer)
 
+
                 val listener = object: BitmapListener {
                     override fun onBitmap(bitmap: Bitmap) {
+                        val inputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap, TensorImageUtils.TORCHVISION_NORM_MEAN_RGB, TensorImageUtils.TORCHVISION_NORM_STD_RGB)
+
+                        val outputTensor = module.forward(IValue.from(inputTensor)).toTensor()
+                        val score = outputTensor.dataAsFloatArray
+                        Log.d("PYTORCH", "onBitmap: $score")
                         CoroutineScope(Dispatchers.Main).launch {
-                            Glide.with(binding.root)
-                                .load(bitmap)
-                                .into(binding.imageCapture)
+                            //Glide.with(binding.root)
+                            //    .load(bitmap)
+                            //    .into(binding.imageCapture)
                             //TODO 이미지 캡쳐한 것 모델에 넣기
+
                         }
                     }
                 }

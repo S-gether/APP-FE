@@ -1,5 +1,6 @@
 package com.sgether.ui.group.room
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -15,7 +16,10 @@ import com.sgether.webrtc.observer.AppSdpObserver
 import io.socket.emitter.Emitter
 import org.json.JSONArray
 import org.json.JSONObject
+import org.pytorch.Module
 import org.webrtc.*
+import java.io.File
+import java.io.FileOutputStream
 
 class RoomActivity : AppCompatActivity() {
 
@@ -37,11 +41,24 @@ class RoomActivity : AppCompatActivity() {
         )
     }
 
+    private val module = Module.load("file:///android_asset/model.ptl")
+
+    fun assetFilePath(context: Context, assetName: String): String {
+        return context.assets.open(assetName).use {
+            val file = File(context.filesDir, assetName)
+            FileOutputStream(file).use { outputStream ->
+                it.copyTo(outputStream)
+            }
+            file.absolutePath
+        }
+    }
+
     private val memberVideoAdapter by lazy {
         MemberVideoAdapter(
             nickName,
             peerManager,
-            socketManager
+            socketManager,
+            module
         )
     }
 
@@ -191,6 +208,8 @@ class RoomActivity : AppCompatActivity() {
             memberData.socketId == remoteSocketId
         }?.peerConnection
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
