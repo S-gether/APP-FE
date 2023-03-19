@@ -10,6 +10,7 @@ import com.sgether.databinding.ActivityRoomBinding
 import com.sgether.model.GroupModel
 import com.sgether.model.MemberData
 import com.sgether.util.Constants
+import com.sgether.util.JWTHelper
 import com.sgether.webrtc.MyPeerManager
 import com.sgether.webrtc.SocketManager
 import com.sgether.webrtc.observer.AppSdpObserver
@@ -80,7 +81,7 @@ class RoomActivity : AppCompatActivity() {
     }
 
     var roomName = "1"
-    val nickName = "emulator"
+    var nickName = "emulator"
     
     private var startTime = 0L
     private var aiCount = 0
@@ -96,7 +97,10 @@ class RoomActivity : AppCompatActivity() {
 
     private fun init() {
         startTime = System.currentTimeMillis() // 현재 시간을 얻어옴
-        
+
+        val payload: JWTHelper.JwtPayload? = intent.getParcelableExtra(Constants.JWT_PAYLOAD)
+        nickName = payload?.name?:"NULL"
+
         groupModel = intent?.getParcelableExtra(Constants.KEY_GROUP_MODEL)!!
         roomName = groupModel.room_name?:"NULL"
         socketManager.joinRoom(roomName, nickName)

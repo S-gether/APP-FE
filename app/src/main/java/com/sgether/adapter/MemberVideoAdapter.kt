@@ -57,7 +57,31 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
 
                         val outputTensor = module.forward(IValue.from(inputTensor)).toTensor()
                         val score = outputTensor.dataAsFloatArray
-                        Log.d("PYTORCH", "onBitmap: $score")
+                        var max = -1f
+                        var maxIndex = 0
+                        for (i in score.indices) {
+                            if(score[i] > max) {
+                                max = score[i]
+                                maxIndex = i
+                            }
+                        }
+                        val result = when(maxIndex) {
+                            0 -> "기쁨"
+                            1 -> "당황"
+                            2 -> "분노"
+                            3 -> "불안"
+                            4 -> "상처"
+                            5 -> "슬픔"
+                            6 -> "중립"
+                            else -> "NULL"
+                        }
+
+                        if(result == "중립") {
+                            Log.d("PYTORCH", "onBitmap: ${System.currentTimeMillis()} 집중")
+                        } else {
+                            Log.d("PYTORCH", "onBitmap: ${System.currentTimeMillis()} 집중X")
+
+                        }
                         CoroutineScope(Dispatchers.Main).launch {
                             //Glide.with(binding.root)
                             //    .load(bitmap)
@@ -67,7 +91,7 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                         }
                     }
                 }
-                timer(period = 3000) {
+                timer(period = 1000) {
                     binding.surfaceViewRenderer.addFrameListener({
                          listener.onBitmap(it)
                     }, 0.5f)
