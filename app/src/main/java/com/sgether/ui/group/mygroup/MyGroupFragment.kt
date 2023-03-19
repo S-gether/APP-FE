@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.sgether.R
 import com.sgether.adapter.GroupAdapter
 import com.sgether.databinding.FragmentMyGroupBinding
 import com.sgether.api.ApiClient
@@ -33,10 +34,6 @@ class MyGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //binding.btnGroupInfo.setOnClickListener {
-        //    findNavController().navigate(R.id.action_myGroupFragment_to_groupInfoFragment)
-        //}
 
         initGroupRecyclerView()
         initViewModelObservers()

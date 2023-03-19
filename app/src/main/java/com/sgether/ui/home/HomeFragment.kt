@@ -139,6 +139,12 @@ class HomeFragment : Fragment(), CalendarAdapter.OnItemClickListener {
         binding.studyTimeTextview.text = "학습 시간: ${convertMillisecondsToTime(dateModel.studyTime)}"
         binding.focusTimeTextview.text = "집중 시간: ${convertMillisecondsToTime(dateModel.focusTime)}"
         binding.aiCountTextview.text = "지적 당한 횟수 : ${dateModel.aiCount}회"
+        val progressBar = binding.focusProgressBar
+        progressBar.max = 100
+        val progress = (dateModel.focusTime.toFloat() / dateModel.studyTime.toFloat()) * 100
+        progressBar.progress = progress.toInt()
+        //TODO 프로그레스바 로직 구현
+    }
     }
 
     fun convertMillisecondsToTime(milliseconds: Long): String {
@@ -147,4 +153,3 @@ class HomeFragment : Fragment(), CalendarAdapter.OnItemClickListener {
         val hours = (milliseconds / (1000 * 60 * 60)) % 24
         return "${hours}시간 ${minutes}분 ${seconds}초"
     }
-}

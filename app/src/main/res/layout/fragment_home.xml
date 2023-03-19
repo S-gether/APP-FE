@@ -128,6 +128,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:context=".ui.auth.find.FindIdFragment">
 
+        <ProgressBar
+            android:id="@+id/focusProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progressDrawable="@drawable/progress_bar_color"
+            android:progress="0"
+            android:max="100"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
+
+
         <TextView
             android:id="@+id/study_time_textview"
             android:layout_width="match_parent"
