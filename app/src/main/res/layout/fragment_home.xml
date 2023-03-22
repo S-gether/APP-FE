@@ -128,23 +128,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:context=".ui.auth.find.FindIdFragment">
 
-        <ProgressBar
-            android:id="@+id/focusProgressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:progressDrawable="@drawable/progress_bar_color"
-            android:progress="0"
-            android:max="100"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
-
-
         <TextView
             android:id="@+id/study_time_textview"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:background="@drawable/background_auth_input"
-            android:drawableStart="@drawable/ic_card"
+            android:drawableStart="@drawable/ic_study"
             android:drawablePadding="8dp"
             android:drawableTint="@color/gray"
             android:padding="10dp"
@@ -158,7 +148,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/background_auth_input"
-            android:drawableStart="@drawable/ic_person"
+            android:drawableStart="@drawable/ic_focus"
             android:drawablePadding="8dp"
             android:drawableTint="@color/gray"
             android:maxLines="1"
@@ -174,13 +164,36 @@
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/background_auth_input"
-            android:drawableStart="@drawable/ic_person"
+            android:drawableStart="@drawable/ic_aicheck"
             android:drawablePadding="8dp"
             android:drawableTint="@color/gray"
             android:padding="10dp"
             android:text="지적당한 횟수: 00회"
             android:textCursorDrawable="@drawable/bg_cursor"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/study_to_focus_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:drawablePadding="8dp"
+            android:text="학습 시간 대비 집중도: 00%"
+            android:textSize="15sp" />
+
+        <ProgressBar
+            android:id="@+id/focusProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginBottom="20dp"
+            android:progressDrawable="@drawable/progress_bar_color"
+            android:progress="1"
+            android:max="100"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
+
+
+
 
 
     </LinearLayout>

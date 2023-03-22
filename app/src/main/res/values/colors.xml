@@ -11,6 +11,7 @@
     <color name="gray">#FFAAAAAA</color>
     <color name="gray_transparent">#88AAAAAA</color>
     <color name="black">#FF000000</color>
+    <color name="light_gray">#F3F3F3</color>
 
     <color name="sgether_purple">#FF1F0F88</color>
     <color name="sgether_purple_ghost">#A49DF3</color>
