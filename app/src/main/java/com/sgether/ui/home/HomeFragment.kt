@@ -144,9 +144,7 @@ class HomeFragment : Fragment(), CalendarAdapter.OnItemClickListener {
         binding.studyTimeTextview.text = "학습 시간: ${convertMillisecondsToTime(dateModel.studyTime)}"
         binding.focusTimeTextview.text = "집중 시간: ${convertMillisecondsToTime(dateModel.focusTime)}"
         binding.aiCountTextview.text = "지적 당한 횟수 : ${dateModel.aiCount}회"
-        if(dateModel.studyTime.toFloat()!= 0f){
         binding.studyToFocusTextview.text = "학습 시간 대비 집중도: ${dateModel.focusTime.toFloat() / dateModel.studyTime.toFloat()* 100}%"
-        }
     }
 }
 
