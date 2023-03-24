@@ -17,9 +17,6 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
-
-    private var context = application.applicationContext
-
     init {
         loadGroupList()
     }
@@ -41,6 +38,10 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         _groupLiveData.postValue(_groupList.filter { it.room_name?.contains(keyword) ?: false })
     }
 
+    fun removeFilter(){
+        setGroupList(_groupList)
+    }
+
     private fun loadGroupList() = viewModelScope.launch(Dispatchers.IO) {
         try {
             val result = ApiClient.groupService.readGroup()
@@ -55,22 +56,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 }
             }
         } catch(e: IOException) {
-            context.toastOnMain(e.message)
+            e.printStackTrace()
         }
     }
-
-    // 최근 검색어
-    private val groupSearchLogDao = AppDatabase.getInstance(application).groupSearchLogDao
-
-    fun insertGroupSearchLog(groupSearchLog: GroupSearchLog) =
-        viewModelScope.launch(Dispatchers.IO) {
-            groupSearchLogDao.insert(groupSearchLog)
-        }
-
-    fun deleteGroupSearchLog(groupSearchLog: GroupSearchLog) =
-        viewModelScope.launch(Dispatchers.IO) {
-            groupSearchLogDao.delete(groupSearchLog)
-        }
-
-    val groupSearchLogListLiveData = groupSearchLogDao.readAll()
 }
