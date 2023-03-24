@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.sgether.databinding.ItemMemberRankingBinding
 import com.sgether.model.MemberRanking
 import com.sgether.util.DateHelper
+import okhttp3.internal.format
 
 class MemberRankingAdapter : RecyclerView.Adapter<MemberRankingAdapter.MemberRankingViewHolder>() {
 
@@ -23,7 +24,7 @@ class MemberRankingAdapter : RecyclerView.Adapter<MemberRankingAdapter.MemberRan
             memberRanking.let {
                 binding.textName.text = it.name
                 binding.textIntroduce.text = it.introduce
-                binding.textStudyTime.text = DateHelper.diffFormat(it.studyTime)
+                binding.textStudyTime.text = formatDuration(it.studyTime)
 
                 binding.imageMaster.visibility = if(it.isMaster) View.VISIBLE else View.INVISIBLE
 
@@ -33,6 +34,15 @@ class MemberRankingAdapter : RecyclerView.Adapter<MemberRankingAdapter.MemberRan
                     .into(binding.imageProfile)
             }
         }
+    }
+
+    fun formatDuration(milliseconds: Long): String {
+        val seconds = (milliseconds / 1000).toInt()
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val days = hours / 24
+
+        return "%02d일 %02d시간 %02d분".format(days, hours % 24, minutes % 60)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberRankingViewHolder {

@@ -2,6 +2,7 @@ package com.sgether.api.service
 
 import com.sgether.api.request.study.CreateStudyTimeBody
 import com.sgether.api.response.study.ReadGroupStudyTimeResponse
+import com.sgether.api.response.study.ReadUserStudyTimeResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,5 +24,5 @@ interface StudyService {
 
     @GET("study/")
     suspend fun readUserStudyTime(
-    ): Response<ReadGroupStudyTimeResponse>
+    ): Response<ReadUserStudyTimeResponse>
 }

@@ -1,8 +1,13 @@
 package com.sgether.api.response.study
 
-data class ReadGroupStudyTimeResponse(
+data class ReadUserStudyTimeResponse(
     val message: String,
     val userSelectReseult: List<StudyTime>,
+)
+
+data class ReadGroupStudyTimeResponse(
+    val message: String,
+    val groupSelectReseult: List<StudyTime>,
 )
 
 data class StudyTime(

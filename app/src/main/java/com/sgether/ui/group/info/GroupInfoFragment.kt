@@ -39,7 +39,7 @@ class GroupInfoFragment : Fragment() {
         initViewListeners()
         initViewModelListeners()
 
-        viewModel.loadGroupMember(args.groupModel.id!!)
+        viewModel.loadGroupMemberStudyTime(args.groupModel.id!!)
     }
 
     private fun initViews() {
