@@ -9,6 +9,7 @@ data class GroupModel(
     val master_id: String?,
     val room_name: String?,
     val accommodation: Int?,
+    val explain: String?,
     val room_pwd: String?,
     val pwd_flag: Int?,
     val created_at: String?,

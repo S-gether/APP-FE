@@ -17,10 +17,9 @@ import com.sgether.databinding.FragmentGroupInfoBinding
 import com.sgether.api.ApiClient
 import com.sgether.ui.MainActivity
 import com.sgether.ui.group.room.RoomActivity
-import com.sgether.util.Constants
-import com.sgether.util.JWTHelper
-import com.sgether.util.toastOnMain
+import com.sgether.util.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -30,10 +29,8 @@ class GroupInfoFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val args: GroupInfoFragmentArgs by navArgs()
-
     private val viewModel: GroupInfoViewModel by viewModels()
-
+    private val args: GroupInfoFragmentArgs by navArgs()
     private val memberRankingAdapter by lazy { MemberRankingAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,17 +42,22 @@ class GroupInfoFragment : Fragment() {
 
     private fun initViews() {
         binding.rvMemberRanking.adapter = memberRankingAdapter
+
         args.groupModel.run {
             binding.textGroupName.text = room_name
-            binding.textGroupDescription.text = this.created_at
-            loadGroupProfile(groupId = id!!)
+            binding.textGroupDescription.text = explain
+            lifecycleScope.launch {
+                loadGroupProfile(
+                    groupId = id!!,
+                    token = withContext(Dispatchers.IO) { PreferenceManager.readStringData(requireContext(), Constants.KEY_TOKEN)?:"" },
+                    view = binding.imageGroupProfile
+                )
+            }
         }
-
     }
 
     private fun initViewListeners() {
         binding.btnStartConference.setOnClickListener {
-
             startActivity(Intent(requireContext(), RoomActivity::class.java).apply {
                 val payload: JWTHelper.JwtPayload? = activity?.intent?.getParcelableExtra(Constants.JWT_PAYLOAD)
                 putExtra(Constants.KEY_GROUP_MODEL, args.groupModel)
@@ -85,25 +87,6 @@ class GroupInfoFragment : Fragment() {
 
             } else {
 
-            }
-        }
-    }
-
-
-    private fun loadGroupProfile(groupId: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val res = ApiClient.uploadService.readGroupProfile(groupId)
-                if(res.isSuccessful) {
-                    withContext(Dispatchers.Main) {
-                        Glide.with(binding.root)
-                            .load(res.body()?.bytes())
-                            .circleCrop()
-                            .into(binding.imageGroupProfile)
-                    }
-                }
-            } catch (e: IOException) {
-                context?.toastOnMain(e.message)
             }
         }
     }

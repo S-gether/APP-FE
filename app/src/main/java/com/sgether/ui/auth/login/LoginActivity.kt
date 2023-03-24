@@ -18,10 +18,8 @@ import com.sgether.api.request.auth.SignInBody
 import com.sgether.ui.MainActivity
 import com.sgether.ui.auth.register.RegisterActivity
 import com.sgether.ui.auth.find.FindActivity
-import com.sgether.util.Constants
-import com.sgether.util.JWTHelper
-import com.sgether.util.PermissionHelper
-import com.sgether.util.dataStore
+import com.sgether.util.*
+import com.sgether.util.PreferenceManager.writeStringData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -142,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private suspend fun checkToken(): String? { // TODO: 토큰이 유효한지도 확인해야 함
-        return readStringData(Constants.KEY_TOKEN)
+        return PreferenceManager.readStringData(this, Constants.KEY_TOKEN)
     }
 
     private fun checkInput(): Boolean {
@@ -182,20 +180,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private suspend fun updateToken(token: String?) {
-        writeStringData(Constants.KEY_TOKEN, token ?: "")
-    }
-
-    private suspend fun readStringData(key: String): String? {
-        val dataStoreKey = stringPreferencesKey(key)
-        val preferences = dataStore.data.first()
-        return preferences[dataStoreKey]
-    }
-
-    private suspend fun writeStringData(key: String, value: String) {
-        val dataStoreKey = stringPreferencesKey(key)
-        dataStore.edit { settings ->
-            settings[dataStoreKey] = value
-        }
+        writeStringData(this, Constants.KEY_TOKEN, token ?: "")
     }
 
 }

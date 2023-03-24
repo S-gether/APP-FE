@@ -1,7 +1,9 @@
 package com.sgether.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,6 +18,7 @@ import com.sgether.ui.group.mygroup.MyGroupFragmentDirections
 import com.sgether.ui.group.search.SearchFragment
 import com.sgether.ui.group.search.SearchFragmentDirections
 import com.sgether.util.Constants
+import com.sgether.util.loadGroupProfile
 import kotlinx.coroutines.CoroutineScope
 
 class GroupAdapter(
@@ -38,9 +41,9 @@ class GroupAdapter(
 
         fun bind(group: GroupModel) {
             binding.textGroupName.text = group.room_name
-            binding.textGroupInfo.text = group.id
+            binding.textGroupInfo.text = group.explain
             binding.imageGroupProfile.setImageBitmap(null)
-            loadGroupProfile(group.id!!, token)
+            loadGroupProfile(group.id!!, token, binding.imageGroupProfile)
 
             binding.root.setOnClickListener {
                 var action: NavDirections? = null
@@ -60,19 +63,7 @@ class GroupAdapter(
             }
         }
 
-        private fun loadGroupProfile(groupId: String, token: String) {
 
-            val url = GlideUrl(
-                "${Constants.serverUrl}upload/group/${groupId}", LazyHeaders.Builder()
-                    .addHeader(Constants.KEY_AUTHORIZATION, "Bearer $token")
-                    .build()
-            )
-
-            Glide.with(binding.root)
-                .load(url)
-                .circleCrop()
-                .into(binding.imageGroupProfile)
-        }
     }
 
     inner class SwipeToDeleteCallback : ItemTouchHelper.Callback() {

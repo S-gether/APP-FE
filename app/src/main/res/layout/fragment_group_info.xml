@@ -12,10 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_base"
-        app:tint="@color/sgether_purple"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_back" />
+        app:srcCompat="@drawable/ic_arrow_back"
+        app:tint="@color/sgether_purple" />
 
     <ImageView
         android:id="@+id/imageGroupProfile"
@@ -31,13 +31,16 @@
         android:id="@+id/textGroupName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_base"
         android:layout_marginTop="16dp"
+        android:maxLines="1"
         android:text="1학년 4반"
         android:textColor="@color/text_primary"
         android:textSize="40sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/imageGroupProfile"
-        app:layout_constraintStart_toStartOf="@id/imageGroupProfile"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageGroupProfile" />
 
     <TextView
@@ -47,6 +50,8 @@
         android:layout_marginHorizontal="@dimen/margin_base"
         android:layout_marginTop="8dp"
         android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:text="11월 26일 1차 시험 대비 공무원 준비반입니다!"
         android:textColor="@color/text_primary"
         android:textStyle="bold"
@@ -57,14 +62,14 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_join"
         style="@style/button"
-        tools:enabled="false"
         android:layout_marginStart="@dimen/margin_base"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:text="스터디 룸 참여하기"
         app:layout_constraintEnd_toStartOf="@id/btn_start_conference"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textGroupDescription" />
+        app:layout_constraintTop_toBottomOf="@id/textGroupDescription"
+        tools:enabled="false" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_start_conference"
@@ -94,8 +99,8 @@
         android:id="@+id/rvMemberRanking"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/margin_base"
         android:layout_marginHorizontal="@dimen/margin_base"
+        android:layout_marginVertical="@dimen/margin_base"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"

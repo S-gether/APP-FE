@@ -8,7 +8,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.PREF_AUTH)
 suspend fun Context.toastOnMain(msg: String?) = withContext(Dispatchers.Main) {
     Toast.makeText(this@toastOnMain, msg, Toast.LENGTH_SHORT).show()
 }
