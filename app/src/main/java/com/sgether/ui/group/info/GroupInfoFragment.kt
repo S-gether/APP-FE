@@ -38,6 +38,8 @@ class GroupInfoFragment : Fragment() {
         initViews()
         initViewListeners()
         initViewModelListeners()
+
+        viewModel.loadGroupMember(args.groupModel.id!!)
     }
 
     private fun initViews() {
@@ -54,6 +56,7 @@ class GroupInfoFragment : Fragment() {
                 )
             }
         }
+        viewModel.groupModel = args.groupModel
     }
 
     private fun initViewListeners() {

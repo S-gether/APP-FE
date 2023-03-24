@@ -4,5 +4,5 @@ import com.sgether.model.User
 
 data class ReadGroupUserResponse(
     var message: String,
-    var userInfo: List<User>
+    var usersInfo: List<User>
 )
