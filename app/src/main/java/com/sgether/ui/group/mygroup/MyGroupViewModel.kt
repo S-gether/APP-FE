@@ -3,20 +3,58 @@ package com.sgether.ui.group.mygroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sgether.api.ApiClient
+import com.sgether.model.GroupIdModel
 import com.sgether.model.GroupModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import java.io.IOException
 
 class MyGroupViewModel : ViewModel() {
-    private val _groupList: List<GroupModel> = listOf(
-        // TODO: API 요청 실패 대비용 테스트 그룹
-        GroupModel("group_id", "master_id", "sample_room", 5, "sample_pwd", 0, "created_at", "updated_at")
-    )
 
+    private var _groupList: List<GroupModel> = listOf()
     private val _groupLiveData = MutableLiveData(_groupList)
-
     val groupLiveData: LiveData<List<GroupModel>>
         get() = _groupLiveData
 
-    fun setGroupList(list: List<GroupModel>) {
-        _groupLiveData.postValue(list)
+    fun loadMyGroupList() = viewModelScope.launch(Dispatchers.IO) {
+        val groupIdList = async { loadMyGroupIdList() }
+        val groupList = async { loadGroupList() }
+
+        _groupList = groupList.await()?.filter { groupModel ->
+            groupIdList.await()
+                ?.map { it.group_id }
+                ?.contains(groupModel.id)
+                ?:false
+        }?: listOf()
+
+        _groupLiveData.postValue(_groupList)
+    }
+
+    private suspend fun loadGroupList(): List<GroupModel>?  {
+        try {
+            val res = ApiClient.groupService.readGroup()
+            val body = res.body()
+            if(res.isSuccessful) {
+                return body?.groupsSelectReseult
+            }
+        } catch(e: IOException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    private suspend fun loadMyGroupIdList(): List<GroupIdModel>?  {
+        try {
+            val res = ApiClient.joinGroupService.loadMyGroupIdList()
+            if(res.isSuccessful) {
+                return res.body()?.groupsSelectReseult!!
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
     }
 }

@@ -14,3 +14,7 @@ data class GroupModel(
     val created_at: String?,
     val updated_at: String?,
 ) : Parcelable
+
+data class GroupIdModel(
+    val group_id: String?,
+)
