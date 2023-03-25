@@ -8,6 +8,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Constants.PREF_AUTH)
 
@@ -15,6 +17,19 @@ fun loadGroupProfile(groupId: String, token: String, view: ImageView) {
 
     val url = GlideUrl(
         "${Constants.serverUrl}upload/group/${groupId}", LazyHeaders.Builder()
+            .addHeader(Constants.KEY_AUTHORIZATION, "Bearer $token")
+            .build()
+    )
+
+    Glide.with(view)
+        .load(url)
+        .circleCrop()
+        .into(view)
+}
+fun loadUserProfile(userId: String, token: String, view: ImageView) {
+
+    val url = GlideUrl(
+        "${Constants.serverUrl}upload/user/${userId}", LazyHeaders.Builder()
             .addHeader(Constants.KEY_AUTHORIZATION, "Bearer $token")
             .build()
     )

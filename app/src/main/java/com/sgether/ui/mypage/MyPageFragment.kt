@@ -1,20 +1,22 @@
 package com.sgether.ui.mypage
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.sgether.databinding.FragmentMyPageBinding
 import com.sgether.ui.auth.login.LoginActivity
-import com.sgether.util.Constants
-import com.sgether.util.JWTHelper
-import com.sgether.util.dataStore
+import com.sgether.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,6 +26,24 @@ class MyPageFragment : Fragment() {
     private var _binding: FragmentMyPageBinding? = null
     private val binding
         get() = _binding!!
+
+    private val viewModel: MyPageViewModel by viewModels()
+
+    private var userImageUri: Uri? = null
+    private val userImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()){
+        if(it != null) {
+            userImageUri = it
+
+            Glide.with(this)
+                .asBitmap()
+                .load(it)
+                .centerCrop()
+                .circleCrop()
+                .into(binding.imageUserProfile)
+
+            viewModel.uploadImage(it)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,6 +76,9 @@ class MyPageFragment : Fragment() {
             }
         }
         */
+        binding.imageUserProfile.setOnClickListener {
+            userImageLauncher.launch("image/*")
+        }
 
         binding.btnLogout.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -65,6 +88,10 @@ class MyPageFragment : Fragment() {
                     activity?.finish()
                 }
             }
+        }
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            loadUserProfile(payload?.id!!, withContext(Dispatchers.IO) {PreferenceManager.readStringData(requireContext(), Constants.KEY_TOKEN)!! }, binding.imageUserProfile)
         }
     }
 

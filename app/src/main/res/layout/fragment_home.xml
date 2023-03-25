@@ -43,63 +43,63 @@
 
     <LinearLayout
         android:id="@+id/text_day"
-        android:layout_marginTop="16dp"
         android:layout_width="0dp"
-        android:padding="8dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_month">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="일"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="일" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="월"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="월" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="화"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="화" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="수"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="수" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="목"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="목" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="금"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="금" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="토"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="토" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -116,6 +116,61 @@
         tools:itemCount="40"
         tools:listitem="@layout/item_date" />
 
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_gravity="center_vertical"
+            android:background="@color/date_q1"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <TextView
+            android:text="1~2H"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/date_q2"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <TextView
+            android:text="2~3H"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/date_q3"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <TextView
+            android:text="3~4H"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/date_q4"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <TextView
+            android:text="4H~"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/linearlayout"
@@ -123,9 +178,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:context=".ui.auth.find.FindIdFragment">
 
         <TextView
@@ -184,16 +239,13 @@
 
         <ProgressBar
             android:id="@+id/focusProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:layout_marginBottom="20dp"
-            android:progressDrawable="@drawable/progress_bar_color"
-            android:progress="1"
+            android:layout_marginBottom="8dp"
             android:max="100"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
-
-
-
+            android:progress="1"
+            android:progressDrawable="@drawable/progress_bar_color" />
 
 
     </LinearLayout>

@@ -15,6 +15,12 @@ interface UploadService {
         @Part upload: MultipartBody.Part?
     ): Response<UploadGroupResponse>
 
+    @Multipart
+    @POST("/upload/user")
+    suspend fun uploadUserProfile(
+        @Part upload: MultipartBody.Part?
+    ): Response<UploadGroupResponse>
+
 
     @GET("/upload/group/{groupId}")
     suspend fun readGroupProfile(

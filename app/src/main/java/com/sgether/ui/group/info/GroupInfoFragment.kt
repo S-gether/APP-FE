@@ -33,24 +33,32 @@ class GroupInfoFragment : Fragment() {
     get() = _binding!!
     var payload: JWTHelper.JwtPayload? = null
 
+    var token: String? = null
+
     private val viewModel: GroupInfoViewModel by viewModels()
     private val args: GroupInfoFragmentArgs by navArgs()
-    private val memberRankingAdapter by lazy { MemberRankingAdapter() }
+    private val memberRankingAdapter by lazy { MemberRankingAdapter(token!!, payload?.id!!) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
-        initViewListeners()
-        initViewModelListeners()
 
         // 유저 정보 토큰으로 불러오기
-         payload =
+        payload =
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
                 activity?.intent?.getParcelableExtra(Constants.JWT_PAYLOAD)
             else
                 activity?.intent?.getParcelableExtra(Constants.JWT_PAYLOAD, JWTHelper.JwtPayload::class.java)
 
-        viewModel.loadGroupMemberStudyTime(args.groupModel.id!!)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            token = PreferenceManager.readStringData(requireContext(), Constants.KEY_TOKEN)
+            withContext(Dispatchers.Main) {
+                initViews()
+                initViewListeners()
+                initViewModelListeners()
+                viewModel.loadGroupMemberStudyTime(args.groupModel.id!!)
+            }
+        }
     }
 
     private fun initViews() {
