@@ -45,7 +45,7 @@ class RoomActivity : AppCompatActivity() {
     }
 
     private val module by lazy {
-        LiteModuleLoader.load(assetFilePath(applicationContext, "model.ptl"))
+        LiteModuleLoader.load(assetFilePath(applicationContext, "yolov5s_torchscript.ptl"))
     }
 
     private fun assetFilePath(context: Context, assetName: String): String? {

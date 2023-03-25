@@ -28,5 +28,8 @@ object Constants {
 
     const val JWT_PAYLOAD = "jwt_payload"
 
+    const val KEY_USER_ID = "key_user_id"
+    const val KEY_USER_NAME = "key_user_name"
+
     const val KEY_GROUP_MODEL = "key_group_model"
 }

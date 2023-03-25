@@ -57,6 +57,7 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
 
                         val outputTensor = module.forward(IValue.from(inputTensor)).toTensor()
                         val score = outputTensor.dataAsFloatArray
+                        Log.d(null, "onBitmap: ${score.joinToString(" ")}")
                         var max = -1f
                         var maxIndex = 0
                         for (i in score.indices) {
@@ -64,30 +65,6 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                                 max = score[i]
                                 maxIndex = i
                             }
-                        }
-                        val result = when(maxIndex) {
-                            0 -> "기쁨"
-                            1 -> "당황"
-                            2 -> "분노"
-                            3 -> "불안"
-                            4 -> "상처"
-                            5 -> "슬픔"
-                            6 -> "중립"
-                            else -> "NULL"
-                        }
-
-                        if(result == "중립") {
-                            //Log.d("PYTORCH", "onBitmap: ${System.currentTimeMillis()} 집중")
-                        } else {
-                            //Log.d("PYTORCH", "onBitmap: ${System.currentTimeMillis()} 집중X")
-
-                        }
-                        CoroutineScope(Dispatchers.Main).launch {
-                            //Glide.with(binding.root)
-                            //    .load(bitmap)
-                            //    .into(binding.imageCapture)
-                            //TODO 이미지 캡쳐한 것 모델에 넣기
-
                         }
                     }
                 }

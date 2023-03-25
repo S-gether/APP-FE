@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.sgether.databinding.FragmentMyPageBinding
 import com.sgether.ui.auth.login.LoginActivity
 import com.sgether.util.*
+import com.sgether.util.PreferenceManager.readStringData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,16 +49,9 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 토큰에서 정보를 가져옴
-        val payload: JWTHelper.JwtPayload? =
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
-                activity?.intent?.getParcelableExtra(Constants.JWT_PAYLOAD)
-            else
-                activity?.intent?.getParcelableExtra(Constants.JWT_PAYLOAD, JWTHelper.JwtPayload::class.java)
-
-        payload?.run {
-            binding.textUserName.text = name
-            binding.textUserEmail.text = id
+        lifecycleScope.launch {
+            binding.textUserName.text = PreferenceManager.readStringData(requireContext(), Constants.KEY_USER_NAME)
+            binding.textUserId.text = PreferenceManager.readStringData(requireContext(), Constants.KEY_USER_ID)
         }
         /* TODO: API 로 가져오는 코드 (설명 추가 요청해야 함)
         lifecycleScope.launch(Dispatchers.IO) {
@@ -91,7 +85,7 @@ class MyPageFragment : Fragment() {
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
-            loadUserProfile(payload?.id?:"", withContext(Dispatchers.IO) {PreferenceManager.readStringData(requireContext(), Constants.KEY_TOKEN)?:"" }, binding.imageUserProfile)
+            loadUserProfile(withContext(Dispatchers.IO) {PreferenceManager.readStringData(requireContext(), Constants.KEY_USER_ID)?:""}, withContext(Dispatchers.IO) {PreferenceManager.readStringData(requireContext(), Constants.KEY_TOKEN)?:"" }, binding.imageUserProfile)
         }
     }
 

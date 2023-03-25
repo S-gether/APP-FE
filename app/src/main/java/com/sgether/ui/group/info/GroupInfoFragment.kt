@@ -33,7 +33,6 @@ class GroupInfoFragment : Fragment() {
     private var _binding: FragmentGroupInfoBinding? = null
     private val binding
     get() = _binding!!
-    var payload: JWTHelper.JwtPayload? = null
 
     var token: String? = null
 
@@ -41,21 +40,16 @@ class GroupInfoFragment : Fragment() {
     private val args: GroupInfoFragmentArgs by navArgs()
     private lateinit var memberRankingAdapter: MemberRankingAdapter
 
+
+    private var userId: String? = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 유저 정보 토큰으로 불러오기
-        payload =
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
-                activity?.intent?.getParcelableExtra(Constants.JWT_PAYLOAD)
-            else
-                activity?.intent?.getParcelableExtra(Constants.JWT_PAYLOAD, JWTHelper.JwtPayload::class.java)
-
-
         lifecycleScope.launch(Dispatchers.IO) {
             token = PreferenceManager.readStringData(requireContext(), Constants.KEY_TOKEN)
-            Log.d(null, "onViewCreated: $token ${payload?.id}")
-            memberRankingAdapter = MemberRankingAdapter(token!!, payload?.id!!)
+            userId = PreferenceManager.readStringData(requireContext(), Constants.KEY_USER_ID)
+            Log.d(null, "onViewCreated: $userId $token")
+            memberRankingAdapter = MemberRankingAdapter(token!!, userId!!)
             withContext(Dispatchers.Main) {
                 initViews()
                 initViewListeners()
@@ -71,7 +65,7 @@ class GroupInfoFragment : Fragment() {
         args.groupModel.run {
             binding.textGroupName.text = room_name
             binding.textGroupDescription.text = explain
-            binding.btnDelete.visibility = if(master_id == payload?.id) View.VISIBLE else View.GONE
+            binding.btnDelete.visibility = if(master_id == userId) View.VISIBLE else View.GONE
             lifecycleScope.launch {
                 loadGroupProfile(
                     groupId = id!!,
@@ -121,7 +115,7 @@ class GroupInfoFragment : Fragment() {
     private fun initViewModelListeners() {
         viewModel.memberRankingListLiveData.observe(viewLifecycleOwner) { memberRankingList ->
             if(memberRankingList != null) {
-                val IsUserJoinedGroup = memberRankingList.map { it.user_id }.contains(payload?.id)
+                val IsUserJoinedGroup = memberRankingList.map { it.user_id }.contains(userId!!)
 
                 binding.btnStartConference.isEnabled = IsUserJoinedGroup
                 binding.btnNotice.isEnabled = IsUserJoinedGroup

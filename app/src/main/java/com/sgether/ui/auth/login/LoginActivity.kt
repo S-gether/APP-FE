@@ -158,6 +158,11 @@ class LoginActivity : AppCompatActivity() {
                 if(res.isSuccessful) {
                     val body = res.body() // TODO: 로직 추가
                     updateToken(body?.token)
+                    ApiClient.enableToken(body?.token)
+
+                    savePayload(body?.token!!)
+
+
                     Log.d("text", "startLogin: ${body?.token}")
                     withContext(Dispatchers.Main) {
                         startActivity(Intent(applicationContext, MainActivity::class.java).apply {
@@ -177,6 +182,13 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private suspend fun savePayload(token: String) {
+        PreferenceManager.writeStringData(applicationContext, Constants.KEY_USER_ID, JWTHelper.parseJwtToken(token).payload.id)
+        PreferenceManager.writeStringData(applicationContext, Constants.KEY_USER_NAME, JWTHelper.parseJwtToken(token).payload.name)
+        Log.d(null, "savePayload: userId ${JWTHelper.parseJwtToken(token).payload.id}")
+        Log.d(null, "savePayload: userName ${JWTHelper.parseJwtToken(token).payload.name}")
     }
 
     private suspend fun updateToken(token: String?) {
