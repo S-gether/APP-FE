@@ -95,7 +95,7 @@ class GroupInfoFragment : Fragment() {
 
         binding.btnJoin.setOnClickListener {
             if (binding.btnJoin.text == "스터디 룸 가입하기") {
-                // 그룹에 참여하기
+                // 그룹에 가입하기
                 viewModel.joinGroup(args.groupModel.id!!)
             } else {
                 // 그룹에 탈퇴하기
