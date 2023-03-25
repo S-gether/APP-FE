@@ -15,7 +15,7 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
 
     private val socket by lazy {
         try {
-            IO.socket("http://192.168.137.1:4000") // TODO: Set Address
+            IO.socket("http://13.125.195.128:8080/") // TODO: Set Address
             //IO.socket("https://every-squids-switch-118-221-204-105.loca.lt") // TODO: Set Address
         } catch (e: URISyntaxException){
             null

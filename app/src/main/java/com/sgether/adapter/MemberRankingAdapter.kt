@@ -32,7 +32,7 @@ class MemberRankingAdapter(var token: String, var userId: String) : RecyclerView
                 binding.textStudyTime.text = formatDuration(it.studyTime)
 
                 binding.imageMaster.visibility = if(it.isMaster) View.VISIBLE else View.INVISIBLE
-                loadUserProfile(userId, token, binding.imageProfile)
+                loadUserProfile(it.user_id, token, binding.imageProfile)
             }
         }
     }

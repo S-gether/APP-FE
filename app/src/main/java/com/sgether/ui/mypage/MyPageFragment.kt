@@ -91,7 +91,7 @@ class MyPageFragment : Fragment() {
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
-            loadUserProfile(payload?.id!!, withContext(Dispatchers.IO) {PreferenceManager.readStringData(requireContext(), Constants.KEY_TOKEN)!! }, binding.imageUserProfile)
+            loadUserProfile(payload?.id?:"", withContext(Dispatchers.IO) {PreferenceManager.readStringData(requireContext(), Constants.KEY_TOKEN)?:"" }, binding.imageUserProfile)
         }
     }
 
