@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
@@ -70,6 +71,7 @@ class GroupInfoFragment : Fragment() {
         args.groupModel.run {
             binding.textGroupName.text = room_name
             binding.textGroupDescription.text = explain
+            binding.btnDelete.visibility = if(master_id == payload?.id) View.VISIBLE else View.GONE
             lifecycleScope.launch {
                 loadGroupProfile(
                     groupId = id!!,
@@ -91,9 +93,17 @@ class GroupInfoFragment : Fragment() {
             })
         }
 
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         binding.btnNotice.setOnClickListener {
             // 공지사항 이동
             findNavController().navigate(R.id.action_groupInfoFragment_to_noticeFragment)
+        }
+
+        binding.btnDelete.setOnClickListener {
+            viewModel.deleteGroup(args.groupModel.id?:"")
         }
 
         binding.btnJoin.setOnClickListener {
@@ -109,14 +119,30 @@ class GroupInfoFragment : Fragment() {
 
     // ViewModel의 LiveData의 값 변화를 관찰
     private fun initViewModelListeners() {
-        viewModel.memberRankingListLiveData.observe(viewLifecycleOwner) {
-            val IsUserJoinedGroup = it.map { it.user_id }.contains(payload?.id)
-            if(IsUserJoinedGroup){
-                binding.btnJoin.text = "스터디 룸 탈퇴하기"
-            } else {
-                binding.btnJoin.text = "스터디 룸 가입하기"
+        viewModel.memberRankingListLiveData.observe(viewLifecycleOwner) { memberRankingList ->
+            if(memberRankingList != null) {
+                val IsUserJoinedGroup = memberRankingList.map { it.user_id }.contains(payload?.id)
+
+                binding.btnStartConference.isEnabled = IsUserJoinedGroup
+                binding.btnNotice.isEnabled = IsUserJoinedGroup
+
+                if(IsUserJoinedGroup){
+                    binding.btnJoin.text = "스터디 룸 탈퇴하기"
+                } else {
+                    binding.btnJoin.text = "스터디 룸 가입하기"
+
+                }
+                memberRankingAdapter.list = memberRankingList
             }
-                memberRankingAdapter.list = it
+
+        }
+
+        viewModel.deleteGroupResult.observe(viewLifecycleOwner) {
+            if(it.isSuccessful) {
+                findNavController().popBackStack()
+            } else {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            }
         }
 
         viewModel.joinGroupResult.observe(viewLifecycleOwner) {

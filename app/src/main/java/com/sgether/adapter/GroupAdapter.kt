@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.sgether.R
+import com.sgether.api.ApiClient
 import com.sgether.databinding.ItemGroupBinding
 import com.sgether.model.GroupModel
 import com.sgether.ui.group.mygroup.MyGroupFragment
@@ -20,6 +22,7 @@ import com.sgether.ui.group.search.SearchFragmentDirections
 import com.sgether.util.Constants
 import com.sgether.util.loadGroupProfile
 import kotlinx.coroutines.CoroutineScope
+import java.io.IOException
 
 class GroupAdapter(
     private val scope: CoroutineScope,
@@ -42,7 +45,6 @@ class GroupAdapter(
         fun bind(group: GroupModel) {
             binding.textGroupName.text = group.room_name
             binding.textGroupInfo.text = group.explain
-            binding.imageGroupProfile.setImageBitmap(null)
             loadGroupProfile(group.id!!, token, binding.imageGroupProfile)
 
             binding.root.setOnClickListener {
@@ -60,6 +62,17 @@ class GroupAdapter(
                     }
                 }
                 navController.navigate(action!!)
+            }
+        }
+
+        private suspend fun loadGroupProfile(groupId: String) {
+            try {
+                val res = ApiClient.uploadService.readGroupProfile(groupId)
+                if(res.isSuccessful) {
+                    //res.body()?.
+                }
+            } catch (e: IOException) {
+
             }
         }
 

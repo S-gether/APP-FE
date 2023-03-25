@@ -36,6 +36,11 @@ class SearchFragment : Fragment() {
         initViewModelListeners()
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.loadGroupList()
+    }
+
     private fun initViews() {
         binding.rvGroup.adapter = groupAdapter
     }

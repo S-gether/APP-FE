@@ -13,6 +13,7 @@ import com.sgether.api.ApiClient
 import com.sgether.api.request.group.CreateAndEditGroupBody
 import com.sgether.util.toastOnMain
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -21,6 +22,7 @@ import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.UUID
 
 class AddGroupActivity : AppCompatActivity() {
     private val binding by lazy { ActivityAddGroupBinding.inflate(layoutInflater) }
@@ -87,7 +89,7 @@ class AddGroupActivity : AppCompatActivity() {
 
         binding.btnOk.setOnClickListener {
             if (checkInput()) {
-                lifecycleScope.launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     val groupId = createGroup(
                         binding.inputGroupName.text.toString(),
                         5,
@@ -96,7 +98,12 @@ class AddGroupActivity : AppCompatActivity() {
                     )?.let {groupId ->
                         groupImageUri?.let {
                             // 이미지 업로드 시작
-                            uploadImage(groupId)
+                            val uploadImageTask = async {  uploadImage(groupId) }
+                            val joinGroupTask = async {  joinGroup(groupId) }
+
+                            uploadImageTask.await()
+                            joinGroupTask.await()
+                            finish()
                         }
                     }
                 }
@@ -135,10 +142,10 @@ class AddGroupActivity : AppCompatActivity() {
             }
         }
 
-    private suspend fun uploadImage(groupId: String) = withContext(Dispatchers.IO) {
+    private suspend fun uploadImage(groupId: String): Boolean {
         try {
             val inputStream = contentResolver.openInputStream(groupImageUri!!)
-            val file = File(externalCacheDir, "groupImage.jpg")
+            val file = File(externalCacheDir, "${UUID.randomUUID()}.jpg")
             val outputStream = FileOutputStream(file)
 
             inputStream.use { input ->
@@ -151,13 +158,25 @@ class AddGroupActivity : AppCompatActivity() {
 
             val res = ApiClient.uploadService.uploadGroupProfile(groupId, body)
             if(res.isSuccessful) {
-                toastOnMain(res.message())
+                return true
             } else {
                 toastOnMain("이미지 업로드 실패")
             }
         } catch(e: IOException) {
-            toastOnMain(e.toString())
+            e.printStackTrace()
         }
+        return false
+    }
 
+    suspend fun joinGroup(groupId: String): Boolean {
+        try {
+            val res = ApiClient.joinGroupService.joinGroup(groupId)
+            if(res.isSuccessful) {
+                return true
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return false
     }
 }

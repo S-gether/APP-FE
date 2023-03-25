@@ -16,6 +16,7 @@ import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.UUID
 
 class MyPageViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -24,7 +25,7 @@ class MyPageViewModel(application: Application) : AndroidViewModel(application) 
     fun uploadImage(imageUri: Uri) = viewModelScope.launch(Dispatchers.IO) {
         try {
             val inputStream = applicationContext.contentResolver.openInputStream(imageUri)
-            val file = File(applicationContext.externalCacheDir, "groupImage.jpg")
+            val file = File(applicationContext.externalCacheDir, "${UUID.randomUUID()}.jpg")
             val outputStream = FileOutputStream(file)
 
             inputStream.use { input ->

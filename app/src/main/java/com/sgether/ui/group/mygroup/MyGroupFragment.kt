@@ -30,6 +30,10 @@ class MyGroupFragment : Fragment() {
         initViewListeners()
         initViewModelObservers()
 
+    }
+
+    override fun onStart() {
+        super.onStart()
         viewModel.loadMyGroupList()
     }
 

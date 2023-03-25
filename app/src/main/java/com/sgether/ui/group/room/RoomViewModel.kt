@@ -4,11 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.google.gson.JsonSyntaxException
 import com.sgether.api.ApiClient
 import com.sgether.api.request.study.CreateStudyTimeBody
-import com.sgether.model.LiveDataResult
+import com.sgether.model.ResultModel
 import com.sgether.model.MemberData
 import com.sgether.util.Constants
 import kotlinx.coroutines.CoroutineScope
@@ -46,8 +44,8 @@ class RoomViewModel(application: Application): AndroidViewModel(application) {
         _memberDataListLiveData.postValue(_memberDataList)
     }
 
-    private var _createStudyTimeLiveData: MutableLiveData<LiveDataResult>  = MutableLiveData()
-    val createStudyTimeLiveData: LiveData<LiveDataResult>
+    private var _createStudyTimeLiveData: MutableLiveData<ResultModel>  = MutableLiveData()
+    val createStudyTimeLiveData: LiveData<ResultModel>
         get() {
             return _createStudyTimeLiveData
         }
@@ -56,12 +54,12 @@ class RoomViewModel(application: Application): AndroidViewModel(application) {
         try {
             val res = ApiClient.studyService.createStudyTime(groupId, CreateStudyTimeBody(studyTime, aiCount))
             if(res.isSuccessful) {
-                _createStudyTimeLiveData.postValue(LiveDataResult(true))
+                _createStudyTimeLiveData.postValue(ResultModel(true))
             } else {
-                _createStudyTimeLiveData.postValue(LiveDataResult(false, res.errorBody()?.string()))
+                _createStudyTimeLiveData.postValue(ResultModel(false, res.errorBody()?.string()))
             }
         } catch(e: IOException) {
-            _createStudyTimeLiveData.postValue(LiveDataResult(false, e.message))
+            _createStudyTimeLiveData.postValue(ResultModel(false, e.message))
         } catch (e: Exception) {
             e.printStackTrace()
         }

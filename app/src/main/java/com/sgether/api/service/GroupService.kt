@@ -2,6 +2,7 @@ package com.sgether.api.service
 
 import com.sgether.api.request.group.CreateAndEditGroupBody
 import com.sgether.api.response.group.*
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -26,4 +27,9 @@ interface GroupService {
     suspend fun readGroupUsers(
         @Path("roomId") roomId: String,
     ): Response<ReadGroupUserResponse>
+
+    @DELETE("/group/{roomId}")
+    suspend fun deleteGroup(
+        @Path("roomId") roomId: String,
+    ): Response<ResponseBody>
 }

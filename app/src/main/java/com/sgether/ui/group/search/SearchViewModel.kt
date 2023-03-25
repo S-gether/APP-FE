@@ -17,9 +17,6 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
-    init {
-        loadGroupList()
-    }
 
     // 그룹 목록
     private var _groupList = mutableListOf<GroupModel>()
@@ -42,7 +39,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         setGroupList(_groupList)
     }
 
-    private fun loadGroupList() = viewModelScope.launch(Dispatchers.IO) {
+    fun loadGroupList() = viewModelScope.launch(Dispatchers.IO) {
         try {
             val result = ApiClient.groupService.readGroup()
             if (result.isSuccessful) {
