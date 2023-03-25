@@ -49,7 +49,7 @@ class GroupInfoViewModel : ViewModel() {
                 Log.d(null, "loadGroupMemberStudyTime: $step3")
 
 
-                MemberRanking(user.name, user.introduce, "https://cdn.pixabay.com/photo/2023/03/07/11/58/woman-7835587_1280.jpg",
+                MemberRanking(user.user_id, user.name, user.introduce, "https://cdn.pixabay.com/photo/2023/03/07/11/58/woman-7835587_1280.jpg",
                     step3?:0,
                     groupModel.master_id == user.user_id
                 )
@@ -89,6 +89,21 @@ class GroupInfoViewModel : ViewModel() {
     fun joinGroup(groupId: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
             val res = ApiClient.joinGroupService.joinGroup(groupId)
+            if(res.isSuccessful){
+                // 성공 결과 반환
+                _joinGroupResult.postValue(LiveDataResult(true))
+            } else {
+                // TODO: Api 실패 결과 문서 정보 부족해서 다음에 처리함
+                _joinGroupResult.postValue(LiveDataResult(false))
+            }
+        } catch (e: Exception) {
+            // TODO: 에러 처리
+        }
+    }
+
+    fun dropGroup(groupId: String) = viewModelScope.launch(Dispatchers.IO) {
+        try {
+            val res = ApiClient.joinGroupService.dropGroup(groupId)
             if(res.isSuccessful){
                 // 성공 결과 반환
                 _joinGroupResult.postValue(LiveDataResult(true))

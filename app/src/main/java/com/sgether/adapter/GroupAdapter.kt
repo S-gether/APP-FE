@@ -63,44 +63,6 @@ class GroupAdapter(
             }
         }
 
-
-    }
-
-    inner class SwipeToDeleteCallback : ItemTouchHelper.Callback() {
-
-        override fun getMovementFlags(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder
-        ): Int {
-            val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-            return makeMovementFlags(0, swipeFlags)
-        }
-
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ): Boolean {
-            return false
-        }
-
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val position = viewHolder.adapterPosition
-            val item = list[position]
-
-            // delete the item from the adapter
-            list = list.toMutableList().apply { removeAt(position) }
-
-            // notify the adapter about the removed item
-            notifyItemRemoved(position)
-        }
-    }
-
-    val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback())
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
 

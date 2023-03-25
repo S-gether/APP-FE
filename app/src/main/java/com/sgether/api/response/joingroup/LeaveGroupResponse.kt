@@ -1,6 +1,6 @@
 package com.sgether.api.response.joingroup
 
-data class LeaveGroupResponse(
+data class DropGroupResponse(
     val message: String?,
     val result: String?,
     val error: String?,

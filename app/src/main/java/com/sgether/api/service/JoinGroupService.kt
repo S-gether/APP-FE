@@ -1,7 +1,7 @@
 package com.sgether.api.service
 
+import com.sgether.api.response.joingroup.DropGroupResponse
 import com.sgether.api.response.joingroup.JoinGroupResponse
-import com.sgether.api.response.joingroup.LeaveGroupResponse
 import com.sgether.api.response.joingroup.ReadJoinGroupResponse
 import com.sgether.model.GroupModel
 import retrofit2.Response
@@ -23,7 +23,7 @@ interface JoinGroupService {
 
     // 그룹 탈퇴하기
     @DELETE("/joinGroup/{groupId}")
-    suspend fun leaveGroup(
+    suspend fun dropGroup(
         @Path("groupId") groupId: String,
-    ): Response<LeaveGroupResponse>
+    ): Response<DropGroupResponse>
 }
