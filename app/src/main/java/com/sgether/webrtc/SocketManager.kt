@@ -15,7 +15,7 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
 
     private val socket by lazy {
         try {
-            IO.socket("http://192.168.137.1:4000") // TODO: Set Address
+            IO.socket("https://neat-corners-marry-14-38-13-95.loca.lt/") // TODO: Set Address
             //IO.socket("https://every-squids-switch-118-221-204-105.loca.lt") // TODO: Set Address
         } catch (e: URISyntaxException){
             null
@@ -43,6 +43,7 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
             .put("type", sdp?.type)
             .put("sdp", sdp?.description)
         socket?.emit("offer", data, socketId, nickName)
+        Log.d(null, "sendOffer: ")
     }
 
     fun sendAnswer(sdp: SessionDescription?, socketId: String) {
@@ -50,6 +51,7 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
             .put("type", sdp?.type)
             .put("sdp", sdp?.description)
         socket?.emit("answer", data, socketId)
+        Log.d(null, "sendAnswer: ")
     }
 
     fun sendIce(iceCandidate: IceCandidate?, remoteSocketId: String){
@@ -59,6 +61,7 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
             .put("sdpMLineIndex", iceCandidate?.sdpMLineIndex)
 
         socket?.emit("ice", data, remoteSocketId);
+        Log.d(null, "sendIce: ")
     }
 
     fun disconnect(){

@@ -208,7 +208,7 @@ class RoomActivity : AppCompatActivity() {
         val sdp = if (ice.has("sdp"))
             ice.get("sdp").toString()
         else ice.get("candidate").toString()
-
+        Log.d(null, "onIceCandidate: ")
         if (ice.has("candidate") || ice.has("sdp")) {
             val temp = IceCandidate(
                 ice.get("sdpMid").toString(),

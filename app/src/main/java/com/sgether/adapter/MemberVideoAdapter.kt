@@ -77,9 +77,9 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                         }
 
                         if(result == "중립") {
-                            Log.d("PYTORCH", "onBitmap: ${System.currentTimeMillis()} 집중")
+                            //Log.d("PYTORCH", "onBitmap: ${System.currentTimeMillis()} 집중")
                         } else {
-                            Log.d("PYTORCH", "onBitmap: ${System.currentTimeMillis()} 집중X")
+                            //Log.d("PYTORCH", "onBitmap: ${System.currentTimeMillis()} 집중X")
 
                         }
                         CoroutineScope(Dispatchers.Main).launch {
