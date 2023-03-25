@@ -99,6 +99,7 @@ class GroupInfoViewModel : ViewModel() {
         } catch (e: Exception) {
             // TODO: 에러 처리
         }
+        loadGroupMemberStudyTime(groupModel.id!!)
     }
 
     fun dropGroup(groupId: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -107,6 +108,7 @@ class GroupInfoViewModel : ViewModel() {
             if(res.isSuccessful){
                 // 성공 결과 반환
                 _joinGroupResult.postValue(LiveDataResult(true))
+
             } else {
                 // TODO: Api 실패 결과 문서 정보 부족해서 다음에 처리함
                 _joinGroupResult.postValue(LiveDataResult(false))
@@ -114,5 +116,6 @@ class GroupInfoViewModel : ViewModel() {
         } catch (e: Exception) {
             // TODO: 에러 처리
         }
+        loadGroupMemberStudyTime(groupModel.id!!)
     }
 }

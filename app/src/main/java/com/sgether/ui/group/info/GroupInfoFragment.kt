@@ -100,7 +100,6 @@ class GroupInfoFragment : Fragment() {
             } else {
                 // 그룹에 탈퇴하기
                 viewModel.dropGroup(args.groupModel.id!!)
-                binding.btnJoin.text = "스터디 룸 가입하기"
             }
         }
     }
@@ -108,10 +107,11 @@ class GroupInfoFragment : Fragment() {
     // ViewModel의 LiveData의 값 변화를 관찰
     private fun initViewModelListeners() {
         viewModel.memberRankingListLiveData.observe(viewLifecycleOwner) {
-            //유저가 해당 그룹에 가입되어 있는지 확인
             val IsUserJoinedGroup = it.map { it.user_id }.contains(payload?.id)
             if(IsUserJoinedGroup){
                 binding.btnJoin.text = "스터디 룸 탈퇴하기"
+            } else {
+                binding.btnJoin.text = "스터디 룸 가입하기"
             }
                 memberRankingAdapter.list = it
         }
