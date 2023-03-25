@@ -85,11 +85,9 @@ class GroupInfoViewModel : ViewModel() {
                 // 성공 결과 반환
                 _joinGroupResult.postValue(ResultModel(true))
             } else {
-                // TODO: Api 실패 결과 문서 정보 부족해서 다음에 처리함
                 _joinGroupResult.postValue(ResultModel(false))
             }
         } catch (e: Exception) {
-            // TODO: 에러 처리
         }
         loadGroupMemberStudyTime(groupModel.id!!)
     }
@@ -102,11 +100,9 @@ class GroupInfoViewModel : ViewModel() {
                 _joinGroupResult.postValue(ResultModel(true))
 
             } else {
-                // TODO: Api 실패 결과 문서 정보 부족해서 다음에 처리함
                 _joinGroupResult.postValue(ResultModel(false))
             }
         } catch (e: Exception) {
-            // TODO: 에러 처리
         }
         loadGroupMemberStudyTime(groupModel.id!!)
     }
