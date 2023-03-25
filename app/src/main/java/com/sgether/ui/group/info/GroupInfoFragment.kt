@@ -3,6 +3,7 @@ package com.sgether.ui.group.info
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +38,7 @@ class GroupInfoFragment : Fragment() {
 
     private val viewModel: GroupInfoViewModel by viewModels()
     private val args: GroupInfoFragmentArgs by navArgs()
-    private val memberRankingAdapter by lazy { MemberRankingAdapter(token!!, payload?.id!!) }
+    private lateinit var memberRankingAdapter: MemberRankingAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,6 +53,8 @@ class GroupInfoFragment : Fragment() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             token = PreferenceManager.readStringData(requireContext(), Constants.KEY_TOKEN)
+            Log.d(null, "onViewCreated: $token ${payload?.id}")
+            memberRankingAdapter = MemberRankingAdapter(token!!, payload?.id!!)
             withContext(Dispatchers.Main) {
                 initViews()
                 initViewListeners()
