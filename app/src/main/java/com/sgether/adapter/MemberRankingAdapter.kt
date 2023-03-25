@@ -30,7 +30,6 @@ class MemberRankingAdapter(var token: String, var userId: String) : RecyclerView
                 binding.textName.text = it.name
                 binding.textIntroduce.text = it.introduce
                 binding.textStudyTime.text = formatDuration(it.studyTime)
-
                 binding.imageMaster.visibility = if(it.isMaster) View.VISIBLE else View.INVISIBLE
                 loadUserProfile(it.user_id, token, binding.imageProfile)
             }

@@ -28,7 +28,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/imageGroupProfile"
         app:layout_constraintTop_toTopOf="@id/imageGroupProfile"
-        tools:text="1학년 4반" />
+        tools:text="" />
 
     <TextView
         android:id="@+id/textGroupInfo"
@@ -40,6 +40,6 @@
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/textGroupName"
         app:layout_constraintTop_toBottomOf="@id/textGroupName"
-        tools:text="최근 학습 참여 경과시간 : 1일 전" />
+        tools:text="" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
