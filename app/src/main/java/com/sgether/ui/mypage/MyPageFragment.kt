@@ -53,23 +53,6 @@ class MyPageFragment : Fragment() {
             binding.textUserName.text = PreferenceManager.readStringData(requireContext(), Constants.KEY_USER_NAME)
             binding.textUserId.text = PreferenceManager.readStringData(requireContext(), Constants.KEY_USER_ID)
         }
-        /* TODO: API 로 가져오는 코드 (설명 추가 요청해야 함)
-        lifecycleScope.launch(Dispatchers.IO) {
-            val res = RetrofitHelper.userService.readUser() // 유저 정보에 대한 요청을 전송
-            if (res.isSuccessful) {
-                val first = res.body()?.userSelectReseult?.get(0) // 첫 번째 유저에 대한 정보를 받아옴
-                withContext(Dispatchers.Main) {
-                    // View 와 연결
-                    binding.textUserName.text = first?.user_id
-                    binding.textUserEmail.text = first?.email
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, res.errorBody()?.string(), Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-        */
         binding.imageUserProfile.setOnClickListener {
             userImageLauncher.launch("image/*")
         }

@@ -139,7 +139,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun checkToken(): String? { // TODO: 토큰이 유효한지도 확인해야 함
+    private suspend fun checkToken(): String? {
         return PreferenceManager.readStringData(this, Constants.KEY_TOKEN)
     }
 
@@ -156,7 +156,7 @@ class LoginActivity : AppCompatActivity() {
                 ApiClient.disableToken()
                 val res = ApiClient.authService.signIn(SignInBody(id, password))
                 if(res.isSuccessful) {
-                    val body = res.body() // TODO: 로직 추가
+                    val body = res.body()
                     updateToken(body?.token)
                     ApiClient.enableToken(body?.token)
 
@@ -172,7 +172,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 } else {
                     withContext(Dispatchers.Main) {
-                        val body = res.errorBody() // TODO: 로직 추가
+                        val body = res.errorBody()
                         Toast.makeText(this@LoginActivity, body?.string(), Toast.LENGTH_SHORT).show()
                     }
                 }
