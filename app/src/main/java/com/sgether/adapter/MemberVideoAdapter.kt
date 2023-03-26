@@ -1,34 +1,29 @@
 package com.sgether.adapter
 
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.sgether.databinding.ItemMemberVideoBinding
 import com.sgether.model.MemberData
-import com.sgether.webrtc.SocketManager
 import com.sgether.util.Constants
 import com.sgether.webrtc.MyPeerManager
+import com.sgether.webrtc.SocketManager
 import com.sgether.webrtc.observer.AppSdpObserver
 import com.sgether.webrtc.observer.PeerConnectionObserver
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.pytorch.IValue
 import org.pytorch.Module
 import org.pytorch.torchvision.TensorImageUtils
-import org.webrtc.EglRenderer
 import org.webrtc.IceCandidate
 import org.webrtc.MediaStream
 import org.webrtc.PeerConnection
 import org.webrtc.SessionDescription
 import java.io.ByteArrayOutputStream
 import kotlin.concurrent.timer
+
 
 class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManager, var socketManager: SocketManager, var module: Module) : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVideHolder>(){
 
@@ -53,19 +48,50 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
 
                 val listener = object: BitmapListener {
                     override fun onBitmap(bitmap: Bitmap) {
-                        val inputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap, TensorImageUtils.TORCHVISION_NORM_MEAN_RGB, TensorImageUtils.TORCHVISION_NORM_STD_RGB)
 
-                        val outputTensor = module.forward(IValue.from(inputTensor)).toTensor()
-                        val score = outputTensor.dataAsFloatArray
-                        Log.d(null, "onBitmap: ${score.joinToString(" ")}")
-                        var max = -1f
-                        var maxIndex = 0
-                        for (i in score.indices) {
-                            if(score[i] > max) {
-                                max = score[i]
-                                maxIndex = i
-                            }
-                        }
+                        val matrix = Matrix()
+                        matrix.postRotate(90.0f)
+                        val bitmapResult = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true)
+                        val resizedBitmap = Bitmap.createScaledBitmap(bitmapResult,
+                            PrePostProcessor.mInputWidth,
+                            PrePostProcessor.mInputHeight,
+                            true
+                        )
+
+                        val inputTensor = TensorImageUtils.bitmapToFloat32Tensor(
+                            resizedBitmap,
+                            PrePostProcessor.NO_MEAN_RGB,
+                            PrePostProcessor.NO_STD_RGB
+                        )
+                        val outputTuple: Array<IValue> =
+                            module.forward(IValue.from(inputTensor)).toTuple()
+                        val outputTensor = outputTuple[0].toTensor()
+                        val outputs = outputTensor.dataAsFloatArray
+
+                       val  mImgScaleX = bitmap.width.toFloat() / PrePostProcessor.mInputWidth
+                        val mImgScaleY = bitmap.height.toFloat() / PrePostProcessor.mInputHeight
+
+                        val mIvScaleX =
+                            if (bitmap.width > bitmap.height) binding.imageCapture.width.toFloat() / bitmap.width else binding.imageCapture.height.toFloat() / bitmap.height
+                        val mIvScaleY =
+                            if (bitmap.height > bitmap.width) {
+                                binding.imageCapture.height.toFloat() / bitmap.height
+                            } else binding.imageCapture.width.toFloat() / bitmap.width
+
+                        val mStartX = (binding.imageCapture.width - mIvScaleX * bitmap.width) / 2
+                        val mStartY = (binding.imageCapture.height - mIvScaleY * bitmap.height) / 2
+
+                        val results = PrePostProcessor.outputsToNMSPredictions(
+                            outputs,
+                            mImgScaleX,
+                            mImgScaleY,
+                            mIvScaleX,
+                            mIvScaleY,
+                            mStartX,
+                            mStartY
+                        )
+
+                        Log.d(null, "onBitmap: ${results.joinToString(" ")}")
                     }
                 }
                 timer(period = 1000) {

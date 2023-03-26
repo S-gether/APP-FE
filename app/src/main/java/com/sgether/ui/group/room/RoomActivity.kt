@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.sgether.adapter.MemberVideoAdapter
+import com.sgether.adapter.PrePostProcessor
 import com.sgether.databinding.ActivityRoomBinding
 import com.sgether.model.GroupModel
 import com.sgether.model.MemberData
@@ -18,11 +19,9 @@ import io.socket.emitter.Emitter
 import org.json.JSONArray
 import org.json.JSONObject
 import org.pytorch.LiteModuleLoader
-import org.pytorch.Module
 import org.webrtc.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
+
 
 class RoomActivity : AppCompatActivity() {
 
@@ -45,6 +44,15 @@ class RoomActivity : AppCompatActivity() {
     }
 
     private val module by lazy {
+        val br = BufferedReader(InputStreamReader(assets.open("classes.txt")))
+        val classes: MutableList<String> = ArrayList()
+        while (true) {
+            val line = br.readLine() ?: break
+            classes.add(line)
+        }
+        //PrePostProcessor.mClasses = arrayOfNulls(classes.size)
+        PrePostProcessor.mClasses = classes.toTypedArray()
+
         LiteModuleLoader.load(assetFilePath(applicationContext, "yolov5s_torchscript.ptl"))
     }
 
