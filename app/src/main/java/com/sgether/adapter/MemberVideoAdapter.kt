@@ -2,6 +2,7 @@ package com.sgether.adapter
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.PostProcessor
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import org.webrtc.PeerConnection
 import org.webrtc.SessionDescription
 import java.io.ByteArrayOutputStream
 import kotlin.concurrent.timer
+import kotlin.math.pow
 
 
 class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManager, var socketManager: SocketManager, var module: Module) : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVideHolder>(){
@@ -72,14 +74,14 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                         val mImgScaleY = bitmap.height.toFloat() / PrePostProcessor.mInputHeight
 
                         val mIvScaleX =
-                            if (bitmap.width > bitmap.height) binding.imageCapture.width.toFloat() / bitmap.width else binding.imageCapture.height.toFloat() / bitmap.height
+                            if (bitmap.width > bitmap.height) binding.surfaceViewRenderer.width.toFloat() / bitmap.width else binding.surfaceViewRenderer.height.toFloat() / bitmap.height
                         val mIvScaleY =
                             if (bitmap.height > bitmap.width) {
-                                binding.imageCapture.height.toFloat() / bitmap.height
-                            } else binding.imageCapture.width.toFloat() / bitmap.width
+                                binding.surfaceViewRenderer.height.toFloat() / bitmap.height
+                            } else binding.surfaceViewRenderer.width.toFloat() / bitmap.width
 
-                        val mStartX = (binding.imageCapture.width - mIvScaleX * bitmap.width) / 2
-                        val mStartY = (binding.imageCapture.height - mIvScaleY * bitmap.height) / 2
+                        val mStartX = (binding.surfaceViewRenderer.width - mIvScaleX * bitmap.width) / 2
+                        val mStartY = (binding.surfaceViewRenderer.height - mIvScaleY * bitmap.height) / 2
 
                         val results = PrePostProcessor.outputsToNMSPredictions(
                             outputs,
@@ -90,11 +92,11 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                             mStartX,
                             mStartY
                         )
-
-                        Log.d(null, "onBitmap: ${results.joinToString(" ")}")
+                        //후처리
+                        Log.d(null, "postProcessing: ${postProcessing(results)}")
                     }
                 }
-                timer(period = 1000) {
+                timer(period = 3000) {
                     binding.surfaceViewRenderer.addFrameListener({
                          listener.onBitmap(it)
                     }, 0.5f)
@@ -123,6 +125,59 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                 }
             }
             binding.textProfile.text = memberData.name
+        }
+
+        val personCenterList = mutableListOf<Float>()
+        val tempCenterRatioX = 0
+        val tempCenterRatioY = 1
+
+        val con_min_distance = 0.01f
+        val con_max_distance = 0.8f
+
+        private fun postProcessing(results: List<Result>): Int {
+            // 인간 박스
+            val personRectAreaList = results.filter { it.classIndex == 0 }.map { it.rect.width() * it.rect.height() }
+            // 휴대폰 박스
+            val phoneRectAreaList = results.filter { it.classIndex == 67 }.map { it.rect.width() * it.rect.height() }
+
+            // 인간 존재
+            if (personRectAreaList.isNotEmpty()) {
+                // 휴대폰 존재X
+                if(phoneRectAreaList.isEmpty()) {
+                    val pos = results.filter { it.classIndex == 0 }
+                        .maxByOrNull { it.rect.width() * it.rect.height() }
+
+                    val centerX = pos?.rect?.centerX()?:0
+                    val centerY = pos?.rect?.centerY()?:0
+
+                    val result = ((tempCenterRatioX - (centerX.div(binding.surfaceViewRenderer.width.toFloat()))).pow(2) + (tempCenterRatioY - (centerY.div(binding.surfaceViewRenderer.height.toFloat()))).pow(2)).pow(0.5f)
+                    personCenterList.add(result)
+
+                    if(personCenterList.size >= 20) {
+                        personCenterList.removeFirst()
+
+                        personCenterList.forEach {
+                            Log.d(null, "postProcessing: $it")
+                        }
+                        if(personCenterList.filter { it < con_min_distance }.size == 20) {
+                            Log.d(null, "postProcessing: 너무 안움직여 ${personCenterList.filter { it < con_min_distance }.size}")
+                            return 0
+                        } else if (personCenterList.filter { it > con_max_distance }.size >= 10) {
+                            Log.d(null, "postProcessing: 그만 움직여 ${personCenterList.filter { it > con_min_distance }.size}")
+                            return 0
+                        }
+                        return 1
+                    }
+                    Log.d(null, "postProcessing: 데이터 수집중")
+                    return 2
+                } else {
+                    Log.d(null, "postProcessing: 휴대폰 그만 만져")
+                    return 0
+                }
+            } else {
+                Log.d(null, "postProcessing: 사람 미존재")
+                return 0
+            }
         }
 
         private fun buildPeerConnection(peerConnectionObserver: PeerConnectionObserver): PeerConnection? {
