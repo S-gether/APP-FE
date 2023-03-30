@@ -85,7 +85,7 @@ class HomeFragment : Fragment(), CalendarAdapter.OnItemClickListener {
                     if(dateModel.year == date.year && dateModel.month == date.month && dateModel.date == date.date) {
                         dateModel.studyTime += it.total_time
                         dateModel.aiCount += it.ai_count
-                        dateModel.focusTime = dateModel.studyTime - dateModel.aiCount * 180000
+                        dateModel.focusTime = dateModel.studyTime - dateModel.aiCount * 3000 //180000
                     }
                 }
             }

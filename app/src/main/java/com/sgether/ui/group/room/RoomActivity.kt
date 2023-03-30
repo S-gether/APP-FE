@@ -23,7 +23,7 @@ import org.webrtc.*
 import java.io.*
 
 
-class RoomActivity : AppCompatActivity() {
+class RoomActivity : AppCompatActivity(), MemberVideoAdapter.AiListener {
 
     private val TAG = ".RoomActivity"
 
@@ -81,6 +81,7 @@ class RoomActivity : AppCompatActivity() {
 
     private val memberVideoAdapter by lazy {
         MemberVideoAdapter(
+            this,
             nickName,
             peerManager,
             socketManager,
@@ -247,4 +248,10 @@ class RoomActivity : AppCompatActivity() {
         val studyTime = System.currentTimeMillis() - startTime
         viewModel.createStudyTime(groupModel.id?:"", studyTime, aiCount)
     }
+
+    override fun onCount() {
+        aiCount += 1
+    }
+
+
 }

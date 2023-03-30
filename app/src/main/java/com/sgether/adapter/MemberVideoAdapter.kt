@@ -1,8 +1,13 @@
 package com.sgether.adapter
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.PostProcessor
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +20,7 @@ import com.sgether.webrtc.MyPeerManager
 import com.sgether.webrtc.SocketManager
 import com.sgether.webrtc.observer.AppSdpObserver
 import com.sgether.webrtc.observer.PeerConnectionObserver
+import es.dmoral.toasty.Toasty
 import org.pytorch.IValue
 import org.pytorch.Module
 import org.pytorch.torchvision.TensorImageUtils
@@ -27,7 +33,7 @@ import kotlin.concurrent.timer
 import kotlin.math.pow
 
 
-class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManager, var socketManager: SocketManager, var module: Module) : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVideHolder>(){
+class MemberVideoAdapter(var listener: AiListener, var localUserName: String, var peerManager: MyPeerManager, var socketManager: SocketManager, var module: Module) : RecyclerView.Adapter<MemberVideoAdapter.MemberVideoVideHolder>(){
 
     var list: List<MemberData> = listOf()
         set(value) {
@@ -93,7 +99,12 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                             mStartY
                         )
                         //후처리
-                        Log.d(null, "postProcessing: ${postProcessing(results)}")
+                        val result = postProcessing(results)
+                        if (result == 0) {
+                            listener.onCount()
+                        }
+
+                        Log.d(null, "postProcessing: $result")
                     }
                 }
                 timer(period = 3000) {
@@ -160,9 +171,11 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                             Log.d(null, "postProcessing: $it")
                         }
                         if(personCenterList.filter { it < con_min_distance }.size == 20) {
+                            Toasty.error(binding.root.context, "Don't sleep!", 1000).show()
                             Log.d(null, "postProcessing: 너무 안움직여 ${personCenterList.filter { it < con_min_distance }.size}")
                             return 0
                         } else if (personCenterList.filter { it > con_max_distance }.size >= 10) {
+                            Toasty.error(binding.root.context, "Be concentrate!", 1000).show()
                             Log.d(null, "postProcessing: 그만 움직여 ${personCenterList.filter { it > con_min_distance }.size}")
                             return 0
                         }
@@ -171,10 +184,12 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
                     Log.d(null, "postProcessing: 데이터 수집중")
                     return 2
                 } else {
+                    Toasty.error(binding.root.context, "Don't use smartphone!", 1000).show()
                     Log.d(null, "postProcessing: 휴대폰 그만 만져")
                     return 0
                 }
             } else {
+                Toasty.error(binding.root.context, "Don't leave your seat!", 1000).show()
                 Log.d(null, "postProcessing: 사람 미존재")
                 return 0
             }
@@ -241,5 +256,20 @@ class MemberVideoAdapter(var localUserName: String, var peerManager: MyPeerManag
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes = baos.toByteArray()
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+    }
+
+    private fun vibrate(context: Context) {
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val pattern = VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE)
+            vibrator.vibrate(pattern)
+        } else {
+            vibrator.vibrate(1000)
+        }
+    }
+
+    interface AiListener {
+        fun onCount()
     }
 }

@@ -15,7 +15,7 @@ class SocketManager(onJoinListener: Emitter.Listener, onOffer: Emitter.Listener,
 
     private val socket by lazy {
         try {
-            IO.socket("https://neat-corners-marry-14-38-13-95.loca.lt/")
+            IO.socket("http://13.125.195.128:8080/")
         } catch (e: URISyntaxException){
             null
         }
