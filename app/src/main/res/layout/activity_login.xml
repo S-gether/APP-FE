@@ -85,7 +85,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputPassword" />
 
-    <LinearLayout
+    <!-- 구글 로그인 버튼 -->
+    <!--LinearLayout
         android:id="@+id/btnGoogle"
         android:layout_width="0dp"
         android:layout_height="48dp"
@@ -111,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Login with Google" />
-    </LinearLayout>
+    </LinearLayout-->
 
     <TextView
         android:id="@+id/sendGroup"
@@ -126,7 +127,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
+        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
     <TextView
         android:id="@+id/textSignUp"
@@ -139,6 +140,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/sendGroup"
-        app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
+        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
