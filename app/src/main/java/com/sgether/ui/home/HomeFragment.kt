@@ -144,10 +144,9 @@ class HomeFragment : Fragment(), CalendarAdapter.OnItemClickListener {
         binding.studyTimeTextview.text = "학습 시간: ${convertMillisecondsToTime(dateModel.studyTime)}"
         binding.focusTimeTextview.text = "집중 시간: ${convertMillisecondsToTime(dateModel.focusTime)}"
         binding.aiCountTextview.text = "지적 당한 횟수 : ${dateModel.aiCount}회"
-        binding.studyToFocusTextview.text = "학습 시간 대비 집중도: ${dateModel.focusTime.toFloat() / dateModel.studyTime.toFloat()* 100}%"
+        binding.studyToFocusTextview.text = if (dateModel.studyTime.toFloat() != 0f) "학습 시간 대비 집중도: ${dateModel.focusTime.toFloat() / dateModel.studyTime.toFloat()* 100}%" else{"학습 시간 대비 집중도: 0"}
     }
 }
-
     fun convertMillisecondsToTime(milliseconds: Long): String {
         val seconds = (milliseconds / 1000) % 60
         val minutes = (milliseconds / (1000 * 60)) % 60

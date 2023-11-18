@@ -134,9 +134,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
-        binding.btnGoogle.setOnClickListener {
-
-        }
     }
 
     private suspend fun checkToken(): String? {
